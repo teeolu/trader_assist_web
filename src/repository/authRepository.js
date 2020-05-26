@@ -36,6 +36,8 @@ const AuthRepository = function (axiosInstance) {
             });
             Auth.setToken(data.token);
             !!navigation && navigation.navigate('overview', { screen: 'overview' });
+            // axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.user.token}`;
+            // axiosInstance.defaults.withCredentials = true;
           } else {
             store.dispatch({
               type: LOGIN_REQUEST_FAILURE,
@@ -93,10 +95,15 @@ const AuthRepository = function (axiosInstance) {
         })
         .then(function (response) {
           const { success, message, data } = response.data;
+          console.log('vjghvjgvjhvjhvhgvjkhgk response.data ', response.data);
 
           if (success) {
             store.dispatch({
               type: REGISTER_REQUEST_SUCCESS,
+            });
+            store.dispatch({
+              type: SET_CURRENT_USER,
+              payload: data.user,
             });
             axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.user.token}`;
             Auth.setToken(data.user.token);
@@ -109,6 +116,7 @@ const AuthRepository = function (axiosInstance) {
           }
         })
         .catch(function (error) {
+          console.log('vjghvjgvjhvjhvhgvjkhgk error ', error);
           store.dispatch({
             type: REGISTER_REQUEST_FAILURE,
             payload: error.message,

@@ -1,14 +1,37 @@
-import React from 'react';
-import { Form, Input, Card } from 'antd';
+import React, { useEffect } from 'react';
+import { Form, Input, Card, notification } from 'antd';
+import { useSelector } from 'react-redux';
 
+import {
+  getIsFetchingState,
+  getErrorMessageState,
+  getStatusState,
+  Status,
+} from '../redux/auth/loginReducer';
 import OnboardingLayout from '../components/OnboardingLayout';
 import Buttons from '../atoms/Buttons';
+import { Api } from '../repository/Api';
 
 const Login = () => {
   const [form] = Form.useForm();
 
+  const isFetching = useSelector(getIsFetchingState);
+  const errorMsg = useSelector(getErrorMessageState);
+  const status = useSelector(getStatusState);
+
+  useEffect(() => {
+    if (status === Status.REGISTER_REQUEST_FAILURE) {
+      notification['error']({
+        message: errorMsg,
+      });
+    }
+  }, [status]);
+  console.log('Success: isFetching ', isFetching);
+
   function onFinish(values) {
     console.log('Success:', values);
+
+    Api.AuthRepository.login({ formData: values });
   }
 
   function onFinishFailed(errorInfo) {
@@ -55,6 +78,7 @@ const Login = () => {
         </Form.Item>
         <Buttons
           btnText="Sign in"
+          isLoading={isFetching}
           style={{
             paddingRight: 50,
             paddingLeft: 50,

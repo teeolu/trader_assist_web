@@ -23,6 +23,8 @@ const addBusinessReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: true,
+        errorMessage: '',
+        status: null,
       };
     case ADD_BUSINESS_REQUEST_SUCCESS:
       return {

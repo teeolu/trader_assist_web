@@ -5,13 +5,14 @@ import { makeStyles } from '@material-ui/styles';
 import Typography from './Typography';
 import { colors } from '../Css';
 
-const Buttons = ({ bgColor, btnText, btnAction, style = {}, ...rest }) => {
+const Buttons = ({ bgColor, textColor, btnText, btnAction, isLoading, style = {}, ...rest }) => {
   const classes = useStyles({ bgColor });
 
   return (
     <Button
       btnAction={btnAction}
       className={classes.btn}
+      loading={isLoading}
       style={{
         ...style,
         display: 'flex',
@@ -21,7 +22,7 @@ const Buttons = ({ bgColor, btnText, btnAction, style = {}, ...rest }) => {
       }}
       type="primary"
       htmlType="submit">
-      <Typography color={colors.white} uppercase {...rest}>
+      <Typography color={!!textColor ? textColor : colors.white} uppercase {...rest}>
         {btnText}
       </Typography>
     </Button>

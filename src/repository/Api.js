@@ -8,12 +8,27 @@ import { InvestmentRepository } from './investmentRepository';
 import { ReturnsRepository } from './returnsRepository';
 import { MiscRepository } from './miscRepository';
 import { SettingsRepository } from './settingsRepository';
+import Auth from '../utils/auth';
 
 const config = {
   baseURL: `http://localhost:5000`,
+  // withCredentials: true,
 };
 
 const instance = axios.create(config);
+
+instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.log('shjhskhskjhsjhsk error.response.data ', error.response.data);
+    return Promise.reject(error.response.data);
+  },
+);
+
+instance.interceptors.request.use((config) => {
+  config.params = { ...config.params, token: Auth.getToken() };
+  return config;
+});
 
 export const Api = {
   AuthRepository: AuthRepository(instance),

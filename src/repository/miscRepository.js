@@ -22,6 +22,7 @@ const MiscRepository = function (axiosInstance) {
         .post('/api/image-upload/add', formData, {
           onUploadProgress: function (progressEvent) {
             var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+
             store.dispatch({
               type: IMAGE_UPLOAD_PERCENTAGE,
               payload: percentCompleted,

@@ -14,7 +14,7 @@ import {
   GET_BUSINESS_HISTORY_REQUEST,
 } from '../redux/business/actionTypes';
 import store from '../redux/store';
-import { overviewOptions } from '../screens/Overview/constants';
+import { overviewOptions } from '../constants/dateFilter';
 
 const BusinessRepository = function (axiosInstance) {
   let _BusinessRepository = {
@@ -34,7 +34,7 @@ const BusinessRepository = function (axiosInstance) {
               type: SET_CURRENT_BUSINESS,
               payload: data,
             });
-            return;
+            return success;
           } else {
             store.dispatch({
               type: ADD_BUSINESS_REQUEST_FAILURE,
