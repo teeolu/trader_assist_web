@@ -130,6 +130,8 @@ const Register = () => {
               borderRadius: 50,
               height: 40,
             }}
+            type="primary"
+            htmlType="submit"
           />
         </Form>
       </OnboardingLayout>

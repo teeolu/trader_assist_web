@@ -139,6 +139,7 @@ export const screenSizes = {
 
 export const boxShadows = {
   card: '0 4px 8px 0 rgba(131,137,160,.2)',
+  border: '1px solid #cdcfd2',
 };
 
 export function spacingHelper(type, units, directions) {

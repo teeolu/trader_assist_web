@@ -41,3 +41,20 @@ body {
   font-family: "Montserrat Thin";
   src: url("/fonts/Montserrat-Thin.ttf");
 }
+
+#components-layout-demo-custom-trigger .trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+  margin-left: 16px;
+}
+
+#components-layout-demo-custom-trigger .trigger:hover {
+  color: #1890ff;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}

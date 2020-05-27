@@ -5,7 +5,16 @@ import { makeStyles } from '@material-ui/styles';
 import Typography from './Typography';
 import { colors } from '../Css';
 
-const Buttons = ({ bgColor, textColor, btnText, btnAction, isLoading, style = {}, ...rest }) => {
+const Buttons = ({
+  bgColor,
+  textColor,
+  btnText,
+  btnAction,
+  isLoading,
+  style = {},
+  textStyle = {},
+  ...props
+}) => {
   const classes = useStyles({ bgColor });
 
   return (
@@ -20,9 +29,8 @@ const Buttons = ({ bgColor, textColor, btnText, btnAction, isLoading, style = {}
         justifyContent: 'center',
         // backgroundColor: bgColor,
       }}
-      type="primary"
-      htmlType="submit">
-      <Typography color={!!textColor ? textColor : colors.white} uppercase {...rest}>
+      {...props}>
+      <Typography color={!!textColor ? textColor : colors.white} uppercase style={textStyle}>
         {btnText}
       </Typography>
     </Button>

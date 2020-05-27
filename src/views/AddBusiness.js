@@ -127,6 +127,8 @@ const AddBusiness = ({ businessAsStaff }) => {
                 padding: '.8rem 2rem',
               }}
               btnText="Add new business"
+              type="primary"
+              htmlType="submit"
             />
           </div>
         ) : null}

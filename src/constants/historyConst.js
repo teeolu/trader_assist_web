@@ -1,4 +1,4 @@
-import { colors } from './theme';
+import { colors } from '../Css';
 
 export const historyTag = {
   edit: {
