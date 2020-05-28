@@ -29,9 +29,10 @@ const publicRoutes = [
 
 export const PrivatePaths = {
   OVERVIEW: '/overview',
+  INVESTORS: '/investors',
 };
 
-const privateRoutes = [{ path: PrivatePaths.OVERVIEW, exact: true, component: Overview }];
+const privateRoutes = [{ path: PrivatePaths.INVESTORS, exact: false, component: Overview }];
 
 const Routes = () => {
   const classes = useStyles();

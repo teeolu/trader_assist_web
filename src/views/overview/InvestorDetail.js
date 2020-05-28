@@ -5,12 +5,21 @@ import { makeStyles } from '@material-ui/styles';
 import { colors, fontsize, boxShadows, typography, fonts } from '../../Css';
 import Buttons from '../../atoms/Buttons';
 import InvestorDetailsTab from './investorDetailsTab';
+import { PrivatePaths } from '../../routes';
+import history from '../../routes/history';
 
-const InvestorDetails = () => {
+const InvestorDetails = (props) => {
   const classes = useStyles();
+  // let {
+  //   match: { path, params },
+  // } = props;
+  // console.log('params.investorId params.investorId ', params);
 
   return (
-    <div className={classes.investorsDetail}>
+    <div
+      style={{
+        padding: '50px 100px 50px 50px',
+      }}>
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
           <div style={{ height: 100, width: 100, backgroundColor: colors.gray }}></div>
@@ -70,6 +79,7 @@ const InvestorDetails = () => {
             }}>
             <Buttons
               btnText="Add investment"
+              onClick={() => history.push(`${PrivatePaths.INVESTORS}/new-investment/dhbjdhbd`)}
               size="small"
               textColor={colors.pinkDark}
               textStyle={{}}
@@ -82,6 +92,7 @@ const InvestorDetails = () => {
             <Buttons
               btnText="Edit"
               size="small"
+              onClick={() => history.push(`${PrivatePaths.INVESTORS}/edit-investor/dhbjdhbd`)}
               textColor={colors.blue}
               textStyle={{}}
               style={{
@@ -100,14 +111,6 @@ const InvestorDetails = () => {
 };
 
 const useStyles = makeStyles({
-  investorsDetail: {
-    flex: 5,
-    height: '100%',
-    width: '100%',
-    backgroundColor: colors.white,
-    padding: '50px 100px 50px 50px',
-    overflowY: 'scroll',
-  },
   investorsHeading: {
     padding: 15,
     width: '100%',

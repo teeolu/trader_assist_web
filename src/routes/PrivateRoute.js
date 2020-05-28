@@ -4,13 +4,17 @@ import { Route, Redirect } from 'react-router-dom';
 import { PublicPaths } from './index';
 import Auth from '../utils/auth';
 
-const PrivateRoute = ({ component: Component, shouldRedirect, ...rest }) => {
+const PrivateRoute = ({ component: Component, render, shouldRedirect, ...rest }) => {
   return (
     <Route
       {...rest}
       render={(props) => {
         const content = Auth.isAuthenticated() ? (
-          <Component {...props} />
+          !!render ? (
+            <>{render()}</>
+          ) : (
+            <Component {...props} />
+          )
         ) : shouldRedirect !== false ? (
           <Redirect
             to={{

@@ -2,13 +2,23 @@ import React, { useState } from 'react';
 import { Layout, Input, Tooltip, Button, Menu } from 'antd';
 import { makeStyles } from '@material-ui/styles';
 import { PlusSquareOutlined } from '@ant-design/icons';
+import { Switch } from 'react-router-dom';
 
 import { colors, fontsize, boxShadows, typography, fonts } from '../../Css';
 import Buttons from '../../atoms/Buttons';
 import InvestorDetails from './InvestorDetail';
+import PrivateRoute from '../../routes/PrivateRoute';
+import AddInvestor from './AddInvestor';
+import history from '../../routes/history';
+import { PrivatePaths } from '../../routes';
+import EditInvestor from './EditInvestor';
+import AddInvestment from './AddInvestment';
 const { Search } = Input;
 
-const Overview = () => {
+const Overview = (props) => {
+  let {
+    match: { path, params },
+  } = props;
   const classes = useStyles();
 
   function renderInvestorsList(params) {
@@ -57,6 +67,7 @@ const Overview = () => {
               <Button
                 type="primary"
                 shape="circle"
+                onClick={() => history.push(`${path}/new-investor`)}
                 style={{ backgroundColor: colors.pinkLight, border: 'none' }}
                 icon={
                   <PlusSquareOutlined style={{ color: colors.pinkDark, fontSize: fontsize.h4 }} />
@@ -73,9 +84,25 @@ const Overview = () => {
             style={{ width: '100%' }}
           />
         </div>
+
         {renderInvestorsList()}
       </div>
-      <InvestorDetails />
+      <div className={classes.investorsDetail}>
+        <Switch>
+          <PrivateRoute path={`${path}/new-investor`} exact={true} component={AddInvestor} />
+          <PrivateRoute path={`${path}/:investorId`} exact={true} component={InvestorDetails} />
+          <PrivateRoute
+            path={`${path}/new-investment/:investorId`}
+            exact={true}
+            component={AddInvestment}
+          />
+          <PrivateRoute
+            path={`${path}/edit-investor/:investorId`}
+            exact={true}
+            component={EditInvestor}
+          />
+        </Switch>
+      </div>
     </div>
   );
 };
@@ -147,6 +174,13 @@ const useStyles = makeStyles({
       bottom: 5,
       right: 5,
     },
+  },
+  investorsDetail: {
+    flex: 5,
+    height: '100%',
+    width: '100%',
+    backgroundColor: colors.white,
+    overflowY: 'scroll',
   },
 });
 

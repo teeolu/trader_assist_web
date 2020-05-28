@@ -24,7 +24,7 @@ const SideBar = () => {
   }
 
   const SideBarContents = [
-    { name: 'Overview', icon: DashboardOutlined, path: PrivatePaths.OVERVIEW },
+    { name: 'Overview', icon: DashboardOutlined, path: PrivatePaths.INVESTORS },
     { name: 'Investors', icon: UsergroupAddOutlined, path: PrivatePaths.ASSESSMENT },
     {
       name: 'Returns',
