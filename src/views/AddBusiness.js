@@ -56,32 +56,33 @@ const AddBusiness = ({ businessAsStaff }) => {
     Api.MiscRepository.uploadImage({
       imageUploadUri: null,
       formData: data,
-    })
-      .then((data) => {
-        if (!!data) {
-          notification['open']({
-            message: `Registering your platform...`,
-            key: imageUploadKey,
-            icon: <LoadingOutlined style={{ color: colors.green }} />,
-            ...notificationConfigs,
-          });
-          Api.BusinessRepository.addBusiness({
-            formData: {
-              ...values,
-              businessImage: data,
-            },
-          });
-        }
-      })
-      .then((success) => {
+    }).then((data) => {
+      if (!!data) {
         notification['open']({
-          ...notificationConfigs,
-          message: `Your platform has been created successfully`,
+          message: `Registering your platform...`,
           key: imageUploadKey,
-          duration: 5,
+          icon: <LoadingOutlined style={{ color: colors.green }} />,
+          ...notificationConfigs,
         });
-        history.replace('overview');
-      });
+        Api.BusinessRepository.addBusiness({
+          formData: {
+            ...values,
+            businessImage: data,
+          },
+        }).then((success) => {
+          console.log('addBusiness addBusiness addBusiness ', success);
+          if (success === true) {
+            notification['open']({
+              ...notificationConfigs,
+              message: `Your platform has been created successfully`,
+              key: imageUploadKey,
+              duration: 5,
+            });
+            history.replace('investors');
+          }
+        });
+      }
+    });
   }
 
   function onFinishFailed(errorInfo) {
@@ -208,6 +209,8 @@ const AddBusiness = ({ businessAsStaff }) => {
               <Buttons
                 btnText="Add your platform"
                 isLoading={isFetching}
+                type="primary"
+                htmlType="submit"
                 style={{
                   paddingRight: 50,
                   paddingLeft: 50,

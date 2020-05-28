@@ -1,92 +1,85 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Row, Col, notification, Button } from 'antd';
+import { Form, Input, Modal, Col, notification, Button, Checkbox } from 'antd';
 import { useSelector } from 'react-redux';
-import { LoadingOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { CheckCircleTwoTone, ArrowLeftOutlined } from '@ant-design/icons';
 import { makeStyles } from '@material-ui/styles';
 
 import {
   getIsFetchingState,
+  getAddedInvestorState,
   getErrorMessageState,
   getStatusState,
   Status,
-} from '../../redux/business/addBusinessReducer';
+} from '../../redux/investor/addInvestorReducer';
+import { getCurrentBusinessState } from '../../redux/business/addBusinessReducer';
 import Buttons from '../../atoms/Buttons';
 import { Api } from '../../repository/Api';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { colors, typography, boxShadows, fontsize } from '../../Css';
 import history from '../../routes/history';
+import { PrivatePaths } from '../../routes';
+import Auth from '../../utils/auth';
 
-const AddInvestor = ({ businessAsStaff }) => {
-  const imageUploadKey = 'uploadBusinessImageKey';
-  const isSelectoption = Array.isArray(businessAsStaff) && businessAsStaff.length > 0;
-  const [selectedImage, setSelectedImage] = useState(null);
+const AddInvestor = ({}) => {
+  const [notifyInvestor, setNotifyInvestor] = useState(false);
   const [form] = Form.useForm();
-  const classes = useStyles({ isVisible: Array.isArray(businessAsStaff) });
+  const classes = useStyles();
+  const { confirm } = Modal;
 
   const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
+  const addedInvestor = useSelector(getAddedInvestorState);
+  const currentBusiness = useSelector(getCurrentBusinessState);
+
+  console.log('addedInvestor addedInvestor addedInvestor ', currentBusiness, addedInvestor);
 
   useEffect(() => {
-    if (status === Status.ADD_BUSINESS_REQUEST_FAILURE) {
+    if (status === Status.ADD_INVESTOR_REQUEST_FAILURE) {
       notification['error']({
         message: errorMsg,
         ...notificationConfigs,
       });
     }
-  }, [status]);
 
-  useEffect(() => {
-    if (isFetching) {
-      notification['open']({
-        message: `Creating your platform...`,
-        key: imageUploadKey,
-        ...notificationConfigs,
+    if (status === Status.ADD_INVESTOR_REQUEST_SUCCESS) {
+      confirm({
+        title: `${addedInvestor.fullName} added successfully`,
+        icon: <CheckCircleTwoTone />,
+        content: `Will you like to add an investment for ${addedInvestor.fullName}?`,
+        onOk() {
+          history.push(`${PrivatePaths.INVESTORS}/new-investment/${addedInvestor._id}`);
+        },
+        onCancel() {
+          history.push(`${PrivatePaths.INVESTORS}/${addedInvestor._id}`);
+        },
       });
     }
-  }, [isFetching]);
+  }, [status]);
 
   function onFinish(values) {
-    const data = new FormData();
-
-    data.append('photo', selectedImage);
-    Api.MiscRepository.uploadImage({
-      imageUploadUri: null,
-      formData: data,
-    })
-      .then((data) => {
-        if (!!data) {
-          notification['open']({
-            message: `Registering your platform...`,
-            key: imageUploadKey,
-            icon: <LoadingOutlined style={{ color: colors.green }} />,
-            ...notificationConfigs,
-          });
-          Api.BusinessRepository.addBusiness({
-            formData: {
-              ...values,
-              businessImage: data,
-            },
-          });
-        }
-      })
-      .then((success) => {
-        notification['open']({
-          ...notificationConfigs,
-          message: `Your platform has been created successfully`,
-          key: imageUploadKey,
-          duration: 5,
+    console.log('addedInvestor addedInvestor success ', currentBusiness, Auth.getCurrentBusiness());
+    Api.InvestorRepository.addInvestor({
+      formData: {
+        ...values,
+        notifyInvestor,
+        businessId: currentBusiness._id,
+      },
+    }).then((success) => {
+      console.log('addedInvestor addedInvestor success ', success);
+      if (success === true) {
+        Api.InvestorRepository.getInvestor({
+          params: {
+            investorId: addedInvestor._id,
+          },
         });
-        history.replace('overview');
-      });
+        Api.InvestorRepository.getInvestors({});
+      }
+    });
   }
 
   function onFinishFailed(errorInfo) {
     console.log('Failed:', errorInfo);
-  }
-
-  function onSelectImage(img) {
-    setSelectedImage(img);
   }
 
   return (
@@ -119,50 +112,35 @@ const AddInvestor = ({ businessAsStaff }) => {
           onFinish={onFinish}
           scrollToFirstError>
           <Form.Item
-            name="businessName"
-            label="Platform name"
-            rules={[{ required: true, message: 'Business name is required!' }]}>
-            <Input
-              autoFocus
-              size="large"
-              placeholder="A name that you can be recognised with officially"
-            />
+            name="fullName"
+            label="Investor name"
+            rules={[{ required: true, message: 'Investor name is required!' }]}>
+            <Input autoFocus size="large" placeholder="e.g John Doe" />
           </Form.Item>
           <Form.Item
-            name="businessAddress"
-            label="Address"
+            name="email"
+            label="Investor email"
             rules={[
-              { required: true, message: 'Password is required!' },
+              { required: true, message: 'Investor email is required!' },
               // {
               //   type: 'email',
               //   message: 'Requires a valid email',
               // },
             ]}>
-            <Input size="large" placeholder="Enter an address to access you" />
+            <Input size="large" placeholder="Enter an email addres" />
           </Form.Item>
-          <Form.Item
-            name="businessPhoneNumber"
-            label="Platform phone number"
-            rules={[{ required: true, message: 'Phone number is required!' }]}>
+          <Form.Item name="phoneNumber" label="Investor phone number">
             <Input size="large" placeholder="e.g 090987654321" />
           </Form.Item>
-          <Form.Item
-            name="businessEmail"
-            label="Platform email address"
-            rules={[
-              { required: true, message: 'Email is required!' },
-              {
-                type: 'email',
-                message: 'Requires a valid email',
-              },
-            ]}>
-            <Input size="large" placeholder="e.g myemail@emailprovider.com" />
-          </Form.Item>
+          <Checkbox onChange={(e) => setNotifyInvestor(e.target.checked)}>
+            Do you want the investor to be notified?
+          </Checkbox>
           <Buttons
             btnText="Add investor"
             size="small"
             textColor={colors.pinkDark}
-            textStyle={{}}
+            htmlType="submit"
+            isLoading={isFetching}
             style={{
               padding: '7px 10px',
               backgroundColor: 'transparent',

@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/styles';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import history from './history';
-import Overview from '../views/overview';
+import Overview from '../views/investors';
 import Login from '../views/Login';
 import Register from '../views/Register';
 import SideBar from '../components/SideBar';

@@ -8,6 +8,16 @@ export default class Auth {
     localStorage.setItem('token', token);
   }
 
+  static setCurrentBusiness(business) {
+    localStorage.setItem('currentBusiness', JSON.stringify(business));
+  }
+
+  static getCurrentBusiness() {
+    const currentBusiness = localStorage.getItem('currentBusiness');
+    if (!!currentBusiness) return JSON.parse(currentBusiness);
+    return null;
+  }
+
   static getToken() {
     return localStorage.getItem('token');
   }

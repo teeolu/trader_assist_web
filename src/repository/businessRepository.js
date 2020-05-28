@@ -15,6 +15,7 @@ import {
 } from '../redux/business/actionTypes';
 import store from '../redux/store';
 import { overviewOptions } from '../constants/dateFilter';
+import Auth from '../utils/auth';
 
 const BusinessRepository = function (axiosInstance) {
   let _BusinessRepository = {
@@ -34,19 +35,21 @@ const BusinessRepository = function (axiosInstance) {
               type: SET_CURRENT_BUSINESS,
               payload: data,
             });
-            return success;
+            Auth.setCurrentBusiness(data);
           } else {
             store.dispatch({
               type: ADD_BUSINESS_REQUEST_FAILURE,
               payload: message,
             });
           }
+          return success;
         })
         .catch(function (error) {
           store.dispatch({
             type: ADD_BUSINESS_REQUEST_FAILURE,
             payload: error.message,
           });
+          return error;
         });
     },
     getBusinesses: function ({ businessId }) {

@@ -15,7 +15,7 @@ import { notificationConfigs } from '../constants/ToastNotifincation';
 import AddBusiness from './AddBusiness';
 
 const Register = () => {
-  const [businessAsStaff, setBusinessAsStaff] = useState([]);
+  const [businessAsStaff, setBusinessAsStaff] = useState(null);
   const [form] = Form.useForm();
 
   const isFetching = useSelector(getIsFetchingState);

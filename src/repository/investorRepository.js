@@ -212,12 +212,11 @@ const InvestorRepository = function (axiosInstance) {
         .then(function (response) {
           const { success, message, data } = response.data;
           if (success) {
-            InvestorRepository.getInvestors({});
             store.dispatch({
               type: ADD_INVESTOR_REQUEST_SUCCESS,
               payload: data,
             });
-            return;
+            return success;
           }
           store.dispatch({
             type: ADD_INVESTOR_REQUEST_FAILURE,
