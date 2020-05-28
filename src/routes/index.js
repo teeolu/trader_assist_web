@@ -9,8 +9,8 @@ import history from './history';
 import Overview from '../views/overview';
 import Login from '../views/Login';
 import Register from '../views/Register';
-import SideBar from '../atoms/SideBar';
-import NavHeader from '../atoms/NavHeader';
+import SideBar from '../components/SideBar';
+import NavHeader from '../components/NavHeader';
 import { boxShadows, colors } from '../Css';
 
 const { Content } = Layout;

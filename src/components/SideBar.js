@@ -25,23 +25,28 @@ const SideBar = () => {
 
   const SideBarContents = [
     { name: 'Overview', icon: DashboardOutlined, path: PrivatePaths.INVESTORS },
-    { name: 'Investors', icon: UsergroupAddOutlined, path: PrivatePaths.ASSESSMENT },
+    { name: 'Investors', icon: UsergroupAddOutlined, path: PrivatePaths.INVESTORS },
     {
       name: 'Returns',
       icon: UploadOutlined,
-      path: PrivatePaths.CONTACT_TRACE,
+      path: PrivatePaths.INVESTORS,
     },
     {
       name: 'Investments',
       icon: DownloadOutlined,
-      path: PrivatePaths.CASE_MANAGEMENT,
+      path: PrivatePaths.INVESTORS,
     },
     {
       name: 'Settings',
       icon: SettingOutlined,
-      path: PrivatePaths.PARTNERS,
+      path: PrivatePaths.INVESTORS,
     },
   ];
+
+  const currentView = window.location.href
+    .replace(new RegExp(`${window.location.origin}/|/$`, 'g'), '')
+    .trim()
+    .split('/')[0];
 
   return (
     <Sider
@@ -61,11 +66,11 @@ const SideBar = () => {
           },
         })}
       </div>
-      <Menu theme="light" mode="inline" defaultSelectedKeys={['1']}>
+      <Menu theme="light" mode="inline" selectedKeys={[currentView]}>
         {SideBarContents.map((el) => {
           const Icon = el.icon;
           return (
-            <Menu.Item key={el.name} icon={<Icon />}>
+            <Menu.Item key={el.name.toLowerCase().trim().replace(/\s/, '-')} icon={<Icon />}>
               {el.name}
             </Menu.Item>
           );
