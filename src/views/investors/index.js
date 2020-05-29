@@ -24,7 +24,7 @@ import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { getCurrentBusinessState } from '../../redux/business/addBusinessReducer';
 const { Search } = Input;
 
-const Overview = (props) => {
+const Investors = (props) => {
   let {
     match: { path },
   } = props;
@@ -67,8 +67,10 @@ const Overview = (props) => {
     return (
       <div className={classes.inventorListContainer}>
         {investorsData.investors.map((investor, i) => {
-          const isActive =
-            investor._id === props.location.pathname.split(`${path}/`)[1].split('/')[0];
+          const idFromParam = !!props.location.pathname.split(`${path}/`)[1]
+            ? props.location.pathname.split(`${path}/`)[1].split('/')[0]
+            : null;
+          const isActive = investor._id === idFromParam;
           return (
             <div
               key={investor._id}
@@ -245,4 +247,4 @@ const useStyles = makeStyles({
   },
 });
 
-export default Overview;
+export default Investors;

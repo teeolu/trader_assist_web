@@ -12,6 +12,7 @@ import {
 import { makeStyles } from '@material-ui/styles';
 import { colors, fontsize, boxShadows } from '../Css';
 import { PrivatePaths } from '../routes';
+import history from '../routes/history';
 
 const { Sider } = Layout;
 
@@ -24,22 +25,22 @@ const SideBar = () => {
   }
 
   const SideBarContents = [
-    { name: 'Overview', icon: DashboardOutlined, path: PrivatePaths.INVESTORS },
+    { name: 'Overview', icon: DashboardOutlined, path: PrivatePaths.OVERVIEW },
     { name: 'Investors', icon: UsergroupAddOutlined, path: PrivatePaths.INVESTORS },
     {
       name: 'Returns',
       icon: UploadOutlined,
-      path: PrivatePaths.INVESTORS,
+      path: PrivatePaths.RETURNS,
     },
     {
       name: 'Investments',
       icon: DownloadOutlined,
-      path: PrivatePaths.INVESTORS,
+      path: PrivatePaths.INVESTMENTS,
     },
     {
       name: 'Settings',
       icon: SettingOutlined,
-      path: PrivatePaths.INVESTORS,
+      path: PrivatePaths.SETTINGS,
     },
   ];
 
@@ -70,7 +71,10 @@ const SideBar = () => {
         {SideBarContents.map((el) => {
           const Icon = el.icon;
           return (
-            <Menu.Item key={el.name.toLowerCase().trim().replace(/\s/, '-')} icon={<Icon />}>
+            <Menu.Item
+              onClick={() => history.push(el.path)}
+              key={el.name.toLowerCase().trim().replace(/\s/, '-')}
+              icon={<Icon />}>
               {el.name}
             </Menu.Item>
           );
