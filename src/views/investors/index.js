@@ -1,36 +1,81 @@
-import React, { useState } from 'react';
-import { Layout, Input, Tooltip, Button, Menu } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Layout, Input, Tooltip, Button, Menu, notification, Spin, Space } from 'antd';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { PlusSquareOutlined } from '@ant-design/icons';
 import { Switch } from 'react-router-dom';
 
+import {
+  getIsFetchingState,
+  getInvestorsState,
+  getErrorMessageState,
+  getStatusState,
+  Status,
+} from '../../redux/investor/getInvestorsReducer';
 import { colors, fontsize, boxShadows, typography, fonts } from '../../Css';
-import Buttons from '../../atoms/Buttons';
 import InvestorDetails from './InvestorDetail';
 import PrivateRoute from '../../routes/PrivateRoute';
 import AddInvestor from './AddInvestor';
 import history from '../../routes/history';
-import { PrivatePaths } from '../../routes';
 import EditInvestor from './EditInvestor';
 import AddInvestment from './AddInvestment';
+import { Api } from '../../repository/Api';
+import { notificationConfigs } from '../../constants/ToastNotifincation';
+import { getCurrentBusinessState } from '../../redux/business/addBusinessReducer';
 const { Search } = Input;
 
 const Overview = (props) => {
   let {
-    match: { path, params },
+    match: { path },
   } = props;
+  const isFetching = useSelector(getIsFetchingState);
+  const errorMsg = useSelector(getErrorMessageState);
+  const status = useSelector(getStatusState);
+  const investorsData = useSelector(getInvestorsState);
+  const currentBusiness = useSelector(getCurrentBusinessState);
+
+  useEffect(() => {
+    fetchInvestors();
+  }, []);
+
+  useEffect(() => {
+    if (status === Status.GET_INVESTORS_REQUEST_FAILURE) {
+      notification['error']({
+        message: errorMsg,
+        ...notificationConfigs,
+      });
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (props.location.pathname === path && investorsData.size !== null) {
+      history.push(`${path}/${investorsData.investors[0]._id}`);
+    }
+  }, [investorsData]);
+
+  function fetchInvestors(search = '') {
+    Api.InvestorRepository.getInvestors({
+      params: {
+        search,
+        businessId: currentBusiness._id,
+      },
+    });
+  }
   const classes = useStyles();
 
-  function renderInvestorsList(params) {
+  function renderInvestorsList() {
     return (
       <div className={classes.inventorListContainer}>
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((investor, i) => {
-          const isActive = i === 1;
+        {investorsData.investors.map((investor, i) => {
+          const isActive =
+            investor._id === props.location.pathname.split(`${path}/`)[1].split('/')[0];
           return (
             <div
-              key={investor}
+              key={investor._id}
+              className={classes.investorContainer}
+              onClick={() => history.push(`${path}/${investor._id}`)}
               style={{
-                backgroundColor: isActive ? colors.pinkLight : 'transparent',
+                backgroundColor: isActive && colors.pinkLight,
                 borderLeft: `3px solid ${isActive ? colors.pinkDark : 'transparent'}`,
               }}>
               <div className={classes.investorIsActiveIndicator}>
@@ -42,7 +87,7 @@ const Overview = (props) => {
               </div>
               <div className={classes.investorInfo}>
                 <p style={{ ...typography.paragraph, fontFamily: fonts.semiBold, marginBottom: 0 }}>
-                  Adewole Damilola
+                  {investor.fullName}
                 </p>
                 <p style={{ ...typography.paragraph, marginBottom: 0 }}>
                   Added on tuesday, 13 2020
@@ -84,7 +129,16 @@ const Overview = (props) => {
             style={{ width: '100%' }}
           />
         </div>
-
+        {isFetching && investorsData.size === null && (
+          <Space
+            style={{
+              width: '100%',
+              minHeight: 300,
+              justifyContent: 'center',
+            }}>
+            <Spin />
+          </Space>
+        )}
         {renderInvestorsList()}
       </div>
       <div className={classes.investorsDetail}>
@@ -92,12 +146,12 @@ const Overview = (props) => {
           <PrivateRoute path={`${path}/new-investor`} exact={true} component={AddInvestor} />
           <PrivateRoute path={`${path}/:investorId`} exact={true} component={InvestorDetails} />
           <PrivateRoute
-            path={`${path}/new-investment/:investorId`}
+            path={`${path}/:investorId/new-investment`}
             exact={true}
             component={AddInvestment}
           />
           <PrivateRoute
-            path={`${path}/edit-investor/:investorId`}
+            path={`${path}/:investorId/edit-investor`}
             exact={true}
             component={EditInvestor}
           />
@@ -128,6 +182,13 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  investorContainer: {
+    transition: '.3s all',
+    backgroundColor: 'transparent',
+    '&:hover': {
+      backgroundColor: colors.gray2,
+    },
   },
   investorText: {
     ...typography.h4,

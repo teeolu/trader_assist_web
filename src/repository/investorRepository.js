@@ -150,7 +150,7 @@ const InvestorRepository = function (axiosInstance) {
             });
             store.dispatch({
               type: SET_CURRENT_INVESTOR,
-              payload: data,
+              payload: { [data._id]: data },
             });
             return;
           }
@@ -242,6 +242,7 @@ const InvestorRepository = function (axiosInstance) {
           phoneNumber,
         })
         .then(function (response) {
+          console.log('response response response ', response);
           const { success, message, data } = response.data;
           if (success) {
             InvestorRepository.getInvestors({});
@@ -262,6 +263,7 @@ const InvestorRepository = function (axiosInstance) {
           });
         })
         .catch(function (error) {
+          console.log('response response response ', error);
           store.dispatch({
             type: EDIT_INVESTOR_REQUEST_FAILURE,
             payload: error.message,

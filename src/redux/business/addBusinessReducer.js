@@ -4,12 +4,13 @@ import {
   ADD_BUSINESS_REQUEST_SUCCESS,
   SET_CURRENT_BUSINESS,
 } from './actionTypes';
+import Auth from '../../utils/auth';
 
 const initialState = {
   isFetching: false,
   errorMessage: '',
   status: null,
-  currentBusiness: {},
+  currentBusiness: Auth.getCurrentBusiness() || {},
 };
 
 export const Status = {

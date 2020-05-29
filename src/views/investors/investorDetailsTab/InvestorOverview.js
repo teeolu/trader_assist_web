@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
-import { Tabs, Input, Tooltip, Button, Menu, Card } from 'antd';
+import { Tabs, Card } from 'antd';
 import { makeStyles } from '@material-ui/styles';
+import { useSelector } from 'react-redux';
 
 import { colors, fontsize, boxShadows, typography, fonts } from '../../../Css';
 import Buttons from '../../../atoms/Buttons';
+import { getCurrentInvestorState } from '../../../redux/investor/getInvestorReducer';
 
 const { TabPane } = Tabs;
 
-const InvestorOverview = () => {
+const InvestorOverview = ({ investor }) => {
   const classes = useStyles();
+  const {
+    fullName,
+    investmentSum,
+    numberOfInvestment,
+    numberOfReturns,
+    returnsSum,
+    createdAt,
+  } = investor;
+
+  console.log('investor[investorId] investor[investorId] ', investor);
 
   return (
     <>
@@ -34,7 +46,7 @@ const InvestorOverview = () => {
               marginRight: 20,
             }}>
             <p>Number of investments</p>
-            <p style={{ ...typography.h2, color: colors.blue }}>0</p>
+            <p style={{ ...typography.h2, color: colors.blue }}>{numberOfInvestment}</p>
           </div>
           <div
             style={{
@@ -45,7 +57,9 @@ const InvestorOverview = () => {
               borderLeft: `1px solid ${colors.gray}`,
             }}>
             <p>Investments sum</p>
-            <p style={{ ...typography.h2, color: colors.pinkDark }}>0</p>
+            <p style={{ ...typography.h3, color: colors.pinkDark }}>
+              NGN{investmentSum.toLocaleString()}
+            </p>
           </div>
         </div>
       </Card>
@@ -57,7 +71,7 @@ const InvestorOverview = () => {
             letterSpacing: 1,
             color: colors.black,
           }}>
-          Investments
+          Returns
         </h4>
         <div
           style={{
@@ -71,7 +85,7 @@ const InvestorOverview = () => {
               marginRight: 20,
             }}>
             <p>Number of returns</p>
-            <p style={{ ...typography.h2, color: colors.blue }}>0</p>
+            <p style={{ ...typography.h2, color: colors.blue }}>{numberOfReturns}</p>
           </div>
           <div
             style={{
@@ -82,7 +96,9 @@ const InvestorOverview = () => {
               borderLeft: `1px solid ${colors.gray}`,
             }}>
             <p>Returns sum</p>
-            <p style={{ ...typography.h2, color: colors.pinkDark }}>0</p>
+            <p style={{ ...typography.h3, color: colors.pinkDark }}>
+              NGN{returnsSum.toLocaleString()}
+            </p>
           </div>
         </div>
       </Card>

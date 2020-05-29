@@ -11,7 +11,7 @@ import InvestorActivities from './InvestorActivities';
 
 const { TabPane } = Tabs;
 
-const InvestorDetailsTab = () => {
+const InvestorDetailsTab = ({ investor }) => {
   const classes = useStyles();
 
   return (
@@ -23,13 +23,13 @@ const InvestorDetailsTab = () => {
           fontWeight: 600,
         }}>
         <TabPane tab="Investor overview" key="1">
-          <InvestorOverview />
+          <InvestorOverview investor={investor} />
         </TabPane>
         <TabPane tab="Investment" key="2">
-          <InvestorInvestments />
+          <InvestorInvestments investor={investor} />
         </TabPane>
         <TabPane tab="Activities" key="3">
-          <InvestorActivities />
+          <InvestorActivities investor={investor} />
         </TabPane>
       </Tabs>
     </div>

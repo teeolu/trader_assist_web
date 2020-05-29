@@ -20,8 +20,11 @@ const instance = axios.create(config);
 instance.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.log('shjhskhskjhsjhsk error.response.data ', error.response.data);
-    return Promise.reject(error.response.data);
+    console.log('shjhskhskjhsjhsk error.response.data ', error.response);
+    if (!!error.response) {
+      return Promise.reject(error.response.data);
+    }
+    throw new Error('An error occured');
   },
 );
 

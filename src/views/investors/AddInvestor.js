@@ -32,8 +32,6 @@ const AddInvestor = ({}) => {
   const addedInvestor = useSelector(getAddedInvestorState);
   const currentBusiness = useSelector(getCurrentBusinessState);
 
-  console.log('addedInvestor addedInvestor addedInvestor ', currentBusiness, addedInvestor);
-
   useEffect(() => {
     if (status === Status.ADD_INVESTOR_REQUEST_FAILURE) {
       notification['error']({

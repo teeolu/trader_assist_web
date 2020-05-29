@@ -4,6 +4,7 @@ import {
   GET_INVESTOR_REQUEST_FAILURE,
   SET_CURRENT_INVESTOR,
 } from './actionTypes';
+import { Api } from '../../repository/Api';
 
 const initialState = {
   isFetching: false,
@@ -41,7 +42,7 @@ const getInvestorReducer = (state = initialState, action) => {
     case SET_CURRENT_INVESTOR:
       return {
         ...state,
-        currentInvestor: action.payload,
+        currentInvestor: { ...state.currentInvestor, ...action.payload },
       };
     default:
       return state;

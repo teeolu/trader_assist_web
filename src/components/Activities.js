@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { PlusSquareOutlined } from '@ant-design/icons';
+import { Timeline } from 'antd';
+import { PlusSquareOutlined, ClockCircleOutlined } from '@ant-design/icons';
 
 import { historyTag } from '../constants/historyConst';
 import { humanReadableTime, sortBaseOnTime } from '../utils/time';
@@ -23,69 +24,35 @@ const Activities = ({ activities = [], navigation }) => {
   }
 
   return (
-    <div style={{ position: 'relative' }}>
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          bottom: 0,
-          left: 20,
-          width: 1,
-          backgroundColor: '#ddd',
-        }}
-      />
-      {sortBaseOnTime(activities).map((el, i) => (
-        <div
-          // onPress={() => onNavigateActivity(el)}
-          key={el._id}
-          style={{
-            ...classes.flexRow,
-            minHeight: 50,
-            marginLeft: 0,
-            marginTop: 20,
-            shadowColor: 'rgba(0, 0, 0, 0.3)',
-            shadowOpacity: 0.1,
-            elevation: 1,
-            shadowRadius: 2,
-            shadowOffset: { width: 1, height: 3 },
-          }}>
-          <div
-            style={{
-              height: 40,
-              width: 40,
-              borderRadius: 30,
-              backgroundColor: !!el.tag ? historyTag[el.tag].color : colors.white,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            {/* <MaterialCommunityIcons
-                name={!!el.tag ? historyTag[el.tag].icon : 'download-outline'}
-                color={colors.white}
-                size={
-                  !!el.tag
-                    ? !!historyTag[el.tag].size
-                      ? historyTag[el.tag].size
-                      : 20
-                    : 20
-                }
-              /> */}
-            <PlusSquareOutlined style={{ color: colors.pinkDark, fontSize: fontsize.h4 }} />
-          </div>
-
-          <div style={{ marginLeft: 10 }}>
-            <p
+    <Timeline>
+      {sortBaseOnTime(activities).map((el, i) => {
+        return (
+          <Timeline.Item>
+            <div
+              // onPress={() => onNavigateActivity(el)}
+              key={el._id}
               style={{
-                ...typography.paragraph,
-                color: colors.black2,
-                marginBottom: 10,
+                display: 'flex',
+                minHeight: 50,
+                marginLeft: 0,
+                marginTop: 20,
               }}>
-              {humanReadableTime(el.createdAt, true)}
-            </p>
-            <p style={{ color: colors.black, paddingRight: 20 }}>{el.desc}</p>
-          </div>
-        </div>
-      ))}
-    </div>
+              <div>
+                <p
+                  style={{
+                    ...typography.paragraph,
+                    color: colors.black2,
+                    marginBottom: 10,
+                  }}>
+                  {humanReadableTime(el.createdAt, true)}
+                </p>
+                <p style={{ color: colors.black }}>{el.desc}</p>
+              </div>
+            </div>
+          </Timeline.Item>
+        );
+      })}
+    </Timeline>
   );
 };
 
@@ -108,7 +75,7 @@ const useStyles = makeStyles({
     bottom: 0,
     left: 0,
     right: 0,
-    elevation: 300,
+    // elevation: 300,
   },
   animateHeight: {
     position: 'relative',
@@ -137,3 +104,17 @@ const useStyles = makeStyles({
 });
 
 export default Activities;
+
+{
+  /* <MaterialCommunityIcons
+name={!!el.tag ? historyTag[el.tag].icon : 'download-outline'}
+color={colors.white}
+size={
+  !!el.tag
+    ? !!historyTag[el.tag].size
+      ? historyTag[el.tag].size
+      : 20
+    : 20
+}
+/> */
+}

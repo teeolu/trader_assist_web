@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Row, Col, notification, Button } from 'antd';
+import { Form, Input, Row, Col, notification, Button, DatePicker, Checkbox } from 'antd';
 import { useSelector } from 'react-redux';
+import moment from 'moment';
 import { LoadingOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { makeStyles } from '@material-ui/styles';
 
@@ -9,84 +10,64 @@ import {
   getErrorMessageState,
   getStatusState,
   Status,
-} from '../../redux/business/addBusinessReducer';
+} from '../../redux/investor/addInvestmentReducer';
 import Buttons from '../../atoms/Buttons';
 import { Api } from '../../repository/Api';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { colors, typography, boxShadows, fontsize } from '../../Css';
 import history from '../../routes/history';
+import { dateFormat, investmentDuration } from '../../constants/dateFilter';
+import { getCurrentBusinessState } from '../../redux/business/addBusinessReducer';
+import store from '../../redux/store';
+import { RESET_INVESTMENT_REQUEST } from '../../redux/investor/actionTypes';
 
-const AddInvestment = ({ businessAsStaff }) => {
-  const imageUploadKey = 'uploadBusinessImageKey';
-  const isSelectoption = Array.isArray(businessAsStaff) && businessAsStaff.length > 0;
-  const [selectedImage, setSelectedImage] = useState(null);
+const AddInvestment = ({ match }) => {
+  let {
+    params: { investorId },
+  } = match;
   const [form] = Form.useForm();
-  const classes = useStyles({ isVisible: Array.isArray(businessAsStaff) });
+  const classes = useStyles();
 
   const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
+  const currentBusiness = useSelector(getCurrentBusinessState);
 
   useEffect(() => {
-    if (status === Status.ADD_BUSINESS_REQUEST_FAILURE) {
+    if (status === Status.ADD_INVESTMENT_REQUEST_FAILURE) {
       notification['error']({
         message: errorMsg,
         ...notificationConfigs,
       });
     }
-  }, [status]);
-
-  useEffect(() => {
-    if (isFetching) {
-      notification['open']({
-        message: `Creating your platform...`,
-        key: imageUploadKey,
+    if (status === Status.ADD_INVESTMENT_REQUEST_SUCCESS) {
+      store.dispatch({
+        type: RESET_INVESTMENT_REQUEST,
+      });
+      form.resetFields();
+      notification.success({
+        message: 'Investment was added successfully',
         ...notificationConfigs,
       });
     }
-  }, [isFetching]);
+  }, [status]);
 
   function onFinish(values) {
-    const data = new FormData();
+    console.log('onDateChange onDateChange onDateChange', values);
 
-    data.append('photo', selectedImage);
-    Api.MiscRepository.uploadImage({
-      imageUploadUri: null,
-      formData: data,
-    })
-      .then((data) => {
-        if (!!data) {
-          notification['open']({
-            message: `Registering your platform...`,
-            key: imageUploadKey,
-            icon: <LoadingOutlined style={{ color: colors.green }} />,
-            ...notificationConfigs,
-          });
-          Api.BusinessRepository.addBusiness({
-            formData: {
-              ...values,
-              businessImage: data,
-            },
-          });
-        }
-      })
-      .then((success) => {
-        notification['open']({
-          ...notificationConfigs,
-          message: `Your platform has been created successfully`,
-          key: imageUploadKey,
-          duration: 5,
-        });
-        history.replace('overview');
-      });
+    Api.InvestorRepository.addInvestment({
+      formData: {
+        ...values,
+        investor: investorId,
+        startDate: moment(values.startDate).format('YYYY-MM-DD h:mm:ss a'),
+        duration: investmentDuration(values.interval),
+        businessId: currentBusiness._id,
+      },
+    });
   }
 
   function onFinishFailed(errorInfo) {
     console.log('Failed:', errorInfo);
-  }
-
-  function onSelectImage(img) {
-    setSelectedImage(img);
   }
 
   return (
@@ -109,67 +90,75 @@ const AddInvestment = ({ businessAsStaff }) => {
           <b>Add investment</b>
         </p>
       </div>
-      <div style={{ width: '70%', padding: '20px 100px 50px 50px' }}>
-        <Form
-          form={form}
-          name="register"
-          layout="vertical"
-          hideRequiredMark={true}
-          onFinishFailed={onFinishFailed}
-          onFinish={onFinish}
-          scrollToFirstError>
-          <Form.Item
-            name="businessName"
-            label="Platform name"
-            rules={[{ required: true, message: 'Business name is required!' }]}>
-            <Input
-              autoFocus
-              size="large"
-              placeholder="A name that you can be recognised with officially"
-            />
-          </Form.Item>
-          <Form.Item
-            name="businessAddress"
-            label="Address"
-            rules={[
-              { required: true, message: 'Password is required!' },
-              // {
-              //   type: 'email',
-              //   message: 'Requires a valid email',
-              // },
-            ]}>
-            <Input size="large" placeholder="Enter an address to access you" />
-          </Form.Item>
-          <Form.Item
-            name="businessPhoneNumber"
-            label="Platform phone number"
-            rules={[{ required: true, message: 'Phone number is required!' }]}>
-            <Input size="large" placeholder="e.g 090987654321" />
-          </Form.Item>
-          <Form.Item
-            name="businessEmail"
-            label="Platform email address"
-            rules={[
-              { required: true, message: 'Email is required!' },
-              {
-                type: 'email',
-                message: 'Requires a valid email',
-              },
-            ]}>
-            <Input size="large" placeholder="e.g myemail@emailprovider.com" />
-          </Form.Item>
-          <Buttons
-            btnText="Add investor"
-            size="small"
-            textColor={colors.pinkDark}
-            textStyle={{}}
-            style={{
-              padding: '7px 10px',
-              backgroundColor: 'transparent',
-              border: `1px solid ${colors.pinkDark}`,
+      <div
+        style={{
+          padding: '20px 100px 50px 50px',
+          height: '100%',
+          overflowY: 'scroll',
+        }}>
+        <div
+          style={{
+            width: '70%',
+          }}>
+          <Form
+            form={form}
+            name="register"
+            layout="vertical"
+            hideRequiredMark={true}
+            onFinishFailed={onFinishFailed}
+            initialValues={{
+              startDate: moment(),
+              interval: '1',
             }}
-          />
-        </Form>
+            onFinish={onFinish}
+            scrollToFirstError>
+            <Form.Item
+              name="amount"
+              label="Amount invested"
+              rules={[{ required: true, message: 'The amount invested is required!' }]}>
+              <Input autoFocus size="large" placeholder="e.g 10500" />
+            </Form.Item>
+            <Form.Item
+              name="percentProfit"
+              label="Percent profit per interval"
+              rules={[{ required: true, message: 'Percent profit is required!' }]}>
+              <Input size="large" placeholder="e.g 10 for 10% every interval provided" />
+            </Form.Item>
+            <Form.Item name="startDate" label="Start date">
+              <DatePicker />
+            </Form.Item>
+            <Form.Item name="interval" label="Monthly interval">
+              <Input size="large" placeholder="e.g 3 for every 3 months" />
+            </Form.Item>
+            <Form.Item name="duration" label="Investment duration in months">
+              <Input size="large" placeholder="e.g 18 for 18 months. No value mean it's infinite" />
+            </Form.Item>
+            <Row gutter={24}>
+              <Col span={12}>
+                <Form.Item name="recurrent" valuePropName="checked">
+                  <Checkbox>Reccurrent?</Checkbox>
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item name="notifyInvestor" valuePropName="checked">
+                  <Checkbox>Notify investor</Checkbox>
+                </Form.Item>
+              </Col>
+            </Row>
+            <Buttons
+              btnText="Add investment"
+              size="small"
+              textColor={colors.pinkDark}
+              htmlType="submit"
+              isLoading={isFetching}
+              style={{
+                padding: '7px 10px',
+                backgroundColor: 'transparent',
+                border: `1px solid ${colors.pinkDark}`,
+              }}
+            />
+          </Form>
+        </div>
       </div>
     </>
   );

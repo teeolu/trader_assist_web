@@ -1,27 +1,51 @@
-import React, { useState } from 'react';
-import { Tabs, List, Tooltip, Button, Collapse, Card, Badge } from 'antd';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { CaretRightOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
 
-import { colors, fontsize, boxShadows, typography, fonts } from '../../../Css';
 import Activities from '../../../components/Activities';
+import {
+  getIsFetchingState,
+  getInvestorHistoryState,
+  getErrorMessageState,
+  getStatusState,
+  Status,
+} from '../../../redux/investor/getInvestorHistoryReducer';
+import { Api } from '../../../repository/Api';
+import { Card } from 'antd';
 
-const InvestorActivities = () => {
+const InvestorActivities = ({ investor }) => {
+  const isFetching = useSelector(getIsFetchingState);
+  const errorMsg = useSelector(getErrorMessageState);
+  const status = useSelector(getStatusState);
+  const investorsHistory = useSelector(getInvestorHistoryState);
   const classes = useStyles();
+
+  useEffect(() => {
+    fetchBusinessHistory();
+  }, []);
+
+  useEffect(() => {
+    if (status === Status.GET_INVESTORS_REQUEST_FAILURE) {
+    }
+  }, [status]);
+
+  function fetchBusinessHistory() {
+    Api.InvestorRepository.getInvestorHistory({
+      params: {
+        investorId: investor._id,
+      },
+    });
+  }
+
+  // console.log(
+  //   'investorsHistory[investor._id] investorsHistory[investor._id] ',
+  //   investorsHistory[investor._id],
+  // );
 
   return (
     <>
       <Card bordered={true} bodyStyle={{ padding: 15 }}>
-        <h4
-          style={{
-            ...typography.paragraph,
-            fontWeight: 600,
-            letterSpacing: 1,
-            color: colors.black,
-          }}>
-          Activities
-        </h4>
-        <Activities />
+        <Activities activities={investorsHistory[investor._id]} />
       </Card>
     </>
   );
