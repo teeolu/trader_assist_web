@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Avatar } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -8,6 +8,7 @@ import {
   UploadOutlined,
   DownloadOutlined,
   SettingOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import { makeStyles } from '@material-ui/styles';
 import { colors, fontsize, boxShadows } from '../Css';
@@ -51,35 +52,92 @@ const SideBar = () => {
 
   return (
     <Sider
-      style={{ borderRight: boxShadows.border }}
+      style={{
+        borderRight: boxShadows.border,
+      }}
       theme="light"
       trigger={null}
       collapsible
       collapsed={collapsed}>
-      <div className="logo" style={{ height: '32px', color: colors.white, margin: '16px' }}>
-        {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-          className: 'trigger',
-          onClick: toggle,
-          style: {
-            color: colors.pinkDark,
-            fontSize: fontsize.h4,
-            marginLeft: 8,
-          },
-        })}
-      </div>
-      <Menu theme="light" mode="inline" selectedKeys={[currentView]}>
-        {SideBarContents.map((el) => {
-          const Icon = el.icon;
-          return (
+      <div
+        style={{
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
+        <div className="logo" style={{ height: '32px', color: colors.white, margin: '16px' }}>
+          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+            className: 'trigger',
+            onClick: toggle,
+            style: {
+              color: colors.pinkDark,
+              fontSize: fontsize.h4,
+              marginLeft: 8,
+            },
+          })}
+        </div>
+        <Menu theme="light" mode="inline" selectedKeys={[currentView]} style={{ flex: 1 }}>
+          {SideBarContents.map((el) => {
+            const Icon = el.icon;
+            return (
+              <Menu.Item
+                onClick={() => history.push(el.path)}
+                style={{
+                  height: 50,
+                  color: colors.black2,
+                  fontWeight: 600,
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+                key={el.name.toLowerCase().trim().replace(/\s/, '-')}
+                icon={
+                  <Icon
+                    style={{
+                      fontSize: fontsize.h4,
+                      color: colors.black,
+                    }}
+                  />
+                }>
+                {el.name}
+              </Menu.Item>
+            );
+          })}
+        </Menu>
+
+        <div style={{ marginTop: 'auto', height: 'max-content', marginBottom: 50 }}>
+          <Menu
+            theme="light"
+            selectedKeys="none"
+            mode="inline"
+            style={{ backgroundColor: colors.gray2 }}>
             <Menu.Item
-              onClick={() => history.push(el.path)}
-              key={el.name.toLowerCase().trim().replace(/\s/, '-')}
-              icon={<Icon />}>
-              {el.name}
+              style={{
+                height: 'max-content',
+                color: colors.black2,
+                fontWeight: 600,
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              key="user-profile"
+              icon={
+                <UserOutlined
+                  style={{
+                    background: colors.gray,
+                    padding: 10,
+                    borderRadius: '50%',
+                    fontSize: fontsize.h4,
+                    color: colors.gray3,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                />
+              }>
+              Olusola Oyinloye
             </Menu.Item>
-          );
-        })}
-      </Menu>
+          </Menu>
+        </div>
+      </div>
     </Sider>
   );
 };

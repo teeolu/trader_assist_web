@@ -1,10 +1,11 @@
 import React from 'react';
-import { Layout, Avatar } from 'antd';
+import { Layout, Avatar, Row, Col, Button } from 'antd';
 import { makeStyles } from '@material-ui/styles';
 import { useSelector } from 'react-redux';
 
-import { fontsize, boxShadows, typography } from '../Css';
+import { fontsize, boxShadows, typography, colors } from '../Css';
 import { getCurrentBusinessState } from '../redux/business/addBusinessReducer';
+import { BellOutlined, WechatOutlined, MailOutlined } from '@ant-design/icons';
 
 const { Header } = Layout;
 
@@ -18,17 +19,44 @@ const NavHeader = () => {
       style={{
         padding: 0,
         borderBottom: boxShadows.border,
-        display: 'flex',
-        alignItems: 'center',
       }}>
-      <Avatar
-        src={currentBusiness.businessImage.secure_url}
-        size="large"
-        style={{ marginLeft: 20 }}
-      />
-      <p style={{ ...typography.h4, marginBottom: 0, marginLeft: 10 }}>
-        {currentBusiness.businessName}
-      </p>
+      <Row gutter={20}>
+        <Col
+          span={12}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            paddingLeft: 30,
+          }}>
+          <Avatar
+            src={currentBusiness.businessImage.secure_url}
+            size="large"
+            style={{ border: `1px solid ${colors.gray}` }}
+          />
+          <p style={{ ...typography.h4, marginBottom: 0, marginLeft: 10 }}>
+            {currentBusiness.businessName}
+          </p>
+        </Col>
+        <Col
+          span={12}
+          juti
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            paddingRight: 30,
+          }}>
+          <Button style={{ margin: '0 5px' }} shape="circle">
+            <BellOutlined size="large" style={{ fontSize: fontsize.h4, color: colors.pink }} />
+          </Button>
+          <Button style={{ margin: '0 5px' }} shape="circle">
+            <WechatOutlined style={{ fontSize: fontsize.h4, color: colors.pink }} />
+          </Button>
+          <Button style={{ margin: '0 5px' }} shape="circle">
+            <MailOutlined style={{ fontSize: fontsize.h4, color: colors.pink }} />
+          </Button>
+        </Col>
+      </Row>
     </Header>
   );
 };
