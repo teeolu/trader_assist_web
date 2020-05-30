@@ -17,8 +17,6 @@ import Returns from '../views/returns';
 import Investments from '../views/investments';
 import Settings from '../views/settings';
 
-const { Content } = Layout;
-
 export const PublicPaths = {
   LOGIN: '/login',
   FORGOT_PASSWORD: '/forgot-password',
@@ -71,25 +69,17 @@ const Routes = () => {
               component={(props) => <NavHeader {...props} />}
               shouldRedirect={false}
             />
-            <Content
-              className="site-layout-background"
-              style={{
-                margin: '24px 16px',
-                height: 'calc(100% - 48px)',
-                border: boxShadows.border,
-              }}>
-              <Route exact path="/" render={() => <Redirect to="/overview" />} />
-              {privateRoutes.map((route) => {
-                return (
-                  <PrivateRoute
-                    key={route.path}
-                    path={route.path}
-                    component={route.component}
-                    exact={route.exact}
-                  />
-                );
-              })}
-            </Content>
+            <Route exact path="/" render={() => <Redirect to="/overview" />} />
+            {privateRoutes.map((route) => {
+              return (
+                <PrivateRoute
+                  key={route.path}
+                  path={route.path}
+                  component={route.component}
+                  exact={route.exact}
+                />
+              );
+            })}
           </Layout>
           <Redirect to={PublicPaths.LOGIN} />
         </Switch>

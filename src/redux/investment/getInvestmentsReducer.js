@@ -1,7 +1,7 @@
 import {
-  GET_INVESTMENT_REQUEST,
-  GET_INVESTMENT_REQUEST_FAILURE,
-  GET_INVESTMENT_REQUEST_SUCCESS,
+  GET_INVESTMENTS_REQUEST,
+  GET_INVESTMENTS_REQUEST_FAILURE,
+  GET_INVESTMENTS_REQUEST_SUCCESS,
 } from './actionTypes';
 
 const initialState = {
@@ -15,32 +15,32 @@ const initialState = {
 };
 
 export const Status = {
-  GET_INVESTMENT_REQUEST_SUCCESS: `GET_INVESTMENT_REQUEST_SUCCESS`,
-  GET_INVESTMENT_REQUEST_FAILURE: `GET_INVESTMENT_REQUEST_FAILURE`,
+  GET_INVESTMENTS_REQUEST_SUCCESS: `GET_INVESTMENTS_REQUEST_SUCCESS`,
+  GET_INVESTMENTS_REQUEST_FAILURE: `GET_INVESTMENTS_REQUEST_FAILURE`,
 };
 
 const getInvestmentsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_INVESTMENT_REQUEST:
+    case GET_INVESTMENTS_REQUEST:
       return {
         ...state,
         isFetching: true,
       };
-    case GET_INVESTMENT_REQUEST_SUCCESS:
+    case GET_INVESTMENTS_REQUEST_SUCCESS:
       return {
         ...state,
         isFetching: false,
-        status: Status.GET_INVESTMENT_REQUEST_SUCCESS,
+        status: Status.GET_INVESTMENTS_REQUEST_SUCCESS,
         investments: {
           investments: { ...state.businessOverview },
           ...action.payload,
         },
       };
-    case GET_INVESTMENT_REQUEST_FAILURE:
+    case GET_INVESTMENTS_REQUEST_FAILURE:
       return {
         ...state,
         isFetching: false,
-        status: Status.GET_INVESTMENT_REQUEST_FAILURE,
+        status: Status.GET_INVESTMENTS_REQUEST_FAILURE,
         errorMessage: action.payload,
       };
     default:

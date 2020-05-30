@@ -5,6 +5,9 @@ import {
   EDIT_RETURNS_REQUEST,
   EDIT_RETURNS_REQUEST_SUCCESS,
   EDIT_RETURNS_REQUEST_FAILURE,
+  GET_RETURN_REQUEST,
+  GET_RETURN_REQUEST_SUCCESS,
+  GET_RETURN_REQUEST_FAILURE,
 } from '../redux/returns/actionTypes';
 import store from '../redux/store';
 
@@ -50,6 +53,41 @@ const ReturnsRepository = function (axiosInstance) {
         .catch(function (error) {
           store.dispatch({
             type: GET_RETURNS_REQUEST_FAILURE,
+            payload: error.message,
+          });
+        });
+    },
+    getReturnById: function ({ params = {} }) {
+      let businessId = store.getState().addBusiness.currentBusiness._id;
+      store.dispatch({
+        type: GET_RETURN_REQUEST,
+      });
+
+      return axiosInstance
+        .get('/api/business/return', {
+          params: {
+            businessId,
+            returnId: params.returnId,
+          },
+        })
+        .then(function (response) {
+          const { success, message, data } = response.data;
+
+          if (success) {
+            store.dispatch({
+              type: GET_RETURN_REQUEST_SUCCESS,
+              payload: { [data._id]: data },
+            });
+            return;
+          }
+          store.dispatch({
+            type: GET_RETURN_REQUEST_FAILURE,
+            payload: message,
+          });
+        })
+        .catch(function (error) {
+          store.dispatch({
+            type: GET_RETURN_REQUEST_FAILURE,
             payload: error.message,
           });
         });

@@ -3,6 +3,18 @@ export const dateFormat = 'YYYY-MM-DD';
 export const overviewOptions = [
   {
     startDate: moment()
+      .startOf('month')
+
+      .format(dateFormat),
+    endDate: moment()
+      .endOf('month')
+
+      .format(dateFormat),
+    caption: 'May',
+    option: 'This month',
+  },
+  {
+    startDate: moment()
       .startOf('week')
 
       .format(dateFormat),
@@ -21,18 +33,6 @@ export const overviewOptions = [
       .format(dateFormat),
     caption: '',
     option: 'Today',
-  },
-  {
-    startDate: moment()
-      .startOf('month')
-
-      .format(dateFormat),
-    endDate: moment()
-      .endOf('month')
-
-      .format(dateFormat),
-    caption: 'May',
-    option: 'This month',
   },
   {
     startDate: moment(new Date())

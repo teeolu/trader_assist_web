@@ -22,6 +22,7 @@ import AddInvestment from './AddInvestment';
 import { Api } from '../../repository/Api';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { getCurrentBusinessState } from '../../redux/business/addBusinessReducer';
+const { Content } = Layout;
 const { Search } = Input;
 
 const Investors = (props) => {
@@ -103,63 +104,71 @@ const Investors = (props) => {
   }
 
   return (
-    <div className={classes.overviewContainer}>
-      <div className={classes.investors}>
-        <div className={classes.investorsHeading}>
-          <p className={classes.investorText}>
-            <b>Investors</b>
-          </p>
-          <div>
-            <Tooltip title="Add investor" placement="bottom">
-              <Button
-                type="primary"
-                shape="circle"
-                onClick={() => history.push(`${path}/new-investor`)}
-                style={{ backgroundColor: colors.pinkLight, border: 'none' }}
-                icon={
-                  <PlusSquareOutlined style={{ color: colors.pinkDark, fontSize: fontsize.h4 }} />
-                }
-              />
-            </Tooltip>
+    <Content
+      className="site-layout-background"
+      style={{
+        margin: '24px 16px',
+        height: 'calc(100% - 48px)',
+        border: boxShadows.border,
+      }}>
+      <div className={classes.overviewContainer}>
+        <div className={classes.investors}>
+          <div className={classes.investorsHeading}>
+            <p className={classes.investorText}>
+              <b>Investors</b>
+            </p>
+            <div>
+              <Tooltip title="Add investor" placement="bottom">
+                <Button
+                  type="primary"
+                  shape="circle"
+                  onClick={() => history.push(`${path}/new-investor`)}
+                  style={{ backgroundColor: colors.pinkLight, border: 'none' }}
+                  icon={
+                    <PlusSquareOutlined style={{ color: colors.pinkDark, fontSize: fontsize.h4 }} />
+                  }
+                />
+              </Tooltip>
+            </div>
           </div>
+          <div className={classes.investorsHeading}>
+            <Search
+              placeholder="Search investors"
+              loading={false}
+              onSearch={(value) => console.log(value)}
+              style={{ width: '100%' }}
+            />
+          </div>
+          {isFetching && investorsData.size === null && (
+            <Space
+              style={{
+                width: '100%',
+                minHeight: 300,
+                justifyContent: 'center',
+              }}>
+              <Spin />
+            </Space>
+          )}
+          {renderInvestorsList()}
         </div>
-        <div className={classes.investorsHeading}>
-          <Search
-            placeholder="Search investors"
-            loading={false}
-            onSearch={(value) => console.log(value)}
-            style={{ width: '100%' }}
-          />
+        <div className={classes.investorsDetail}>
+          <Switch>
+            <PrivateRoute path={`${path}/new-investor`} exact={true} component={AddInvestor} />
+            <PrivateRoute path={`${path}/:investorId`} exact={true} component={InvestorDetails} />
+            <PrivateRoute
+              path={`${path}/:investorId/new-investment`}
+              exact={true}
+              component={AddInvestment}
+            />
+            <PrivateRoute
+              path={`${path}/:investorId/edit-investor`}
+              exact={true}
+              component={EditInvestor}
+            />
+          </Switch>
         </div>
-        {isFetching && investorsData.size === null && (
-          <Space
-            style={{
-              width: '100%',
-              minHeight: 300,
-              justifyContent: 'center',
-            }}>
-            <Spin />
-          </Space>
-        )}
-        {renderInvestorsList()}
       </div>
-      <div className={classes.investorsDetail}>
-        <Switch>
-          <PrivateRoute path={`${path}/new-investor`} exact={true} component={AddInvestor} />
-          <PrivateRoute path={`${path}/:investorId`} exact={true} component={InvestorDetails} />
-          <PrivateRoute
-            path={`${path}/:investorId/new-investment`}
-            exact={true}
-            component={AddInvestment}
-          />
-          <PrivateRoute
-            path={`${path}/:investorId/edit-investor`}
-            exact={true}
-            component={EditInvestor}
-          />
-        </Switch>
-      </div>
-    </div>
+    </Content>
   );
 };
 

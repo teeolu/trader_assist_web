@@ -1,10 +1,13 @@
 import {
-  GET_INVESTMENT_REQUEST,
-  GET_INVESTMENT_REQUEST_SUCCESS,
-  GET_INVESTMENT_REQUEST_FAILURE,
+  GET_INVESTMENTS_REQUEST,
+  GET_INVESTMENTS_REQUEST_SUCCESS,
+  GET_INVESTMENTS_REQUEST_FAILURE,
   EDIT_INVESTMENT_REQUEST,
   EDIT_INVESTMENT_REQUEST_SUCCESS,
   EDIT_INVESTMENT_REQUEST_FAILURE,
+  GET_INVESTMENT_REQUEST,
+  GET_INVESTMENT_REQUEST_SUCCESS,
+  GET_INVESTMENT_REQUEST_FAILURE,
 } from '../redux/investment/actionTypes';
 import store from '../redux/store';
 
@@ -14,7 +17,7 @@ const InvestmentRepository = function (axiosInstance) {
       let businessId = store.getState().addBusiness.currentBusiness._id;
       if (!selectedOption.startDate || !selectedOption.endDate) return;
       store.dispatch({
-        type: GET_INVESTMENT_REQUEST,
+        type: GET_INVESTMENTS_REQUEST,
       });
 
       return axiosInstance
@@ -30,7 +33,7 @@ const InvestmentRepository = function (axiosInstance) {
           const { success, message, data } = response.data;
           if (success) {
             store.dispatch({
-              type: GET_INVESTMENT_REQUEST_SUCCESS,
+              type: GET_INVESTMENTS_REQUEST_SUCCESS,
               payload: {
                 investments: {
                   [selectedOption.option]: {
@@ -39,6 +42,41 @@ const InvestmentRepository = function (axiosInstance) {
                   },
                 },
               },
+            });
+            return;
+          }
+          store.dispatch({
+            type: GET_INVESTMENTS_REQUEST_FAILURE,
+            payload: message,
+          });
+        })
+        .catch(function (error) {
+          store.dispatch({
+            type: GET_INVESTMENTS_REQUEST_FAILURE,
+            payload: error.message,
+          });
+        });
+    },
+    getInvestmentById: function ({ params = {} }) {
+      let businessId = store.getState().addBusiness.currentBusiness._id;
+      store.dispatch({
+        type: GET_INVESTMENT_REQUEST,
+      });
+
+      return axiosInstance
+        .get('/api/business/investment', {
+          params: {
+            businessId,
+            investmentId: params.investmentId,
+          },
+        })
+        .then(function (response) {
+          const { success, message, data } = response.data;
+
+          if (success) {
+            store.dispatch({
+              type: GET_INVESTMENT_REQUEST_SUCCESS,
+              payload: { [data._id]: data },
             });
             return;
           }

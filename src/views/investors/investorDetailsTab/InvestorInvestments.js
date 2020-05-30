@@ -20,21 +20,6 @@ import { sortBaseOnTime, humanReadableTime } from '../../../utils/time';
 
 const { Panel } = Collapse;
 
-const data = [
-  {
-    title: 'Ant Design Title 1',
-  },
-  {
-    title: 'Ant Design Title 2',
-  },
-  {
-    title: 'Ant Design Title 3',
-  },
-  {
-    title: 'Ant Design Title 4',
-  },
-];
-
 const InvestorInvestments = ({ investor }) => {
   const investorId = investor._id;
   const classes = useStyles();

@@ -23,6 +23,7 @@ import getBusinessHistoryReducer from './business/businessHistoryReducer';
 
 import getInvestmentsReducer from './investment/getInvestmentsReducer';
 import editInvestmentReducer from './investment/editInvestmentReducer';
+import getInvestmentsByIdReducer from './investment/getInvestmentByIdReducer';
 
 import getReturnsReducer from './returns/getReturnsReducer';
 import getInvestorReturnsReducer from './investor/getInvestorReturnReducer';
@@ -36,6 +37,7 @@ import getBusinessStaffReducer from './settings/getBusinessStaffs';
 
 import imageUploadReducer from './misc/imageUploadReducer';
 import cancelAdminStaffInviteReducer from './settings/cancelAdminStaffInviteReducer';
+import getReturnsByIdReducer from './returns/getReturnByIdReducer';
 
 export default combineReducers({
   userRequest: userRequestReducer,
@@ -61,10 +63,12 @@ export default combineReducers({
 
   getInvestments: getInvestmentsReducer,
   editInvestment: editInvestmentReducer,
+  getInvestmentsById: getInvestmentsByIdReducer,
 
   getReturns: getReturnsReducer,
   editReturn: editReturnReducer,
   confirmReturn: confirmReturnReducer,
+  getReturnsById: getReturnsByIdReducer,
 
   inviteAdminStaff: inviteAdminStaffReducer,
   getBusinessStaff: getBusinessStaffReducer,
