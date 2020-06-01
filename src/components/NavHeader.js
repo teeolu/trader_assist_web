@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Avatar, Row, Col, Button } from 'antd';
+import { Layout, Avatar, Row, Col, Button, Badge } from 'antd';
 import { makeStyles } from '@material-ui/styles';
 import { useSelector } from 'react-redux';
 
@@ -47,7 +47,9 @@ const NavHeader = () => {
             paddingRight: 30,
           }}>
           <Button style={{ margin: '0 5px' }} shape="circle">
-            <BellOutlined size="large" style={{ fontSize: fontsize.h4, color: colors.pink }} />
+            <Badge style={{ backgroundColor: colors.pinkDark }} count={1}>
+              <BellOutlined size="large" style={{ fontSize: fontsize.h4, color: colors.pink }} />
+            </Badge>
           </Button>
           <Button style={{ margin: '0 5px' }} shape="circle">
             <WechatOutlined style={{ fontSize: fontsize.h4, color: colors.pink }} />

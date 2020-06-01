@@ -105,11 +105,7 @@ const SideBar = () => {
         </Menu>
 
         <div style={{ marginTop: 'auto', height: 'max-content', marginBottom: 50 }}>
-          <Menu
-            theme="light"
-            selectedKeys="none"
-            mode="inline"
-            style={{ backgroundColor: colors.gray2 }}>
+          <Menu theme="light" selectedKeys="none" mode="inline" inlineIndent={15}>
             <Menu.Item
               style={{
                 height: 'max-content',

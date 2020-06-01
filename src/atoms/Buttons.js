@@ -19,7 +19,7 @@ const Buttons = ({
 
   return (
     <Button
-      btnAction={btnAction}
+      onClick={btnAction || null}
       className={classes.btn}
       loading={isLoading}
       style={{
