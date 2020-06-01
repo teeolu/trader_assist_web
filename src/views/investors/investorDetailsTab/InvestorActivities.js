@@ -11,7 +11,8 @@ import {
   Status,
 } from '../../../redux/investor/getInvestorHistoryReducer';
 import { Api } from '../../../repository/Api';
-import { Card } from 'antd';
+import { Card, notification } from 'antd';
+import { notificationConfigs } from '../../../constants/ToastNotifincation';
 
 const InvestorActivities = ({ investor }) => {
   const isFetching = useSelector(getIsFetchingState);
@@ -26,6 +27,10 @@ const InvestorActivities = ({ investor }) => {
 
   useEffect(() => {
     if (status === Status.GET_INVESTORS_REQUEST_FAILURE) {
+      notification['error']({
+        message: errorMsg,
+        ...notificationConfigs,
+      });
     }
   }, [status]);
 

@@ -2,6 +2,15 @@ import moment from 'moment';
 export const dateFormat = 'YYYY-MM-DD';
 export const overviewOptions = [
   {
+    startDate: moment(new Date())
+      .subtract(90, 'd')
+
+      .format(dateFormat),
+    endDate: moment(new Date()).format(dateFormat),
+    caption: '',
+    option: '90 days',
+  },
+  {
     startDate: moment()
       .startOf('month')
 
@@ -33,15 +42,6 @@ export const overviewOptions = [
       .format(dateFormat),
     caption: '',
     option: 'Today',
-  },
-  {
-    startDate: moment(new Date())
-      .subtract(90, 'd')
-
-      .format(dateFormat),
-    endDate: moment(new Date()).format(dateFormat),
-    caption: '',
-    option: '90 days',
   },
   // {startDate: '', endDate: moment(), caption: '', option: 'All time'},
 ];

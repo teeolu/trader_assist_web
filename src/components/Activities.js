@@ -7,25 +7,13 @@ import { historyTag } from '../constants/historyConst';
 import { humanReadableTime, sortBaseOnTime } from '../utils/time';
 import { fontsize, typography, colors, fonts } from '../Css';
 
-const Activities = ({ activities = [], navigation }) => {
+const Activities = ({ activities = [], limit, seeMoreAction }) => {
   const classes = useStyles();
-  function onNavigateActivity(el) {
-    if (!el.route && !navigation) return;
-    if (el.rootRoute) {
-      navigation.navigate(el.rootRoute, {
-        screen: el.route,
-        params: { title: '', id: el.relevantId },
-      });
-    } else {
-      navigation.navigate(el.route, {
-        params: { title: '', id: el.relevantId },
-      });
-    }
-  }
 
   return (
     <Timeline>
       {sortBaseOnTime(activities).map((el, i) => {
+        if (i >= limit) return null;
         return (
           <Timeline.Item>
             <div
@@ -33,16 +21,15 @@ const Activities = ({ activities = [], navigation }) => {
               key={el._id}
               style={{
                 display: 'flex',
-                minHeight: 50,
                 marginLeft: 0,
-                marginTop: 20,
+                marginTop: 10,
               }}>
               <div>
                 <p
                   style={{
                     ...typography.paragraph,
                     color: colors.black2,
-                    marginBottom: 10,
+                    marginBottom: 0,
                   }}>
                   {humanReadableTime(el.createdAt, true)}
                 </p>
@@ -52,6 +39,29 @@ const Activities = ({ activities = [], navigation }) => {
           </Timeline.Item>
         );
       })}
+
+      {!!limit && (
+        <Timeline.Item>
+          <div
+            // onPress={() => onNavigateActivity(el)}
+            style={{
+              display: 'flex',
+              marginLeft: 0,
+              marginTop: 10,
+            }}>
+            <p
+              onClick={!!seeMoreAction && seeMoreAction}
+              style={{
+                ...typography.paragraph,
+                color: colors.pinkDark,
+                textDecoration: 'underline',
+                cursor: 'pointer',
+              }}>
+              See all activities
+            </p>
+          </div>
+        </Timeline.Item>
+      )}
     </Timeline>
   );
 };
