@@ -25,4 +25,8 @@ export default class Auth {
   static removeToken() {
     localStorage.removeItem('token');
   }
+
+  static removeCurrentBusiness() {
+    localStorage.removeItem('currentBusiness');
+  }
 }

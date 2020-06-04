@@ -49,7 +49,11 @@ const Investors = (props) => {
   }, [status]);
 
   useEffect(() => {
-    if (props.location.pathname === path && investorsData.size !== null) {
+    if (
+      props.location.pathname === path &&
+      investorsData.size !== null &&
+      investorsData.size !== 0
+    ) {
       history.push(`${path}/${investorsData.investors[0]._id}`);
     }
   }, [investorsData]);

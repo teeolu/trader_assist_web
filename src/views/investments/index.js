@@ -47,15 +47,15 @@ const Investments = (props) => {
 
   useEffect(() => {
     if (!investmentIdFromParam) {
-      if (!!investments.investments[selectedOption.option])
-        history.push(
-          `${path}/${sortBaseOnTime(investments.investments[selectedOption.option].data)[0]._id}`,
-        );
+      // if (!!investments.investments[selectedOption.option])
+      //   history.push(
+      //     `${path}/${sortBaseOnTime(investments.investments[selectedOption.option].data)[0]._id}`,
+      //   );
     }
   }, [investmentIdFromParam, investments]);
 
   useEffect(() => {
-    if (status === Status.GET_INVESTORS_REQUEST_FAILURE) {
+    if (status === Status.GET_INVESTMENTS_REQUEST_FAILURE) {
       notification['error']({
         message: errorMsg,
         ...notificationConfigs,

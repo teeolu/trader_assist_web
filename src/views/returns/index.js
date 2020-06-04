@@ -47,10 +47,10 @@ const Returns = (props) => {
 
   useEffect(() => {
     if (!returnIdFromParam) {
-      if (!!returns.returns[selectedOption.option])
-        history.push(
-          `${path}/${sortBaseOnTime(returns.returns[selectedOption.option].data)[0]._id}`,
-        );
+      // if (!!returns.returns[selectedOption.option])
+      // history.push(
+      //   `${path}/${sortBaseOnTime(returns.returns[selectedOption.option].data)[0]._id}`,
+      // );
     }
   }, [returnIdFromParam, returns]);
 

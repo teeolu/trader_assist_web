@@ -15,7 +15,7 @@ const Overview = () => {
       }}>
       <Row gutter={24}>
         <Col span={16}>
-          <Card>
+          <Card bodyStyle={{ padding: 15 }}>
             <OverviewCalendar />
           </Card>
         </Col>

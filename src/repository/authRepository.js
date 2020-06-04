@@ -15,6 +15,7 @@ import {
 } from '../redux/auth/actionTypes';
 import Auth from '../utils/auth';
 import store from '../redux/store';
+import { SET_CURRENT_BUSINESS } from '../redux/business/actionTypes';
 
 const AuthRepository = function (axiosInstance) {
   let _AuthRepository = {
@@ -35,7 +36,6 @@ const AuthRepository = function (axiosInstance) {
               payload: response.data,
             });
             Auth.setToken(data.token);
-            !!navigation && navigation.navigate('overview', { screen: 'overview' });
             // axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.user.token}`;
             // axiosInstance.defaults.withCredentials = true;
           } else {
@@ -70,6 +70,7 @@ const AuthRepository = function (axiosInstance) {
               payload: null,
             });
             Auth.removeToken();
+            Auth.removeCurrentBusiness();
           } else {
             store.dispatch({
               type: LOGOUT_REQUEST_FAILURE,
@@ -95,8 +96,6 @@ const AuthRepository = function (axiosInstance) {
         })
         .then(function (response) {
           const { success, message, data } = response.data;
-          console.log('vjghvjgvjhvjhvhgvjkhgk response.data ', response.data);
-
           if (success) {
             store.dispatch({
               type: REGISTER_REQUEST_SUCCESS,
@@ -131,7 +130,7 @@ const AuthRepository = function (axiosInstance) {
       return axiosInstance
         .get('/api/users/auth', { params: { token } })
         .then(function (response) {
-          const { success, message, data } = response.data;
+          const { success, message, data, status } = response.data;
           if (success) {
             store.dispatch({
               type: REQUEST_USER_REQUEST_SUCCESS,

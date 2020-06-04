@@ -47,11 +47,6 @@ const InvestmentDetails = (props) => {
     _id,
   } = investmentsById[investmentId] || {};
 
-  console.log(
-    'investmentsById[investmentId] investmentsById[investmentId] ',
-    investmentsById[investmentId],
-  );
-
   const color = isConfirmed ? colors.green : colors.red;
   const tag = isConfirmed ? 'confirmed' : 'unconfirmed';
   const caption = isConfirmed ? `Confirmed by ${confirmedBy}` : `Not yet confirmed`;

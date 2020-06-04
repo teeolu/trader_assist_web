@@ -17,6 +17,7 @@ import { makeStyles } from '@material-ui/styles';
 import { colors, typography } from '../Css';
 import UploadImage from '../atoms/UploadImage';
 import history from '../routes/history';
+import { PrivatePaths } from '../routes';
 
 const AddBusiness = ({ businessAsStaff }) => {
   const imageUploadKey = 'uploadBusinessImageKey';
@@ -78,7 +79,7 @@ const AddBusiness = ({ businessAsStaff }) => {
               key: imageUploadKey,
               duration: 5,
             });
-            history.replace('investors');
+            history.push(PrivatePaths.OVERVIEW);
           }
         });
       }
