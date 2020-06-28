@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Router, Switch, Route, Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
 import { makeStyles } from '@material-ui/styles';
@@ -46,29 +46,38 @@ const privateRoutes = [
 ];
 
 const Routes = () => {
+  const [collapsed, setCollapsed] = useState(false);
   const classes = useStyles();
+
+  function toggle() {
+    setCollapsed(!collapsed);
+  }
 
   return (
     <Layout className={classes.container}>
       <Router history={history}>
         <Switch>
-          <PrivateRoute
-            path="/"
-            component={(props) => <SideBar {...props} />}
-            shouldRedirect={false}
-          />
-        </Switch>
-        <Switch>
-          <Route path="/login" render={() => <Login />} />
-          <Route path="/register" render={() => <Register />} />
-        </Switch>
-        <Switch>
           <Layout className="site-layout">
             <PrivateRoute
               path="/"
-              component={(props) => <NavHeader {...props} />}
+              component={(props) => <NavHeader toggle={toggle} collapsed={collapsed} {...props} />}
               shouldRedirect={false}
             />
+          </Layout>
+        </Switch>
+        <Switch>
+          <Route path="/login" exact render={() => <Login />} />
+          <Route path="/register" exact render={() => <Register />} />
+        </Switch>
+        <Switch>
+          <Layout className="site-layout">
+            <Switch>
+              <PrivateRoute
+                path="/"
+                component={(props) => <SideBar collapsed={collapsed} toggle={toggle} {...props} />}
+                shouldRedirect={false}
+              />
+            </Switch>
             <Route exact path="/" render={() => <Redirect to="/overview" />} />
             {privateRoutes.map((route) => {
               return (

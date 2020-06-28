@@ -55,7 +55,6 @@ const PlatformActivities = () => {
       </h3>
       <Activities
         activities={businessHistory.history[selectedOption.option]}
-        limit={2}
         seeMoreAction={() => setDrawerIsVisible(true)}
       />
       <Drawer

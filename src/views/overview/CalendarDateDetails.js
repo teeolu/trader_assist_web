@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
-import { Drawer, notification, List } from 'antd';
+import { Drawer, notification, List, Button } from 'antd';
+import { makeStyles } from '@material-ui/styles';
+import { CloseOutlined } from '@ant-design/icons';
 
 import { dateFormat } from '../../constants/dateFilter';
 import { sortBaseOnTime } from '../../utils/time';
-import { colors } from '../../Css';
-import { makeStyles } from '@material-ui/styles';
+import { colors, fontsize } from '../../Css';
 import CalendarDateReturns from './CalendarDateReturn';
-import CalendarDateInvestments from './CalendarDateInvestment';
 
-const CalendarDateDetails = ({ onClose, dateToShowDetails }) => {
+const CalendarDateDetails = ({ onClose, dateToShowDetails, width }) => {
   const classes = useStyles();
 
   const selectedOption = {
@@ -20,27 +20,38 @@ const CalendarDateDetails = ({ onClose, dateToShowDetails }) => {
 
   return (
     <Drawer
-      title={!!dateToShowDetails && dateToShowDetails.format('dddd Do MMMM, YYYY')}
+      style={{ position: 'absolute', padding: 0 }}
+      bodyStyle={{ padding: 0 }}
+      title={
+        <p
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: 0,
+            justifyContent: 'space-between',
+          }}>
+          {!!dateToShowDetails && dateToShowDetails.format('ddd Do MMMM, YYYY')}{' '}
+          <Button
+            type="primary"
+            shape="circle"
+            onClick={onClose}
+            style={{ border: 'none', backgroundColor: 'transparent' }}
+            icon={
+              <CloseOutlined style={{ color: colors.pinkDark, fontSize: fontsize.paragraph }} />
+            }
+          />
+        </p>
+      }
       placement="right"
       closable={false}
       onClose={onClose}
+      getContainer={false}
       destroyOnClose={true}
       maskStyle={{ backgroundColor: 'transparent' }}
-      width={400}
+      width={width || 300}
       keyboard={true}
       visible={Boolean(dateToShowDetails)}>
-      <div>
-        <CalendarDateReturns
-          dateToShowDetails={dateToShowDetails}
-          selectedOption={selectedOption}
-        />
-      </div>
-      <div style={{ marginTop: 20 }}>
-        <CalendarDateInvestments
-          dateToShowDetails={dateToShowDetails}
-          selectedOption={selectedOption}
-        />
-      </div>
+      <CalendarDateReturns dateToShowDetails={dateToShowDetails} selectedOption={selectedOption} />
     </Drawer>
   );
 };

@@ -64,3 +64,7 @@ body {
 .ant-menu-vertical-left {
   border-right: none !important;
 }
+
+.ant-layout {
+  min-height: 64px !important;
+}

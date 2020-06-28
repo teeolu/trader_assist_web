@@ -8,6 +8,9 @@ import {
   GET_RETURN_REQUEST,
   GET_RETURN_REQUEST_SUCCESS,
   GET_RETURN_REQUEST_FAILURE,
+  GET_RETURNS_CALENDAR_OVERVIEW_REQUEST,
+  GET_RETURNS_CALENDAR_OVERVIEW_REQUEST_SUCCESS,
+  GET_RETURNS_CALENDAR_OVERVIEW_REQUEST_FAILURE,
 } from '../redux/returns/actionTypes';
 import store from '../redux/store';
 
@@ -92,6 +95,41 @@ const ReturnsRepository = function (axiosInstance) {
           });
         });
     },
+    getReturnsCalendarOverviewId: function ({ params = {} }) {
+      let businessId = store.getState().addBusiness.currentBusiness._id;
+      store.dispatch({
+        type: GET_RETURNS_CALENDAR_OVERVIEW_REQUEST,
+      });
+
+      return axiosInstance
+        .get('/api/business/return-overview', {
+          params: {
+            businessId,
+            ...params,
+          },
+        })
+        .then(function (response) {
+          const { success, message, data } = response.data;
+          console.log('GET_RETURNS_CALENDAR_OVERVIEW_REQUEST ', response.data);
+          if (success) {
+            store.dispatch({
+              type: GET_RETURNS_CALENDAR_OVERVIEW_REQUEST_SUCCESS,
+              payload: data,
+            });
+            return;
+          }
+          store.dispatch({
+            type: GET_RETURNS_CALENDAR_OVERVIEW_REQUEST_FAILURE,
+            payload: message,
+          });
+        })
+        .catch(function (error) {
+          store.dispatch({
+            type: GET_RETURNS_CALENDAR_OVERVIEW_REQUEST_FAILURE,
+            payload: error.message,
+          });
+        });
+    },
     editReturns: function ({ formData, params, selectedOption }) {
       store.dispatch({
         type: EDIT_RETURNS_REQUEST,
@@ -100,7 +138,7 @@ const ReturnsRepository = function (axiosInstance) {
       return axiosInstance
         .patch('/api/business/returns', formData)
         .then(function (response) {
-          const { success, message, data } = response.data;
+          const { success, message } = response.data;
           if (success) {
             _ReturnsRepository.getReturns({ selectedOption, params });
             store.dispatch({

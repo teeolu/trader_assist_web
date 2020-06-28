@@ -191,13 +191,10 @@ const Returns = (props) => {
   );
 
   return (
-    <Content
-      style={{
-        margin: '24px 16px',
-      }}>
-      <Row gutter={24}>
-        <Col span={16}>
-          <Card>
+    <Content>
+      <Row gutter={0}>
+        <Col span={17}>
+          <Card style={{ minHeight: 'calc(100vh - 64px)' }} bodyStyle={{ padding: 0 }}>
             <Tabs
               tabBarExtraContent={operations}
               animated={false}
@@ -214,13 +211,14 @@ const Returns = (props) => {
             </Tabs>
           </Card>
         </Col>
-        <Col span={8} style={{}}>
+        <Col span={7}>
           <Card
             style={{
-              height: 600,
+              height: 'calc(100vh - 64px)',
               position: 'sticky',
               top: 20,
-            }}>
+            }}
+            bodyStyle={{ padding: 15 }}>
             <Switch>
               <PrivateRoute path={`${path}/:returnId`} exact={true} component={ReportDetails} />
             </Switch>

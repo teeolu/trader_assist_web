@@ -53,7 +53,10 @@ const AddInvestment = ({ match }) => {
   }, [status]);
 
   function onFinish(values) {
-    console.log('onDateChange onDateChange onDateChange', values);
+    console.log(
+      'GET_RETURNS_CALENDAR_OVERVIEW_REQUEST onDateChange onDateChange onDateChange',
+      values,
+    );
 
     Api.InvestorRepository.addInvestment({
       formData: {

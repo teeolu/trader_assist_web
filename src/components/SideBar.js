@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Avatar } from 'antd';
 import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
   DashboardOutlined,
   UsergroupAddOutlined,
   UploadOutlined,
@@ -17,13 +15,8 @@ import history from '../routes/history';
 
 const { Sider } = Layout;
 
-const SideBar = () => {
-  const [collapsed, setCollapsed] = useState(false);
+const SideBar = ({ toggle, collapsed }) => {
   const classes = useStyles();
-
-  function toggle() {
-    setCollapsed(!collapsed);
-  }
 
   const SideBarContents = [
     { name: 'Overview', icon: DashboardOutlined, path: PrivatePaths.OVERVIEW },
@@ -65,18 +58,7 @@ const SideBar = () => {
           display: 'flex',
           flexDirection: 'column',
         }}>
-        <div className="logo" style={{ height: '32px', color: colors.white, margin: '16px' }}>
-          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-            className: 'trigger',
-            onClick: toggle,
-            style: {
-              color: colors.pinkDark,
-              fontSize: fontsize.h4,
-              marginLeft: 8,
-            },
-          })}
-        </div>
-        <Menu theme="light" mode="inline" selectedKeys={[currentView]} style={{ flex: 1 }}>
+        <Menu mode="inline" selectedKeys={[currentView]} style={{ flex: 1 }}>
           {SideBarContents.map((el) => {
             const Icon = el.icon;
             return (

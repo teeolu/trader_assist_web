@@ -11,7 +11,6 @@ import {
 } from '../../redux/returns/getReturnsReducer';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { Api } from '../../repository/Api';
-import { dateFormat } from '../../constants/dateFilter';
 import { humanReadableTime, sortBaseOnTime } from '../../utils/time';
 import { colors, typography, boxShadows } from '../../Css';
 import { makeStyles } from '@material-ui/styles';
@@ -47,15 +46,6 @@ const CalendarDateReturns = ({ dateToShowDetails, selectedOption }) => {
 
   return (
     <>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderBottom: boxShadows.border,
-        }}>
-        <h4 style={{ ...typography.paragraph, fontWeight: 600 }}>Returns</h4>
-      </div>
       <List
         itemLayout="horizontal"
         loading={isFetching}

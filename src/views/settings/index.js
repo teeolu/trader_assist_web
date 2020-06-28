@@ -62,16 +62,13 @@ const Settings = (props) => {
   ];
 
   return (
-    <Content
-      style={{
-        margin: '24px 16px',
-      }}>
-      <Row gutter={18}>
-        <Col span={5} style={{}}>
+    <Content>
+      <Row gutter={0}>
+        <Col span={5}>
           <Card
             bodyStyle={{ paddingRight: 0 }}
             style={{
-              minHeight: 300,
+              minHeight: 'calc(100vh - 64px)',
               position: 'sticky',
               top: 20,
             }}>
@@ -128,8 +125,11 @@ const Settings = (props) => {
             </Menu>
           </Card>
         </Col>
-        <Col span={13}>
-          <Card>
+        <Col span={19}>
+          <Card
+            style={{
+              minHeight: 'calc(100vh - 64px)',
+            }}>
             <Switch>
               <PrivateRoute path={`${path}/staffs`} exact={true} component={Staffs} />
             </Switch>

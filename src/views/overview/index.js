@@ -1,45 +1,54 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { Layout, Row, Col, Card } from 'antd';
 
 import './index.css';
 import PlatformActivities from './PlatformActivities';
 import OverviewCalendar from './Calendar';
+import CalendarDateDetails from './CalendarDateDetails';
 
 const { Content } = Layout;
 
 const Overview = () => {
+  const [dateToShowDetails, setDateToShowDetail] = useState(null);
+  const calendarDetailContainerRef = useRef();
+
   return (
-    <Content
-      style={{
-        margin: '24px 16px',
-      }}>
-      <Row gutter={24}>
-        <Col span={16}>
+    <Content>
+      <Row gutter={0}>
+        <Col span={17}>
           <Card bodyStyle={{ padding: 15 }}>
-            <OverviewCalendar />
+            <OverviewCalendar showDateDetails={(date) => setDateToShowDetail(date)} />
           </Card>
         </Col>
-        <Col span={8} style={{}}>
+        <Col span={7} style={{}}>
           <Card
             bodyStyle={{ padding: 0 }}
             style={{
-              minHeight: 600,
+              height: 'calc(100vh - 64px)',
               position: 'sticky',
               backgroundColor: 'transparent',
-              top: 20,
+              top: 0,
             }}>
             <Card
-              bodyStyle={{ padding: 15 }}
+              bodyStyle={{ padding: 0 }}
               style={{
-                minHeight: 200,
+                height: 'calc(100vh - 64px)',
               }}>
-              <PlatformActivities />
+              <div
+                ref={calendarDetailContainerRef}
+                className="site-drawer-render-in-current-wrapper">
+                <PlatformActivities />
+                <CalendarDateDetails
+                  width={
+                    !!calendarDetailContainerRef.current
+                      ? calendarDetailContainerRef.current.getBoundingClientRect().width
+                      : 0
+                  }
+                  dateToShowDetails={dateToShowDetails}
+                  onClose={() => setDateToShowDetail(null)}
+                />
+              </div>
             </Card>
-            <Card
-              style={{
-                minHeight: 200,
-                marginTop: 20,
-              }}></Card>
           </Card>
         </Col>
       </Row>

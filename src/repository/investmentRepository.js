@@ -100,7 +100,7 @@ const InvestmentRepository = function (axiosInstance) {
       return axiosInstance
         .patch('/api/investors/investment', formData)
         .then(function (response) {
-          const { success, message, data } = response.data;
+          const { success, message } = response.data;
           if (success) {
             _InvestmentRepository.getInvesments({ selectedOption, params });
             store.dispatch({

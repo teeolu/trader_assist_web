@@ -24,3 +24,13 @@
 .ant-timeline-item {
   padding-bottom: 0 !important;
 }
+
+.site-drawer-render-in-current-wrapper {
+  position: relative;
+  height: 600px;
+  overflow: hidden;
+}
+
+.ant-drawer-header {
+  padding: 10px 15px !important;
+}

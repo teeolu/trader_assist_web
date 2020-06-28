@@ -28,6 +28,7 @@ import getInvestmentsByIdReducer from './investment/getInvestmentByIdReducer';
 import getReturnsReducer from './returns/getReturnsReducer';
 import getInvestorReturnsReducer from './investor/getInvestorReturnReducer';
 import editReturnReducer from './returns/editReturnsReducer';
+import getReturnsCalendarOverviewReducer from './returns/getReturnsCalendarOverviewReducer';
 
 import confirmReturnReducer from './investor/confirmReturnReducer';
 import registerReducer from './auth/registerReducer';
@@ -69,6 +70,7 @@ export default combineReducers({
   editReturn: editReturnReducer,
   confirmReturn: confirmReturnReducer,
   getReturnsById: getReturnsByIdReducer,
+  getReturnsCalendarOverview: getReturnsCalendarOverviewReducer,
 
   inviteAdminStaff: inviteAdminStaffReducer,
   getBusinessStaff: getBusinessStaffReducer,

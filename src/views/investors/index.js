@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Input, Tooltip, Button, Menu, notification, Spin, Space } from 'antd';
+import {
+  Layout,
+  Input,
+  Tooltip,
+  Button,
+  Menu,
+  notification,
+  Spin,
+  Space,
+  Row,
+  Col,
+  Card,
+} from 'antd';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { PlusSquareOutlined } from '@ant-design/icons';
@@ -96,9 +108,7 @@ const Investors = (props) => {
                 <p style={{ ...typography.paragraph, fontFamily: fonts.semiBold, marginBottom: 0 }}>
                   {investor.fullName}
                 </p>
-                <p style={{ ...typography.paragraph, marginBottom: 0 }}>
-                  Added on tuesday, 13 2020
-                </p>
+                <p style={{ ...typography.caption, marginBottom: 0 }}>Added on tuesday, 13 2020</p>
               </div>
             </div>
           );
@@ -108,70 +118,69 @@ const Investors = (props) => {
   }
 
   return (
-    <Content
-      className="site-layout-background"
-      style={{
-        margin: '24px 16px',
-        height: 'calc(100% - 48px)',
-        border: boxShadows.border,
-      }}>
-      <div className={classes.overviewContainer}>
-        <div className={classes.investors}>
-          <div className={classes.investorsHeading}>
-            <p className={classes.investorText}>
-              <b>Investors</b>
-            </p>
-            <div>
-              <Tooltip title="Add investor" placement="bottom">
-                <Button
-                  type="primary"
-                  shape="circle"
-                  onClick={() => history.push(`${path}/new-investor`)}
-                  style={{ backgroundColor: colors.pinkLight, border: 'none' }}
-                  icon={
-                    <PlusSquareOutlined style={{ color: colors.pinkDark, fontSize: fontsize.h4 }} />
-                  }
-                />
-              </Tooltip>
+    <Content style={{}}>
+      <Row gutter={0}>
+        <Col span={7}>
+          <Card
+            bodyStyle={{ padding: 0, height: 'calc(100vh - 64px)' }}
+            style={{
+              position: 'sticky',
+              top: 0,
+            }}>
+            <div className={classes.investors}>
+              <div className={classes.investorsHeading}>
+                <p className={classes.investorText}>
+                  <b>Investors</b>
+                </p>
+                <div>
+                  <Tooltip title="Add investor" placement="bottom">
+                    <Button
+                      type="primary"
+                      shape="circle"
+                      onClick={() => history.push(`${path}/new-investor`)}
+                      style={{ backgroundColor: colors.pinkLight, border: 'none' }}
+                      icon={
+                        <PlusSquareOutlined
+                          style={{ color: colors.pinkDark, fontSize: fontsize.h4 }}
+                        />
+                      }
+                    />
+                  </Tooltip>
+                </div>
+              </div>
+              {isFetching && investorsData.size === null && (
+                <Space
+                  style={{
+                    width: '100%',
+                    minHeight: 300,
+                    justifyContent: 'center',
+                  }}>
+                  <Spin />
+                </Space>
+              )}
+              {renderInvestorsList()}
             </div>
-          </div>
-          <div className={classes.investorsHeading}>
-            <Search
-              placeholder="Search investors"
-              loading={false}
-              onSearch={(value) => console.log(value)}
-              style={{ width: '100%' }}
-            />
-          </div>
-          {isFetching && investorsData.size === null && (
-            <Space
-              style={{
-                width: '100%',
-                minHeight: 300,
-                justifyContent: 'center',
-              }}>
-              <Spin />
-            </Space>
-          )}
-          {renderInvestorsList()}
-        </div>
-        <div className={classes.investorsDetail}>
-          <Switch>
-            <PrivateRoute path={`${path}/new-investor`} exact={true} component={AddInvestor} />
-            <PrivateRoute path={`${path}/:investorId`} exact={true} component={InvestorDetails} />
-            <PrivateRoute
-              path={`${path}/:investorId/new-investment`}
-              exact={true}
-              component={AddInvestment}
-            />
-            <PrivateRoute
-              path={`${path}/:investorId/edit-investor`}
-              exact={true}
-              component={EditInvestor}
-            />
-          </Switch>
-        </div>
-      </div>
+          </Card>
+        </Col>
+        <Col span={17} style={{}}>
+          <Card bodyStyle={{ padding: 0 }}>
+            <Switch>
+              <PrivateRoute path={`${path}/new-investor`} exact={true} component={AddInvestor} />
+              <PrivateRoute path={`${path}/:investorId`} exact={true} component={InvestorDetails} />
+              <PrivateRoute
+                path={`${path}/:investorId/new-investment`}
+                exact={true}
+                component={AddInvestment}
+              />
+              <PrivateRoute
+                path={`${path}/:investorId/edit-investor`}
+                exact={true}
+                component={EditInvestor}
+              />
+            </Switch>
+          </Card>
+        </Col>
+      </Row>
     </Content>
   );
 };
@@ -182,12 +191,11 @@ const useStyles = makeStyles({
     height: '100%',
   },
   investors: {
-    flex: 3,
-    height: '100%',
-    width: '100%',
-    borderRight: boxShadows.border,
-    display: 'flex',
-    flexDirection: 'column',
+    // height: '100%',
+    // width: '100%',
+    // borderRight: boxShadows.border,
+    // display: 'flex',
+    // flexDirection: 'column',
   },
   investorsHeading: {
     padding: 15,
@@ -216,26 +224,26 @@ const useStyles = makeStyles({
     height: '100%',
     overflowY: 'scroll',
     '& > div': {
-      padding: 15,
+      padding: 5,
       cursor: 'pointer',
       display: 'flex',
+      alignItems: 'center',
       '&:not(:last-child)': {
         borderBottom: boxShadows.border,
       },
     },
   },
   investorInfo: {
-    marginTop: 5,
     marginLeft: 10,
   },
   investorIsActiveIndicator: {
     ...typography.paragraphGray,
     fontFamily: fonts.regular,
-    fontSize: fontsize.h3,
-    height: 60,
-    width: 60,
-    borderRadius: 5,
-    backgroundColor: colors.gray3,
+    fontSize: fontsize.h4,
+    height: 40,
+    width: 40,
+    borderRadius: 56,
+    backgroundColor: colors.pinkDark,
     textTransform: 'uppercase',
     display: 'flex',
     alignItems: 'center',
@@ -247,8 +255,8 @@ const useStyles = makeStyles({
       borderRadius: 10,
       border: `3px solid ${colors.white}`,
       position: 'absolute',
-      bottom: 5,
-      right: 5,
+      bottom: -2,
+      right: -2,
     },
   },
   investorsDetail: {
