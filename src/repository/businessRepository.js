@@ -6,6 +6,9 @@ import {
   GET_BUSINESSES_REQUEST,
   GET_BUSINESSES_REQUEST_SUCCESS,
   GET_BUSINESSES_REQUEST_FAILURE,
+  GET_BUSINESS_REQUEST,
+  GET_BUSINESS_REQUEST_SUCCESS,
+  GET_BUSINESS_REQUEST_FAILURE,
   GET_BUSINESS_OVERVIEW_REQUEST,
   GET_BUSINESS_OVERVIEW_REQUEST_SUCCESS,
   GET_BUSINESS_OVERVIEW_REQUEST_FAILURE,
@@ -92,6 +95,50 @@ const BusinessRepository = function (axiosInstance) {
         .catch(function (error) {
           store.dispatch({
             type: GET_BUSINESSES_REQUEST_FAILURE,
+            payload: error.message,
+          });
+        });
+    },
+    getBusiness: function ({ businessName }) {
+      store.dispatch({
+        type: GET_BUSINESS_REQUEST,
+      });
+
+      return axiosInstance
+        .get('/api/business/business', {
+          params: {
+            businessName,
+          },
+        })
+        .then(function (response) {
+          const { success, message, data } = response.data;
+          if (success) {
+            let selectedBusiness;
+            store.dispatch({
+              type: SET_CURRENT_BUSINESS,
+              payload: data,
+            });
+            function callBack() {
+              store.dispatch({
+                type: GET_BUSINESS_REQUEST_SUCCESS,
+                payload: data,
+              });
+            }
+
+            _BusinessRepository.getBusinessOverview({
+              callBack,
+              businessId: !!selectedBusiness ? selectedBusiness._id : data[0]._id,
+            });
+            return;
+          }
+          store.dispatch({
+            type: GET_BUSINESS_REQUEST_FAILURE,
+            payload: message,
+          });
+        })
+        .catch(function (error) {
+          store.dispatch({
+            type: GET_BUSINESS_REQUEST_FAILURE,
             payload: error.message,
           });
         });

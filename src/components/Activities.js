@@ -33,7 +33,7 @@ const Activities = ({ activities = [], limit, seeMoreAction }) => {
                   }}>
                   {humanReadableTime(el.createdAt, true)}
                 </p>
-                <p style={{ color: colors.black }}>{el.desc}</p>
+                <p style={{ color: colors.black, fontSize: fontsize.captionMedium }}>{el.desc}</p>
               </div>
             </div>
           </Timeline.Item>

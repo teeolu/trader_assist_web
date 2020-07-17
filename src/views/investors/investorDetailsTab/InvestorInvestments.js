@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Tabs, List, Tooltip, Button, Collapse, Card, Badge, notification } from 'antd';
+import React, { useEffect } from 'react';
+import { List, Collapse, Card, notification } from 'antd';
 import { makeStyles } from '@material-ui/styles';
 import { CaretRightOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 
-import { colors, fontsize, boxShadows, typography, fonts } from '../../../Css';
-import Buttons from '../../../atoms/Buttons';
+import { colors, typography } from '../../../Css';
 import {
   getIsFetchingState,
   getInvestorInvestmentsState,
@@ -22,19 +21,12 @@ const { Panel } = Collapse;
 
 const InvestorInvestments = ({ investor }) => {
   const investorId = investor._id;
-  const classes = useStyles();
-  const isFetching = useSelector(getIsFetchingState);
+  // const classes = useStyles();
+  // const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
   const investorsInvestmentsData = useSelector(getInvestorInvestmentsState);
   const investorsReturns = useSelector(getInvestorReturnsState);
-
-  console.log(
-    'investorsInvestmentsData investorsInvestmentsData investorsInvestmentsData ',
-    !!investorsInvestmentsData.investments[investorId] &&
-      sortBaseOnTime(investorsInvestmentsData.investments[investorId]),
-    // investorsReturns,
-  );
 
   useEffect(() => {
     fetchInvestors();
@@ -204,6 +196,6 @@ const InvestorInvestments = ({ investor }) => {
   );
 };
 
-const useStyles = makeStyles({});
+// const useStyles = makeStyles({});
 
 export default InvestorInvestments;

@@ -2,22 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input, Row, Col, notification } from 'antd';
 import { useSelector } from 'react-redux';
 import { LoadingOutlined } from '@ant-design/icons';
+import { makeStyles } from '@material-ui/styles';
 
 import {
   getIsFetchingState,
   getErrorMessageState,
   getStatusState,
   Status,
-} from '../redux/business/addBusinessReducer';
-import OnboardingLayout from '../components/OnboardingLayout';
-import Buttons from '../atoms/Buttons';
-import { Api } from '../repository/Api';
-import { notificationConfigs } from '../constants/ToastNotifincation';
-import { makeStyles } from '@material-ui/styles';
-import { colors, typography } from '../Css';
-import UploadImage from '../atoms/UploadImage';
-import history from '../routes/history';
-import { PrivatePaths } from '../routes';
+} from '../../redux/business/addBusinessReducer';
+import OnboardingLayout from '../../components/OnboardingLayout';
+import Buttons from '../../atoms/Buttons';
+import { Api } from '../../repository/Api';
+import { notificationConfigs } from '../../constants/ToastNotifincation';
+import { colors, typography } from '../../Css';
+import UploadImage from '../../atoms/UploadImage';
+import history from '../../routes/history';
+import { PrivatePaths } from '../../routes';
 
 const AddBusiness = ({ businessAsStaff }) => {
   const imageUploadKey = 'uploadBusinessImageKey';
@@ -71,7 +71,6 @@ const AddBusiness = ({ businessAsStaff }) => {
             businessImage: data,
           },
         }).then((success) => {
-          console.log('addBusiness addBusiness addBusiness ', success);
           if (success === true) {
             notification['open']({
               ...notificationConfigs,
@@ -79,7 +78,7 @@ const AddBusiness = ({ businessAsStaff }) => {
               key: imageUploadKey,
               duration: 5,
             });
-            history.push(PrivatePaths.OVERVIEW);
+            history.push(PrivatePaths.MY_PROFILE);
           }
         });
       }
@@ -93,8 +92,6 @@ const AddBusiness = ({ businessAsStaff }) => {
   function onSelectImage(img) {
     setSelectedImage(img);
   }
-
-  if (!Array.isArray(businessAsStaff)) return null;
 
   return (
     <div className={classes.container}>
@@ -229,11 +226,11 @@ const AddBusiness = ({ businessAsStaff }) => {
 
 const useStyles = makeStyles({
   container: {
-    position: 'fixed',
-    top: (props) => (props.isVisible ? 0 : 1000),
-    bottom: 0,
-    right: 0,
-    transition: '.5s all',
+    // position: 'fixed',
+    // top: (props) => (props.isVisible ? 0 : 1000),
+    // bottom: 0,
+    // right: 0,
+    // transition: '.5s all',
   },
 });
 

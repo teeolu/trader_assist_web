@@ -9,7 +9,7 @@ const initialState = {
   isFetching: false,
   errorMessage: '',
   status: null,
-  currentUser: null,
+  currentUser: {},
 };
 
 export const Status = {

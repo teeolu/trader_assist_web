@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import { colors, fonts, sizes } from '../../../Css';
+import { colors, fonts } from '../../../Css';
 import { Api } from '../../../repository/Api';
 
 import {
@@ -13,7 +13,6 @@ import {
 import store from '../../../redux/store';
 import { RESET_ADMIN_STAFF_INVITE } from '../../../redux/settings/actionTypes';
 import { Modal, notification, Form, Input } from 'antd';
-import { makeStyles } from '@material-ui/styles';
 import { notificationConfigs } from '../../../constants/ToastNotifincation';
 
 const InviteAdminStaffModal = ({ isVisible, role, closeModal }) => {
@@ -51,12 +50,6 @@ const InviteAdminStaffModal = ({ isVisible, role, closeModal }) => {
   }
 
   function handleOk() {
-    console.log(
-      'form.getFieldValue form.getFieldValue ',
-      form.getFieldValue(),
-      form.getFieldsError(),
-    );
-
     form.submit();
   }
 
@@ -95,19 +88,19 @@ const InviteAdminStaffModal = ({ isVisible, role, closeModal }) => {
   );
 };
 
-const styles = makeStyles({
-  flexContainer: {
-    flex: 1,
-    backgroundColor: '#000',
-  },
-  flatListContainer: {
-    justifyContent: 'flex-end',
-    height: 120,
-  },
-  galleryImage: {
-    width: 120,
-    height: 120,
-  },
-});
+// const styles = makeStyles({
+//   flexContainer: {
+//     flex: 1,
+//     backgroundColor: '#000',
+//   },
+//   flatListContainer: {
+//     justifyContent: 'flex-end',
+//     height: 120,
+//   },
+//   galleryImage: {
+//     width: 120,
+//     height: 120,
+//   },
+// });
 
 export default InviteAdminStaffModal;

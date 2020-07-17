@@ -1,15 +1,14 @@
-import React, { useEffect } from 'react';
-import { Drawer, notification, List, Button } from 'antd';
+import React from 'react';
+import { Drawer, Button } from 'antd';
 import { makeStyles } from '@material-ui/styles';
 import { CloseOutlined } from '@ant-design/icons';
 
 import { dateFormat } from '../../constants/dateFilter';
-import { sortBaseOnTime } from '../../utils/time';
 import { colors, fontsize } from '../../Css';
 import CalendarDateReturns from './CalendarDateReturn';
 
 const CalendarDateDetails = ({ onClose, dateToShowDetails, width }) => {
-  const classes = useStyles();
+  // const classes = useStyles();
 
   const selectedOption = {
     startDate: !!dateToShowDetails && dateToShowDetails.startOf('day').format(),
@@ -56,13 +55,13 @@ const CalendarDateDetails = ({ onClose, dateToShowDetails, width }) => {
   );
 };
 
-const useStyles = makeStyles({
-  listItem: {
-    cursor: 'pointer',
-    '&:hover': {
-      backgroundColor: colors.pinkLight,
-    },
-  },
-});
+// const useStyles = makeStyles({
+//   listItem: {
+//     cursor: 'pointer',
+//     '&:hover': {
+//       backgroundColor: colors.pinkLight,
+//     },
+//   },
+// });
 
 export default CalendarDateDetails;

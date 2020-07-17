@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { Tabs, Input, Tooltip, Button, Menu } from 'antd';
+import React from 'react';
+import { Tabs } from 'antd';
 import { makeStyles } from '@material-ui/styles';
 
-import { colors, fontsize, boxShadows, typography, fonts } from '../../../Css';
-import Buttons from '../../../atoms/Buttons';
+import { colors } from '../../../Css';
 import './investorDetailsTabCss.css';
 import InvestorOverview from './InvestorOverview';
 import InvestorInvestments from './InvestorInvestments';
@@ -12,7 +11,7 @@ import InvestorActivities from './InvestorActivities';
 const { TabPane } = Tabs;
 
 const InvestorDetailsTab = ({ investor }) => {
-  const classes = useStyles();
+  // const classes = useStyles();
 
   return (
     <div className="card-container" style={{ marginTop: 50 }}>
@@ -36,6 +35,6 @@ const InvestorDetailsTab = ({ investor }) => {
   );
 };
 
-const useStyles = makeStyles({});
+// const useStyles = makeStyles({});
 
 export default InvestorDetailsTab;

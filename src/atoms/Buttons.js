@@ -23,10 +23,10 @@ const Buttons = ({
       className={classes.btn}
       loading={isLoading}
       style={{
-        ...style,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        ...style,
         // backgroundColor: bgColor,
       }}
       {...props}>

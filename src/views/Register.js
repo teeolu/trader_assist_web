@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Form, Input, Row, Col, notification } from 'antd';
 import { useSelector } from 'react-redux';
 
@@ -12,10 +12,8 @@ import OnboardingLayout from '../components/OnboardingLayout';
 import Buttons from '../atoms/Buttons';
 import { Api } from '../repository/Api';
 import { notificationConfigs } from '../constants/ToastNotifincation';
-import AddBusiness from './AddBusiness';
 
 const Register = () => {
-  const [businessAsStaff, setBusinessAsStaff] = useState(null);
   const [form] = Form.useForm();
 
   const isFetching = useSelector(getIsFetchingState);
@@ -34,9 +32,7 @@ const Register = () => {
   function onFinish(values) {
     const { confirmPassword, ...formVal } = values;
 
-    Api.AuthRepository.register({ formData: formVal }).then((data) => {
-      setBusinessAsStaff(data.businessAsStaff);
-    });
+    Api.AuthRepository.register({ formData: formVal });
   }
 
   function onFinishFailed(errorInfo) {
@@ -135,7 +131,7 @@ const Register = () => {
           />
         </Form>
       </OnboardingLayout>
-      <AddBusiness businessAsStaff={businessAsStaff} />
+      {/* <AddBusiness businessAsStaff={businessAsStaff} /> */}
     </div>
   );
 };

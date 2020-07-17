@@ -38,9 +38,9 @@ const OverviewCalendar = ({ showDateDetails }) => {
 
   function getListData(value) {
     return [
-      { type: 'error', content: <span>&#8358;1,200,000</span> },
+      // { type: 'error', content: <span>&#8358;1,200,000</span> },
       // { type: 'success', content: <span>&#8358;300,000'</span> },
-      { type: 'warning', content: '3' },
+      // { type: 'warning', content: '3' },
     ];
   }
 

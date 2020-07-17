@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import BgImg from '../assets/images/bg_img_1.jpg';
 import { colors, typography } from '../Css';

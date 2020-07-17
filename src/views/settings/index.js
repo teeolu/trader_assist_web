@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
 import { Switch } from 'react-router-dom';
-import { Tabs, Layout, Button, Row, Col, Card, Select, Menu } from 'antd';
-
-import { colors, typography, fontsize } from '../../Css';
+import { Tabs, Layout, Row, Col, Card, Select, Menu } from 'antd';
 import { makeStyles } from '@material-ui/styles';
+
+import { colors, typography } from '../../Css';
 import { PrivatePaths } from '../../routes';
 import history from '../../routes/history';
 import PrivateRoute from '../../routes/PrivateRoute';
 import Staffs from './Team/Staffs';
 import Admins from './Team/Admins';
 
-const { TabPane } = Tabs;
 const { Content } = Layout;
-const { Option } = Select;
 
 const Settings = (props) => {
   let {
@@ -143,10 +140,10 @@ const Settings = (props) => {
   );
 };
 
-const useStyles = makeStyles({
-  activeRow: {
-    backgroundColor: colors.pinkLight,
-  },
-});
+// const useStyles = makeStyles({
+//   activeRow: {
+//     backgroundColor: colors.pinkLight,
+//   },
+// });
 
 export default Settings;

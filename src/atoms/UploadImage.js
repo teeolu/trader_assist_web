@@ -12,7 +12,7 @@ const acceptedMimeTypes = ['image/png', 'image/jpeg', 'image/gif'];
 const maxFileSize = 1000000;
 
 const UploadImage = ({ onSelectImage, imageUploadKey }) => {
-  const [files, setFiles] = useState(null);
+  // const [files, setFiles] = useState(null);
   const [invalidFile, setInvalidFile] = useState({
     invalid: false,
     type: '',
@@ -53,8 +53,6 @@ const UploadImage = ({ onSelectImage, imageUploadKey }) => {
       });
   }, [invalidFile]);
 
-  console.log('vjghvjgvjhvjhvhgvjkhgk ', imageUploadProgress);
-
   function verifyFile(file) {
     if (!acceptedMimeTypes.includes(file.type)) {
       return [false, 'format'];
@@ -73,7 +71,7 @@ const UploadImage = ({ onSelectImage, imageUploadKey }) => {
     if (newFile) {
       const [fileValid, error] = verifyFile(newFile);
       if (fileValid) {
-        setFiles(newFile);
+        // setFiles(newFile);
         onSelectImage(newFile);
 
         var reader = new FileReader();

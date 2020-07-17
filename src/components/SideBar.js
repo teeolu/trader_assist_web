@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Layout, Menu, Avatar } from 'antd';
+import React from 'react';
+import { Layout, Menu } from 'antd';
+import { useSelector } from 'react-redux';
 import {
   DashboardOutlined,
   UsergroupAddOutlined,
@@ -12,41 +13,57 @@ import { makeStyles } from '@material-ui/styles';
 import { colors, fontsize, boxShadows } from '../Css';
 import { PrivatePaths } from '../routes';
 import history from '../routes/history';
+import { getCurrentBusinessState } from '../redux/business/addBusinessReducer';
 
 const { Sider } = Layout;
 
-const SideBar = ({ toggle, collapsed }) => {
+const SideBar = ({ collapsed, match }) => {
   const classes = useStyles();
+  const currentBusiness = useSelector(getCurrentBusinessState);
+
+  if (!currentBusiness.businessImage) return null;
 
   const SideBarContents = [
-    { name: 'Overview', icon: DashboardOutlined, path: PrivatePaths.OVERVIEW },
-    { name: 'Investors', icon: UsergroupAddOutlined, path: PrivatePaths.INVESTORS },
+    {
+      name: 'Overview',
+      icon: DashboardOutlined,
+      path: `/${currentBusiness.businessName}${PrivatePaths.OVERVIEW}`,
+    },
+    {
+      name: 'Investors',
+      icon: UsergroupAddOutlined,
+      path: `/${currentBusiness.businessName}${PrivatePaths.INVESTORS}`,
+    },
     {
       name: 'Returns',
       icon: UploadOutlined,
-      path: PrivatePaths.RETURNS,
+      path: `/${currentBusiness.businessName}${PrivatePaths.RETURNS}`,
     },
     {
       name: 'Investments',
       icon: DownloadOutlined,
-      path: PrivatePaths.INVESTMENTS,
+      path: `/${currentBusiness.businessName}${PrivatePaths.INVESTMENTS}`,
     },
     {
       name: 'Settings',
       icon: SettingOutlined,
-      path: PrivatePaths.SETTINGS,
+      path: `/${currentBusiness.businessName}${PrivatePaths.SETTINGS}`,
     },
   ];
 
   const currentView = window.location.href
     .replace(new RegExp(`${window.location.origin}/|/$`, 'g'), '')
     .trim()
-    .split('/')[0];
+    .split('/')
+    .pop();
+
+  if (currentView === PrivatePaths.CREATE_PLATFORM.split('/').pop()) return null;
 
   return (
     <Sider
       style={{
         borderRight: boxShadows.border,
+        height: '100%',
       }}
       theme="light"
       trigger={null}
@@ -96,21 +113,9 @@ const SideBar = ({ toggle, collapsed }) => {
                 display: 'flex',
                 alignItems: 'center',
               }}
+              onClick={() => history.push(PrivatePaths.MY_PROFILE)}
               key="user-profile"
-              icon={
-                <UserOutlined
-                  style={{
-                    background: colors.gray,
-                    padding: 10,
-                    borderRadius: '50%',
-                    fontSize: fontsize.h4,
-                    color: colors.gray3,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                />
-              }>
+              icon={<UserOutlined className={classes.userProfileIcon} />}>
               Olusola Oyinloye
             </Menu.Item>
           </Menu>
@@ -131,6 +136,16 @@ const useStyles = makeStyles({
   },
   menuIcon: {
     fontSize: fontsize.h4,
+  },
+  userProfileIcon: {
+    background: colors.gray,
+    padding: 10,
+    borderRadius: '50%',
+    fontSize: fontsize.h4,
+    color: colors.gray3,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

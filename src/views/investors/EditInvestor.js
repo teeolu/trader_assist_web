@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Input, Row, Col, notification, Button } from 'antd';
+import React, { useEffect } from 'react';
+import { Form, Input, notification, Button } from 'antd';
 import { useSelector } from 'react-redux';
-import { LoadingOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import { makeStyles } from '@material-ui/styles';
 
 import {

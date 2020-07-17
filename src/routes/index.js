@@ -6,22 +6,21 @@ import { makeStyles } from '@material-ui/styles';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import history from './history';
-import Investors from '../views/investors';
 import Login from '../views/Login';
 import Register from '../views/Register';
 import SideBar from '../components/SideBar';
 import NavHeader from '../components/NavHeader';
-import { boxShadows, colors } from '../Css';
-import Overview from '../views/overview';
-import Returns from '../views/returns';
-import Investments from '../views/investments';
-import Settings from '../views/settings';
+import UserProfile from '../views/UserProfile';
+import AddBusiness from '../views/AddBusiness';
+import Business from '../views/Business';
+import ErrorPage from '../views/ErrorPage';
 
 export const PublicPaths = {
   LOGIN: '/login',
   FORGOT_PASSWORD: '/forgot-password',
   REGISTER: '/register',
   RESET_PASSWORD: '/reset-password',
+  ERROR_UNAUTHORIZED: '/unathorized',
 };
 
 const publicRoutes = [
@@ -35,18 +34,22 @@ export const PrivatePaths = {
   RETURNS: '/returns',
   INVESTMENTS: '/investments',
   SETTINGS: '/settings',
+  MY_PROFILE: '/my-profile',
+  CREATE_PLATFORM: '/my-profile/create-platform',
+  BUSINESS: '/:platformName',
 };
 
 const privateRoutes = [
-  { path: PrivatePaths.INVESTORS, exact: false, component: Investors },
-  { path: PrivatePaths.OVERVIEW, exact: false, component: Overview },
-  { path: PrivatePaths.RETURNS, exact: false, component: Returns },
-  { path: PrivatePaths.INVESTMENTS, exact: false, component: Investments },
-  { path: PrivatePaths.SETTINGS, exact: false, component: Settings },
+  { path: PrivatePaths.MY_PROFILE, exact: true, component: UserProfile },
+  { path: PrivatePaths.CREATE_PLATFORM, exact: false, component: AddBusiness },
+  { path: PrivatePaths.BUSINESS, exact: false, component: Business },
 ];
 
-const Routes = () => {
+const Routes = (props) => {
   const [collapsed, setCollapsed] = useState(false);
+  // let {
+  //   match: { path },
+  // } = props;
   const classes = useStyles();
 
   function toggle() {
@@ -57,20 +60,19 @@ const Routes = () => {
     <Layout className={classes.container}>
       <Router history={history}>
         <Switch>
-          <Layout className="site-layout">
-            <PrivateRoute
-              path="/"
-              component={(props) => <NavHeader toggle={toggle} collapsed={collapsed} {...props} />}
-              shouldRedirect={false}
-            />
-          </Layout>
+          <PrivateRoute
+            path="/"
+            component={(props) => <NavHeader toggle={toggle} collapsed={collapsed} {...props} />}
+            shouldRedirect={false}
+          />
         </Switch>
         <Switch>
           <Route path="/login" exact render={() => <Login />} />
           <Route path="/register" exact render={() => <Register />} />
+          <Route path={PublicPaths.ERROR_UNAUTHORIZED} exact render={() => <ErrorPage />} />
         </Switch>
         <Switch>
-          <Layout className="site-layout">
+          <Layout className="site-layout" style={{ height: '100%' }}>
             <Switch>
               <PrivateRoute
                 path="/"
@@ -78,7 +80,7 @@ const Routes = () => {
                 shouldRedirect={false}
               />
             </Switch>
-            <Route exact path="/" render={() => <Redirect to="/overview" />} />
+            <Route exact path="/" render={() => <Redirect to="/my-profile" />} />
             {privateRoutes.map((route) => {
               return (
                 <PrivateRoute

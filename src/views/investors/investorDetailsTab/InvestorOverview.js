@@ -1,26 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tabs, Card } from 'antd';
 import { makeStyles } from '@material-ui/styles';
-import { useSelector } from 'react-redux';
 
-import { colors, fontsize, boxShadows, typography, fonts } from '../../../Css';
-import Buttons from '../../../atoms/Buttons';
-import { getCurrentInvestorState } from '../../../redux/investor/getInvestorReducer';
+import { colors, typography } from '../../../Css';
 
 const { TabPane } = Tabs;
 
 const InvestorOverview = ({ investor }) => {
-  const classes = useStyles();
-  const {
-    fullName,
-    investmentSum,
-    numberOfInvestment,
-    numberOfReturns,
-    returnsSum,
-    createdAt,
-  } = investor;
-
-  console.log('investor[investorId] investor[investorId] ', investor);
+  // const classes = useStyles();
+  const { investmentSum, numberOfInvestment, numberOfReturns, returnsSum } = investor;
 
   return (
     <>
@@ -106,6 +94,6 @@ const InvestorOverview = ({ investor }) => {
   );
 };
 
-const useStyles = makeStyles({});
+// const useStyles = makeStyles({});
 
 export default InvestorOverview;

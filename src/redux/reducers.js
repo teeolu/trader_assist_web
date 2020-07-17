@@ -39,6 +39,7 @@ import getBusinessStaffReducer from './settings/getBusinessStaffs';
 import imageUploadReducer from './misc/imageUploadReducer';
 import cancelAdminStaffInviteReducer from './settings/cancelAdminStaffInviteReducer';
 import getReturnsByIdReducer from './returns/getReturnByIdReducer';
+import getBusinessReducer from './business/getBusinessReducer';
 
 export default combineReducers({
   userRequest: userRequestReducer,
@@ -58,6 +59,7 @@ export default combineReducers({
 
   businessMisc: businessMiscReducer,
   addBusiness: addBusinessReducer,
+  getBusiness: getBusinessReducer,
   getBusinesses: getBusinessesReducer,
   getBusinessOverview: getBusinessOverviewReducer,
   getBusinessHistory: getBusinessHistoryReducer,

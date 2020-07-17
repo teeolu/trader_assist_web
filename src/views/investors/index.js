@@ -1,17 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Layout,
-  Input,
-  Tooltip,
-  Button,
-  Menu,
-  notification,
-  Spin,
-  Space,
-  Row,
-  Col,
-  Card,
-} from 'antd';
+import React, { useEffect } from 'react';
+import { Layout, Input, Tooltip, Button, notification, Spin, Space, Row, Col, Card } from 'antd';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { PlusSquareOutlined } from '@ant-design/icons';
@@ -35,7 +23,6 @@ import { Api } from '../../repository/Api';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { getCurrentBusinessState } from '../../redux/business/addBusinessReducer';
 const { Content } = Layout;
-const { Search } = Input;
 
 const Investors = (props) => {
   let {

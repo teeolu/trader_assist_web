@@ -12,7 +12,6 @@ import { Api } from '../../repository/Api';
 import { notification, Space, Spin } from 'antd';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { typography, colors } from '../../Css';
-import { humanReadableTime } from '../../utils/time';
 import history from '../../routes/history';
 import { PrivatePaths } from '../../routes';
 import bankImage from '../../assets/images/bank.png';
@@ -20,7 +19,6 @@ import bankImage from '../../assets/images/bank.png';
 const InvestmentDetails = (props) => {
   let {
     match: {
-      path,
       params: { investmentId },
     },
   } = props;

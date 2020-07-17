@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/styles';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import Activities from '../../../components/Activities';
@@ -15,11 +14,10 @@ import { Card, notification } from 'antd';
 import { notificationConfigs } from '../../../constants/ToastNotifincation';
 
 const InvestorActivities = ({ investor }) => {
-  const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
   const investorsHistory = useSelector(getInvestorHistoryState);
-  const classes = useStyles();
+  // const classes = useStyles();
 
   useEffect(() => {
     fetchBusinessHistory();
@@ -56,6 +54,6 @@ const InvestorActivities = ({ investor }) => {
   );
 };
 
-const useStyles = makeStyles({});
+// const useStyles = makeStyles({});
 
 export default InvestorActivities;

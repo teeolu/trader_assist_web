@@ -15,7 +15,8 @@ import {
 } from '../redux/auth/actionTypes';
 import Auth from '../utils/auth';
 import store from '../redux/store';
-import { SET_CURRENT_BUSINESS } from '../redux/business/actionTypes';
+import { PrivatePaths } from '../routes';
+import history from '../routes/history';
 
 const AuthRepository = function (axiosInstance) {
   let _AuthRepository = {
@@ -36,6 +37,7 @@ const AuthRepository = function (axiosInstance) {
               payload: response.data,
             });
             Auth.setToken(data.token);
+            history.push(PrivatePaths.MY_PROFILE);
             // axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.user.token}`;
             // axiosInstance.defaults.withCredentials = true;
           } else {
@@ -106,6 +108,7 @@ const AuthRepository = function (axiosInstance) {
             });
             axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.user.token}`;
             Auth.setToken(data.user.token);
+            history.push(PrivatePaths.MY_PROFILE);
             return data;
           } else {
             store.dispatch({
@@ -115,7 +118,6 @@ const AuthRepository = function (axiosInstance) {
           }
         })
         .catch(function (error) {
-          console.log('vjghvjgvjhvjhvhgvjkhgk error ', error);
           store.dispatch({
             type: REGISTER_REQUEST_FAILURE,
             payload: error.message,
@@ -130,7 +132,7 @@ const AuthRepository = function (axiosInstance) {
       return axiosInstance
         .get('/api/users/auth', { params: { token } })
         .then(function (response) {
-          const { success, message, data, status } = response.data;
+          const { success, message, data } = response.data;
           if (success) {
             store.dispatch({
               type: REQUEST_USER_REQUEST_SUCCESS,

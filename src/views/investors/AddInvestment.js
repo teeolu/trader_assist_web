@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Form, Input, Row, Col, notification, Button, DatePicker, Checkbox } from 'antd';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
-import { LoadingOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import { makeStyles } from '@material-ui/styles';
 
 import {
@@ -16,7 +16,7 @@ import { Api } from '../../repository/Api';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { colors, typography, boxShadows, fontsize } from '../../Css';
 import history from '../../routes/history';
-import { dateFormat, investmentDuration } from '../../constants/dateFilter';
+import { investmentDuration } from '../../constants/dateFilter';
 import { getCurrentBusinessState } from '../../redux/business/addBusinessReducer';
 import store from '../../redux/store';
 import { RESET_INVESTMENT_REQUEST } from '../../redux/investor/actionTypes';

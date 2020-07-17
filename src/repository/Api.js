@@ -13,6 +13,7 @@ import store from '../redux/store';
 import { SET_CURRENT_USER } from '../redux/auth/actionTypes';
 import { SET_CURRENT_BUSINESS } from '../redux/business/actionTypes';
 import history from '../routes/history';
+import { PublicPaths } from '../routes';
 
 const config = {
   baseURL: `http://localhost:5000`,
@@ -25,18 +26,18 @@ instance.interceptors.response.use(
   (response) => response,
   (error) => {
     console.log('shjhskhskjhsjhsk error.response.data ', error.response);
-    if (error.response.status === 404) {
+    if (error.response.status === 401) {
       store.dispatch({
         type: SET_CURRENT_USER,
-        payload: null,
+        payload: {},
       });
       store.dispatch({
         type: SET_CURRENT_BUSINESS,
-        payload: null,
+        payload: {},
       });
       Auth.removeToken();
       Auth.removeCurrentBusiness();
-      history.push('/login');
+      history.push(PublicPaths.ERROR_UNAUTHORIZED);
       return;
     }
     if (!!error.response) {

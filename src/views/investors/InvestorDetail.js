@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Input, Tooltip, Button, Menu, Space, Spin, notification } from 'antd';
+import React, { useEffect } from 'react';
+import { Space, Spin, notification } from 'antd';
 import { makeStyles } from '@material-ui/styles';
 import { useSelector } from 'react-redux';
 import userAvatar from '../../assets/images/user.png';
@@ -19,7 +19,7 @@ import {
   getStatusState,
   Status,
 } from '../../redux/investor/getInvestorReducer';
-import { colors, fontsize, boxShadows, typography, fonts } from '../../Css';
+import { colors, boxShadows, typography, fonts } from '../../Css';
 import Buttons from '../../atoms/Buttons';
 import InvestorDetailsTab from './investorDetailsTab';
 import { PrivatePaths } from '../../routes';
@@ -29,13 +29,12 @@ import { Api } from '../../repository/Api';
 import { generatePreviousReturn, generateNextReturns } from '../../utils/returnsUtils';
 
 const InvestorDetails = (props) => {
-  const classes = useStyles();
+  // const classes = useStyles();
   let {
     match: {
       params: { investorId },
     },
   } = props;
-  console.log('params.investorId params.investorId ', investorId);
 
   const investor = useSelector(getCurrentInvestorState);
   const isFetching = useSelector(getIsFetchingState);
@@ -43,7 +42,7 @@ const InvestorDetails = (props) => {
   const status = useSelector(getStatusState);
 
   const investorsReturns = useSelector(getInvestorReturnsState);
-  const returnIsFetching = useSelector(getIsFetchingReturnState);
+  // const returnIsFetching = useSelector(getIsFetchingReturnState);
   const returnErrorMsg = useSelector(getReturnsErrorMessageState);
   const returnStatus = useSelector(getReturnStatusState);
 
@@ -51,9 +50,9 @@ const InvestorDetails = (props) => {
     fullName,
     investmentSum,
     numberOfInvestment,
-    numberOfReturns,
-    returnsSum,
-    createdAt,
+    // numberOfReturns,
+    // returnsSum,
+    // createdAt,
     _id,
   } = investor[investorId] || {};
 

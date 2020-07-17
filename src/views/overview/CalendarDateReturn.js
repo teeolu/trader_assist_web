@@ -11,8 +11,8 @@ import {
 } from '../../redux/returns/getReturnsReducer';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { Api } from '../../repository/Api';
-import { humanReadableTime, sortBaseOnTime } from '../../utils/time';
-import { colors, typography, boxShadows } from '../../Css';
+import { sortBaseOnTime } from '../../utils/time';
+import { colors, typography } from '../../Css';
 import { makeStyles } from '@material-ui/styles';
 import history from '../../routes/history';
 import { PrivatePaths } from '../../routes';
@@ -60,9 +60,9 @@ const CalendarDateReturns = ({ dateToShowDetails, selectedOption }) => {
             amount,
             isApproved,
             isConfirmed,
-            approvedBy,
-            confirmedBy,
-            dueDate,
+            // approvedBy,
+            // confirmedBy,
+            // dueDate,
             isReturnDue,
             investor,
           } = returns;
@@ -80,13 +80,13 @@ const CalendarDateReturns = ({ dateToShowDetails, selectedOption }) => {
                 : 'unconfirmed'
               : 'unapproved'
             : 'not due';
-          const returnReview = isReturnDue
-            ? isApproved
-              ? isConfirmed
-                ? `Confirmed by ${confirmedBy}`
-                : `Approved by ${approvedBy}, confirm return`
-              : 'Approve this return'
-            : `Due date - ${humanReadableTime(dueDate)}`;
+          // const returnReview = isReturnDue
+          //   ? isApproved
+          //     ? isConfirmed
+          //       ? `Confirmed by ${confirmedBy}`
+          //       : `Approved by ${approvedBy}, confirm return`
+          //     : 'Approve this return'
+          //   : `Due date - ${humanReadableTime(dueDate)}`;
           return (
             <List.Item
               className={classes.listItem}
