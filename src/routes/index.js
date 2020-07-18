@@ -67,8 +67,8 @@ const Routes = (props) => {
           />
         </Switch>
         <Switch>
-          <Route path="/login" exact render={() => <Login />} />
-          <Route path="/register" exact render={() => <Register />} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/register" exact component={Register} />
           <Route path={PublicPaths.ERROR_UNAUTHORIZED} exact render={() => <ErrorPage />} />
         </Switch>
         <Switch>
@@ -80,7 +80,6 @@ const Routes = (props) => {
                 shouldRedirect={false}
               />
             </Switch>
-            <Route exact path="/" render={() => <Redirect to="/my-profile" />} />
             {privateRoutes.map((route) => {
               return (
                 <PrivateRoute
@@ -91,8 +90,9 @@ const Routes = (props) => {
                 />
               );
             })}
+            {/* <Route exact path="/" render={() => <Redirect to="/my-profile" />} /> */}
           </Layout>
-          <Redirect to={PublicPaths.LOGIN} />
+          {/* <Redirect to={PublicPaths.LOGIN} /> */}
         </Switch>
       </Router>
     </Layout>

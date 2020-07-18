@@ -27,14 +27,14 @@ instance.interceptors.response.use(
   (error) => {
     console.log('shjhskhskjhsjhsk error.response.data ', error.response);
     if (error.response.status === 401) {
-      store.dispatch({
-        type: SET_CURRENT_USER,
-        payload: {},
-      });
-      store.dispatch({
-        type: SET_CURRENT_BUSINESS,
-        payload: {},
-      });
+      // store.dispatch({
+      //   type: SET_CURRENT_USER,
+      //   payload: {},
+      // });
+      // store.dispatch({
+      //   type: SET_CURRENT_BUSINESS,
+      //   payload: {},
+      // });
       Auth.removeToken();
       Auth.removeCurrentBusiness();
       history.push(PublicPaths.ERROR_UNAUTHORIZED);

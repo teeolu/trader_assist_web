@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Layout, Row, Col, Avatar } from 'antd';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { colors, boxShadows, typography, fonts } from '../../Css';
+import { colors, typography, fonts } from '../../Css';
 import { getCurrentUserState } from '../../redux/auth/userRequestReducer';
 import { Api } from '../../repository/Api';
 import Buttons from '../../atoms/Buttons';
@@ -51,26 +52,22 @@ const UserProfile = (props) => {
           ? !!currentUser.businessAsStaff &&
             currentUser.businessAsStaff.map((business) => {
               return (
-                <Col
-                  onClick={() =>
-                    history.push(`${business.business.businessName.split(' ').join('.')}/overview`)
-                  }
-                  key={business._id}
-                  span={6}
-                  className={classes.businessCard}>
+                <Col key={business._id} span={6} className={classes.businessCard}>
                   <div>
-                    <Avatar
-                      size="large"
-                      style={{ marginBottom: 10 }}
-                      src={business.business.businessImage.secure_url}
-                      alt={business.business.businessName}
-                    />
-                    <p style={{ margin: 0, font: fonts.regular }}>
-                      {business.business.businessName}
-                    </p>
-                    <p style={{ ...typography.caption, margin: 0, font: fonts.regular }}>
-                      {business.role}
-                    </p>
+                    <Link to={`${business.business.businessName.split(' ').join('.')}/overview`}>
+                      <Avatar
+                        size="large"
+                        style={{ marginBottom: 10 }}
+                        src={business.business.businessImage.secure_url}
+                        alt={business.business.businessName}
+                      />
+                      <p style={{ margin: 0, font: fonts.regular }}>
+                        {business.business.businessName}
+                      </p>
+                      <p style={{ ...typography.caption, margin: 0, font: fonts.regular }}>
+                        {business.role}
+                      </p>
+                    </Link>
                   </div>
                 </Col>
               );

@@ -12,22 +12,19 @@ import {
 
 import { fontsize, boxShadows, typography, colors } from '../Css';
 import { getCurrentBusinessState } from '../redux/business/addBusinessReducer';
-import { PrivatePaths } from '../routes';
+import { PrivatePaths, PublicPaths } from '../routes';
 import { Api } from '../repository/Api';
 
 const { Header } = Layout;
 const { Search } = Input;
 
 const NavHeader = ({ toggle, collapsed, match }) => {
-  // const classes = useStyles();
   const businessName = window.location.pathname.split('/')[1];
   const currentView = window.location.href
     .replace(new RegExp(`${window.location.origin}/|/$`, 'g'), '')
     .trim()
     .split('/')[0];
   const currentBusiness = useSelector(getCurrentBusinessState);
-
-  console.log('currentBusiness currentBusiness currentBusiness ', currentBusiness);
 
   useEffect(() => {
     if (!currentBusiness.businessImage) {
@@ -37,6 +34,8 @@ const NavHeader = ({ toggle, collapsed, match }) => {
   }, [businessName, currentBusiness]);
 
   if (`/${currentView}` === PrivatePaths.MY_PROFILE) return null;
+  if (`/${currentView}` === PublicPaths.LOGIN) return null;
+  if (`/${currentView}` === PublicPaths.REGISTER) return null;
   return (
     <Layout className="site-layout">
       <Header

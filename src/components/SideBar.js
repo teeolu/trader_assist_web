@@ -10,6 +10,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { makeStyles } from '@material-ui/styles';
+import { Link } from 'react-router-dom';
 import { colors, fontsize, boxShadows } from '../Css';
 import { PrivatePaths } from '../routes';
 import history from '../routes/history';
@@ -22,6 +23,7 @@ const SideBar = ({ collapsed, match }) => {
   const currentBusiness = useSelector(getCurrentBusinessState);
 
   if (!currentBusiness.businessImage) return null;
+  console.log('Success: isFetching SideBar ');
 
   const SideBarContents = [
     {
@@ -58,6 +60,7 @@ const SideBar = ({ collapsed, match }) => {
     .pop();
 
   if (currentView === PrivatePaths.CREATE_PLATFORM.split('/').pop()) return null;
+  if (currentView === PrivatePaths.MY_PROFILE.split('/').pop()) return null;
 
   return (
     <Sider
@@ -80,7 +83,6 @@ const SideBar = ({ collapsed, match }) => {
             const Icon = el.icon;
             return (
               <Menu.Item
-                onClick={() => history.push(el.path)}
                 style={{
                   height: 50,
                   color: colors.black2,
@@ -97,7 +99,7 @@ const SideBar = ({ collapsed, match }) => {
                     }}
                   />
                 }>
-                {el.name}
+                <Link to={el.path}>{el.name}</Link>
               </Menu.Item>
             );
           })}
@@ -113,10 +115,9 @@ const SideBar = ({ collapsed, match }) => {
                 display: 'flex',
                 alignItems: 'center',
               }}
-              onClick={() => history.push(PrivatePaths.MY_PROFILE)}
               key="user-profile"
               icon={<UserOutlined className={classes.userProfileIcon} />}>
-              Olusola Oyinloye
+              <Link to={PrivatePaths.MY_PROFILE}>Olusola Oyinloye</Link>
             </Menu.Item>
           </Menu>
         </div>

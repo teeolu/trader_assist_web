@@ -15,10 +15,12 @@ const PrivateRoute = ({ component: Component, shouldRedirect, ...rest }) => {
           <Redirect
             to={{
               pathname: PublicPaths.LOGIN,
-              state: { from: props.location },
+              // state: { from: props.location },
             }}
           />
-        ) : null;
+        ) : (
+          <div>This is an issue from yhe router</div>
+        );
         return content;
       }}
     />
