@@ -27,7 +27,7 @@ export default (props) => {
     <>
       {businessRoutes.map((route) => {
         const path = `/${params.platformName}${route.path}`;
-        return <PrivateRoute path={path} exact={true} component={route.component} />;
+        return <PrivateRoute path={path} exact={route.exact} component={route.component} />;
       })}
     </>
   );

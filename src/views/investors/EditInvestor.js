@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Form, Input, notification, Button } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Form, Input, notification, Button, Select } from 'antd';
 import { useSelector } from 'react-redux';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { makeStyles } from '@material-ui/styles';
@@ -18,6 +18,9 @@ import history from '../../routes/history';
 import { getCurrentInvestorState } from '../../redux/investor/getInvestorReducer';
 import { RESET_EDIT_INVESTOR_REQUEST } from '../../redux/investor/actionTypes';
 import store from '../../redux/store';
+import { banksArray } from '../../utils/banksArray';
+
+const { Option } = Select;
 
 const EditInvestor = (props) => {
   let {
@@ -27,6 +30,7 @@ const EditInvestor = (props) => {
   } = props;
   const [form] = Form.useForm();
   const classes = useStyles();
+  const [selectBank, setSelectBank] = useState('');
 
   const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
@@ -65,7 +69,7 @@ const EditInvestor = (props) => {
 
   function onFinish(values) {
     Api.InvestorRepository.editInvestor({
-      formData: { ...investor, ...values },
+      formData: { ...investor, ...values, bank: selectBank },
     });
   }
 
@@ -77,7 +81,17 @@ const EditInvestor = (props) => {
     fullName: !!investor ? investor.fullName : '',
     email: !!investor ? investor.email : '',
     phoneNumber: !!investor ? investor.phoneNumber : '',
+    accountNumber: !!investor ? investor.accountNumber : '',
+    bank: !!investor
+      ? !!investor.bank
+        ? banksArray.find((bank) => bank.value === investor.bank)
+        : ''
+      : '',
   };
+
+  function handleSelectChange(bank) {
+    setSelectBank(bank.value);
+  }
 
   return (
     <>
@@ -109,6 +123,10 @@ const EditInvestor = (props) => {
           onFinish={onFinish}
           initialValues={initialValues}
           scrollToFirstError>
+          <div style={{ marginBottom: 15 }}>
+            <p style={{ marginBottom: 5 }}>Personal information</p>
+            <hr />
+          </div>
           <Form.Item
             name="fullName"
             label="Investor name"
@@ -120,15 +138,38 @@ const EditInvestor = (props) => {
             label="Investor email"
             rules={[
               { required: true, message: 'Investor email is required!' },
-              // {
-              //   type: 'email',
-              //   message: 'Requires a valid email',
-              // },
+              {
+                type: 'email',
+                message: 'Requires a valid email',
+              },
             ]}>
             <Input size="large" placeholder="Enter an email addres" />
           </Form.Item>
           <Form.Item name="phoneNumber" label="Investor phone number">
             <Input size="large" placeholder="e.g 090987654321" />
+          </Form.Item>
+          <div style={{ marginBottom: 15 }}>
+            <p style={{ marginBottom: 5 }}>Bank details</p>
+            <hr />
+          </div>
+          <Form.Item name="bank" label="Select bank">
+            <Select
+              labelInValue
+              placeholder="Select bank"
+              filterOption={true}
+              onChange={handleSelectChange}
+              style={{ width: '100%' }}>
+              {banksArray.map((bank) => {
+                return (
+                  <Option value={bank.value} key={bank.id}>
+                    {bank.name}
+                  </Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
+          <Form.Item name="accountNumber" label="Account number">
+            <Input size="large" placeholder="Nuban account number" />
           </Form.Item>
           <Buttons
             btnText="Save edit"

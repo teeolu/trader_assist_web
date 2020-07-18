@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Modal, Col, notification, Button, Checkbox } from 'antd';
+import { Form, Input, Modal, Select, notification, Button, Checkbox, Spin } from 'antd';
 import { useSelector } from 'react-redux';
 import { CheckCircleTwoTone, ArrowLeftOutlined } from '@ant-design/icons';
 import { makeStyles } from '@material-ui/styles';
@@ -18,10 +18,13 @@ import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { colors, typography, boxShadows, fontsize } from '../../Css';
 import history from '../../routes/history';
 import { PrivatePaths } from '../../routes';
-import Auth from '../../utils/auth';
+import { banksArray } from '../../utils/banksArray';
+
+const { Option } = Select;
 
 const AddInvestor = ({}) => {
   const [notifyInvestor, setNotifyInvestor] = useState(false);
+  const [selectBank, setSelectBank] = useState('');
   const [form] = Form.useForm();
   const classes = useStyles();
   const { confirm } = Modal;
@@ -49,22 +52,23 @@ const AddInvestor = ({}) => {
           history.push(`${PrivatePaths.INVESTORS}/new-investment/${addedInvestor._id}`);
         },
         onCancel() {
-          history.push(`${PrivatePaths.INVESTORS}/${addedInvestor._id}`);
+          history.push(
+            `/${currentBusiness.businessName}${PrivatePaths.INVESTORS}/${addedInvestor._id}`,
+          );
         },
       });
     }
   }, [status]);
 
   function onFinish(values) {
-    console.log('addedInvestor addedInvestor success ', currentBusiness, Auth.getCurrentBusiness());
     Api.InvestorRepository.addInvestor({
       formData: {
         ...values,
+        bank: selectBank,
         notifyInvestor,
         businessId: currentBusiness._id,
       },
     }).then((success) => {
-      console.log('addedInvestor addedInvestor success ', success);
       if (success === true) {
         Api.InvestorRepository.getInvestor({
           params: {
@@ -78,6 +82,10 @@ const AddInvestor = ({}) => {
 
   function onFinishFailed(errorInfo) {
     console.log('Failed:', errorInfo);
+  }
+
+  function handleSelectChange(bank) {
+    setSelectBank(bank.value);
   }
 
   return (
@@ -109,6 +117,10 @@ const AddInvestor = ({}) => {
           onFinishFailed={onFinishFailed}
           onFinish={onFinish}
           scrollToFirstError>
+          <div style={{ marginBottom: 15 }}>
+            <p style={{ marginBottom: 5 }}>Personal information</p>
+            <hr />
+          </div>
           <Form.Item
             name="fullName"
             label="Investor name"
@@ -120,15 +132,41 @@ const AddInvestor = ({}) => {
             label="Investor email"
             rules={[
               { required: true, message: 'Investor email is required!' },
-              // {
-              //   type: 'email',
-              //   message: 'Requires a valid email',
-              // },
+              {
+                type: 'email',
+                message: 'Requires a valid email',
+              },
             ]}>
             <Input size="large" placeholder="Enter an email addres" />
           </Form.Item>
-          <Form.Item name="phoneNumber" label="Investor phone number">
+          <Form.Item
+            name="phoneNumber"
+            label="Investor phone number"
+            rules={[{ required: true, message: 'Investor phone number is required!' }]}>
             <Input size="large" placeholder="e.g 090987654321" />
+          </Form.Item>
+          <div style={{ marginBottom: 15 }}>
+            <p style={{ marginBottom: 5 }}>Bank details</p>
+            <hr />
+          </div>
+          <Form.Item name="bank" label="Select bank">
+            <Select
+              labelInValue
+              placeholder="Select bank"
+              filterOption={true}
+              onChange={handleSelectChange}
+              style={{ width: '100%' }}>
+              {banksArray.map((bank) => {
+                return (
+                  <Option value={bank.value} key={bank.id}>
+                    {bank.name}
+                  </Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
+          <Form.Item name="accountNumber" label="Account number">
+            <Input size="large" placeholder="Nuban account number" />
           </Form.Item>
           <Checkbox onChange={(e) => setNotifyInvestor(e.target.checked)}>
             Do you want the investor to be notified?

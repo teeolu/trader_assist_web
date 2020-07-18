@@ -29,10 +29,12 @@ import { Api } from '../../repository/Api';
 import { generatePreviousReturn, generateNextReturns } from '../../utils/returnsUtils';
 
 const InvestorDetails = (props) => {
-  // const classes = useStyles();
+  const classes = useStyles();
   let {
     match: {
       params: { investorId },
+      path,
+      url,
     },
   } = props;
 
@@ -106,62 +108,24 @@ const InvestorDetails = (props) => {
         <>
           <div style={{ display: 'flex' }}>
             <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-              <div
-                style={{
-                  height: 100,
-                  width: 100,
-                  backgroundColor: colors.gray,
-                }}>
-                <img src={userAvatar} alt="User" style={{ height: '100%' }} />
+              <div className={classes.avatarContainer}>
+                <img src={userAvatar} alt="User" />
               </div>
             </div>
             <div style={{ flex: 3 }}>
-              <p
-                style={{
-                  ...typography.paragraph,
-                  fontFamily: fonts.semiBold,
-                  fontSize: '1.5rem',
-                  lineHeight: 1.4,
-                  marginBottom: 5,
-                  fontWeight: 600,
-                  color: colors.black,
-                }}>
-                {fullName}
-              </p>
-              <p
-                style={{
-                  lineHeight: 1.4,
-                  fontWeight: 400,
-                  marginBottom: 5,
-                  fontWeight: 600,
-                }}>
+              <p className={classes.investorFullname}>{fullName}</p>
+              <p className={classes.activeInvestment}>
                 <span
                   style={{
-                    height: 10,
-                    width: 10,
                     backgroundColor: numberOfInvestment > 0 ? colors.green : colors.red,
-                    display: 'inline-block',
-                    marginRight: 10,
                   }}></span>
                 NGN{investmentSum.toLocaleString()} - sum of active investment
               </p>
-              <p
-                style={{
-                  ...typography.caption,
-                  color: colors.black2,
-                  marginBottom: 0,
-                  fontWeight: 600,
-                }}>
+              <p className={classes.prevReturn}>
                 {!!investorsReturns[investorId] &&
                   generatePreviousReturn(investorsReturns[investorId].data)}
               </p>
-              <p
-                style={{
-                  ...typography.caption,
-                  color: colors.black2,
-                  marginBottom: 5,
-                  fontWeight: 600,
-                }}>
+              <p className={classes.nextReturn}>
                 {!!investorsReturns[investorId] &&
                   generateNextReturns(investorsReturns[investorId].data)}
               </p>
@@ -172,10 +136,9 @@ const InvestorDetails = (props) => {
                 }}>
                 <Buttons
                   btnText="Add investment"
-                  onClick={() => history.push(`${PrivatePaths.INVESTORS}/${_id}/new-investment`)}
+                  onClick={() => history.push(`${url}/new-investment`)}
                   size="small"
                   textColor={colors.pinkDark}
-                  textStyle={{}}
                   style={{
                     padding: '7px 10px',
                     backgroundColor: 'transparent',
@@ -185,9 +148,8 @@ const InvestorDetails = (props) => {
                 <Buttons
                   btnText="Edit"
                   size="small"
-                  onClick={() => history.push(`${PrivatePaths.INVESTORS}/${_id}/edit-investor`)}
+                  onClick={() => history.push(`${url}/edit-investor`)}
                   textColor={colors.blue}
-                  textStyle={{}}
                   style={{
                     padding: '7px 10px',
                     backgroundColor: 'transparent',
@@ -215,25 +177,44 @@ const InvestorDetails = (props) => {
 };
 
 const useStyles = makeStyles({
-  investorsHeading: {
-    padding: 15,
-    width: '100%',
-    height: 50,
-    borderBottom: boxShadows.border,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  avatarContainer: {
+    height: 100,
+    width: 100,
+    backgroundColor: colors.gray,
+    '& img': { height: '100%' },
   },
-  investorText: {
-    ...typography.h4,
+  investorFullname: {
+    ...typography.paragraph,
+    fontFamily: fonts.semiBold,
+    fontSize: '1.5rem',
+    lineHeight: 1.4,
+    marginBottom: 5,
+    fontWeight: 600,
+    color: colors.black,
+  },
+  activeInvestment: {
+    lineHeight: 1.4,
+    fontWeight: 400,
+    marginBottom: 5,
+    fontWeight: 600,
+    '& span': {
+      height: 10,
+      width: 10,
+      display: 'inline-block',
+      marginRight: 10,
+    },
+  },
+  prevReturn: {
+    ...typography.caption,
+    color: colors.black2,
     marginBottom: 0,
     fontWeight: 600,
-    color: colors.black2,
-    letterSpacing: '1px',
   },
-  investorInfo: {
-    marginTop: 5,
-    marginLeft: 10,
+  nextReturn: {
+    ...typography.caption,
+    color: colors.black2,
+    marginBottom: 5,
+    fontWeight: 600,
   },
 });
 
