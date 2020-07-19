@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Switch } from 'react-router-dom';
-import { Table, Tabs, Layout, Button, Row, Col, Card, notification, Select } from 'antd';
+import { Table, Tabs, Layout, Row, Col, Card, notification, Select } from 'antd';
 
 import {
   getIsFetchingState,
@@ -10,7 +10,7 @@ import {
   getStatusState,
   Status,
 } from '../../redux/returns/getReturnsReducer';
-import { boxShadows, colors, typography } from '../../Css';
+import { colors, typography } from '../../Css';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { Api } from '../../repository/Api';
 import { overviewOptions } from '../../constants/dateFilter';
@@ -220,7 +220,11 @@ const Returns = (props) => {
             }}
             bodyStyle={{ padding: 15 }}>
             <Switch>
-              <PrivateRoute path={`${path}/:returnId`} exact={true} component={ReportDetails} />
+              <PrivateRoute
+                path={`${path}/:returnId`}
+                exact={true}
+                component={(props) => <ReportDetails selectedOption={selectedOption} {...props} />}
+              />
             </Switch>
           </Card>
         </Col>

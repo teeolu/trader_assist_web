@@ -11,9 +11,9 @@ import {
 } from '@ant-design/icons';
 import { makeStyles } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
+
 import { colors, fontsize, boxShadows } from '../Css';
 import { PrivatePaths } from '../routes';
-import history from '../routes/history';
 import { getCurrentBusinessState } from '../redux/business/addBusinessReducer';
 
 const { Sider } = Layout;
@@ -23,7 +23,6 @@ const SideBar = ({ collapsed, match }) => {
   const currentBusiness = useSelector(getCurrentBusinessState);
 
   if (!currentBusiness.businessImage) return null;
-  console.log('Success: isFetching SideBar ');
 
   const SideBarContents = [
     {

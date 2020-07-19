@@ -92,13 +92,13 @@ const InvestmentRepository = function (axiosInstance) {
           });
         });
     },
-    editInvesments: function ({ formData, params, selectedOption }) {
+    editInvesments: function ({ formData, params = {}, selectedOption = {} }) {
       store.dispatch({
         type: EDIT_INVESTMENT_REQUEST,
         payload: formData.data._id,
       });
       return axiosInstance
-        .patch('/api/investors/investment', formData)
+        .put('/api/investors/investment', formData)
         .then(function (response) {
           const { success, message } = response.data;
           if (success) {

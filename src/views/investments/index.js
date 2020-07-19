@@ -10,7 +10,7 @@ import {
   getStatusState,
   Status,
 } from '../../redux/investment/getInvestmentsReducer';
-import { boxShadows, colors, typography } from '../../Css';
+import { colors, typography } from '../../Css';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { Api } from '../../repository/Api';
 import { overviewOptions } from '../../constants/dateFilter';
@@ -103,22 +103,10 @@ const Investments = (props) => {
     },
     {
       title: 'Status',
-      dataIndex: 'isReturnDue',
-      render: (text, { isReturnDue, isApproved, isConfirmed }) => {
-        const color = isReturnDue
-          ? isApproved
-            ? isConfirmed
-              ? colors.green
-              : colors.yellow
-            : colors.red
-          : colors.black2;
-        const tag = isReturnDue
-          ? isApproved
-            ? isConfirmed
-              ? 'confirmed'
-              : 'unconfirmed'
-            : 'unapproved'
-          : 'not due';
+      dataIndex: 'isActive',
+      render: (isActive) => {
+        const color = isActive ? colors.green : colors.red;
+        const tag = isActive ? 'Active' : 'Inactive';
         return (
           <Row>
             <span
@@ -130,6 +118,33 @@ const Investments = (props) => {
                 color,
                 display: 'inline-block',
               }}>
+              {tag}
+            </span>
+          </Row>
+        );
+      },
+    },
+    {
+      title: 'Confirmed',
+      dataIndex: 'isConfirmed',
+      render: (isConfirmed, { confirmedBy }) => {
+        const color = isConfirmed ? colors.green : colors.red;
+        const tag = isConfirmed ? confirmedBy.fullName : 'unconfirmed';
+        return (
+          <Row>
+            <span
+              style={
+                !isConfirmed
+                  ? {
+                      ...typography.captionMedium,
+                      border: `1px solid ${color}`,
+                      borderRadius: 5,
+                      padding: '3px 5px',
+                      color,
+                      display: 'inline-block',
+                    }
+                  : null
+              }>
               {tag}
             </span>
           </Row>
@@ -221,7 +236,9 @@ const Investments = (props) => {
               <PrivateRoute
                 path={`${path}/:investmentId`}
                 exact={true}
-                component={InvestmentDetails}
+                component={(props) => (
+                  <InvestmentDetails selectedOption={selectedOption} {...props} />
+                )}
               />
             </Switch>
           </Card>

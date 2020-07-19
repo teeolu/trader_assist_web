@@ -9,9 +9,9 @@ import { ReturnsRepository } from './returnsRepository';
 import { MiscRepository } from './miscRepository';
 import { SettingsRepository } from './settingsRepository';
 import Auth from '../utils/auth';
-import store from '../redux/store';
-import { SET_CURRENT_USER } from '../redux/auth/actionTypes';
-import { SET_CURRENT_BUSINESS } from '../redux/business/actionTypes';
+// import store from '../redux/store';
+// import { SET_CURRENT_USER } from '../redux/auth/actionTypes';
+// import { SET_CURRENT_BUSINESS } from '../redux/business/actionTypes';
 import history from '../routes/history';
 import { PublicPaths } from '../routes';
 
@@ -25,22 +25,22 @@ const instance = axios.create(config);
 instance.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.log('shjhskhskjhsjhsk error.response.data ', error.response);
-    if (error.response.status === 401) {
-      // store.dispatch({
-      //   type: SET_CURRENT_USER,
-      //   payload: {},
-      // });
-      // store.dispatch({
-      //   type: SET_CURRENT_BUSINESS,
-      //   payload: {},
-      // });
-      Auth.removeToken();
-      Auth.removeCurrentBusiness();
-      history.push(PublicPaths.ERROR_UNAUTHORIZED);
-      return;
-    }
+    console.log('shjhskhskjhsjhsk error.response.data ', error);
     if (!!error.response) {
+      if (error.response.status === 401) {
+        // store.dispatch({
+        //   type: SET_CURRENT_USER,
+        //   payload: {},
+        // });
+        // store.dispatch({
+        //   type: SET_CURRENT_BUSINESS,
+        //   payload: {},
+        // });
+        Auth.removeToken();
+        Auth.removeCurrentBusiness();
+        history.push(PublicPaths.ERROR_UNAUTHORIZED);
+        return;
+      }
       return Promise.reject(error.response.data);
     }
     throw new Error('An error occured');

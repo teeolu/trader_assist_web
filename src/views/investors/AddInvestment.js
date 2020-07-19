@@ -121,31 +121,42 @@ const AddInvestment = ({ match }) => {
               rules={[{ required: true, message: 'The amount invested is required!' }]}>
               <Input autoFocus size="large" placeholder="e.g 10500" />
             </Form.Item>
+            <Form.Item name="interval" label="Interval (In Months)">
+              <Input size="large" placeholder="e.g 1 for montly" />
+            </Form.Item>
             <Form.Item
               name="percentProfit"
               label="Percent profit per interval"
               rules={[{ required: true, message: 'Percent profit is required!' }]}>
-              <Input size="large" placeholder="e.g 10 for 10% every interval provided" />
-            </Form.Item>
-            <Form.Item name="startDate" label="Start date">
-              <DatePicker />
-            </Form.Item>
-            <Form.Item name="interval" label="Monthly interval">
-              <Input size="large" placeholder="e.g 3 for every 3 months" />
+              <Input
+                size="large"
+                placeholder={`e.g 10 for 10% every ${form.getFieldValue().interval} month`}
+              />
             </Form.Item>
             <Form.Item name="duration" label="Investment duration in months">
               <Input size="large" placeholder="e.g 18 for 18 months. No value mean it's infinite" />
             </Form.Item>
-            <Row gutter={24}>
-              <Col span={12}>
-                <Form.Item name="recurrent" valuePropName="checked">
-                  <Checkbox>Reccurrent?</Checkbox>
+
+            <Row gutter={24} justify="space-between">
+              <Col>
+                <Form.Item name="startDate" label="Start date">
+                  <DatePicker />
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item name="notifyInvestor" valuePropName="checked">
-                  <Checkbox>Notify investor</Checkbox>
-                </Form.Item>
+                <Row span={12}>
+                  <Form.Item name="recurrent" valuePropName="checked" style={{ marginBottom: 0 }}>
+                    <Checkbox>Recurrent?</Checkbox>
+                  </Form.Item>
+                </Row>
+                <Row span={12}>
+                  <Form.Item
+                    name="notifyInvestor"
+                    valuePropName="checked"
+                    style={{ marginBottom: 0 }}>
+                    <Checkbox>Notify investor?</Checkbox>
+                  </Form.Item>
+                </Row>
               </Col>
             </Row>
             <Buttons

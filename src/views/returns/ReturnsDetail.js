@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { notification, Space, Spin, Row, Col } from 'antd';
+import { Link } from 'react-router-dom';
 
 import {
   getIsFetchingState,
@@ -9,25 +11,29 @@ import {
   Status,
 } from '../../redux/returns/getReturnByIdReducer';
 import { Api } from '../../repository/Api';
-import { notification, Space, Spin } from 'antd';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { typography, colors } from '../../Css';
 import { humanReadableTime } from '../../utils/time';
-import history from '../../routes/history';
 import { PrivatePaths } from '../../routes';
-import bankImage from '../../assets/images/bank.png';
+import UploadImage from '../../atoms/UploadImage';
+import Buttons from '../../atoms/Buttons';
+import ApproveReturnBtn from './ApproveReturnBtn';
+import { getCurrentBusinessState } from '../../redux/business/addBusinessReducer';
 
 const ReportDetails = (props) => {
   let {
     match: {
-      path,
       params: { returnId },
     },
+    selectedOption,
   } = props;
+  const imageUploadKey = 'confirmRetur';
+  const [selectedImage, setSelectedImage] = useState(null);
   const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
   const returnsById = useSelector(getReturnsByIdState);
+  const currentBusiness = useSelector(getCurrentBusinessState);
 
   useEffect(() => {
     if (!!returnId)
@@ -41,6 +47,7 @@ const ReportDetails = (props) => {
     isApproved,
     isConfirmed,
     confirmedBy,
+    proofOfPayment,
     approvedBy,
     dueDate,
     investor,
@@ -65,7 +72,7 @@ const ReportDetails = (props) => {
     ? isApproved
       ? isConfirmed
         ? `Confirmed by ${confirmedBy}`
-        : `Approved by ${approvedBy}`
+        : `Approved by ${approvedBy.fullName}`
       : 'Approve this return'
     : `Due date - ${humanReadableTime(dueDate)}`;
 
@@ -86,16 +93,88 @@ const ReportDetails = (props) => {
     );
   }
 
+  function onSelectImage(img) {
+    setSelectedImage(img);
+  }
+
+  function onUploadImage() {
+    const data = new FormData();
+
+    data.append('photo', selectedImage);
+    Api.MiscRepository.uploadImage({
+      imageUploadUri: null,
+      formData: data,
+    }).then((data) => {
+      if (!!data) {
+        Api.InvestmentRepository.editInvesments({
+          formData: {
+            data: {
+              proofOfPayment: data,
+              isConfirmed: true,
+              _id,
+            },
+            tag: 'confirm',
+          },
+          selectedOption,
+        });
+        notification['open']({
+          ...notificationConfigs,
+          message: `Successfull! Investment has been verified`,
+          key: imageUploadKey,
+          duration: 5,
+        });
+      }
+    });
+  }
+
+  function renderConfirmReturn() {
+    return (
+      <Row justify="space-around" style={{ margin: 20 }}>
+        <Col>
+          <UploadImage
+            onSelectImage={onSelectImage}
+            imageUploadKey={imageUploadKey}
+            uploadeText="Select image to proof payment"
+          />
+          <Buttons
+            btnText="Confirm return"
+            size="small"
+            textColor={colors.pinkDark}
+            btnAction={onUploadImage}
+            // isLoading={isFetching}
+            disabled={!selectedImage}
+            style={{
+              padding: '7px 10px',
+              backgroundColor: 'transparent',
+              border: `1px solid ${colors.pinkDark}`,
+            }}
+          />
+        </Col>
+      </Row>
+    );
+  }
+
   return (
     <div>
-      <img src={bankImage} alt="bank" style={{ height: 300, width: '100%' }} />
+      {!!isReturnDue ? (
+        !isApproved ? (
+          <ApproveReturnBtn investmentReturn={returnsById[returnId]} />
+        ) : !isConfirmed ? (
+          renderConfirmReturn()
+        ) : (
+          <img src={proofOfPayment.secure_url} alt="bank" style={{ height: 300, width: '100%' }} />
+        )
+      ) : null}
       <p style={{ ...typography.h4, color: colors.black2 }}>
         &#8358;{!!amount && amount.toLocaleString()}
       </p>
-      <p
-        onClick={() => history.push(`${PrivatePaths.INVESTORS}/${investor._id}`)}
-        style={{ color: colors.blue, textDecoration: 'underline', cursor: 'pointer' }}>
-        {!!investor && investor.fullName}
+      <p>
+        <Link
+          to={`/${currentBusiness.businessName}${PrivatePaths.INVESTORS}/${
+            !!investor && investor._id
+          }`}>
+          {!!investor && investor.fullName}
+        </Link>
       </p>
       <p>{caption}</p>
       <p

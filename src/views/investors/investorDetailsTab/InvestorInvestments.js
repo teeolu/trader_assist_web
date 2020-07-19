@@ -68,14 +68,18 @@ const InvestorInvestments = ({ investor }) => {
                   ...typography.paragraph,
                   fontWeight: 600,
                   letterSpacing: 1,
-                  color: colors.black,
+                  color: investment.isConfirmed ? colors.green : colors.gray,
                 }}>
                 NGN{investment.amount.toLocaleString()}{' '}
                 <span style={{ ...typography.captionMedium }}>
                   on {humanReadableTime(investment.createdAt)}
                 </span>
               </h4>
-              <p style={{ marginBottom: 10 }}>This investment was confirmed by Sola</p>
+              <p style={{ marginBottom: 10 }}>
+                {investment.isConfirmed
+                  ? `This investment was confirmed by ${investment.confirmedBy.fullName}`
+                  : 'Not yet confirmed'}
+              </p>
               <div
                 style={{
                   display: 'flex',

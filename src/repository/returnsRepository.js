@@ -16,7 +16,7 @@ import store from '../redux/store';
 
 const ReturnsRepository = function (axiosInstance) {
   let _ReturnsRepository = {
-    getReturns: function ({ selectedOption, params = {} }) {
+    getReturns: function ({ selectedOption = {}, params = {} }) {
       let businessId = store.getState().addBusiness.currentBusiness._id;
       if (!selectedOption.startDate || !selectedOption.endDate) return;
       store.dispatch({
@@ -136,7 +136,7 @@ const ReturnsRepository = function (axiosInstance) {
         payload: formData.data._id,
       });
       return axiosInstance
-        .patch('/api/business/returns', formData)
+        .put('/api/business/returns', formData)
         .then(function (response) {
           const { success, message } = response.data;
           if (success) {

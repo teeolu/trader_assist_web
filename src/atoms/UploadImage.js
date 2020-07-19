@@ -11,7 +11,7 @@ import { getImageUploadPercentageState } from '../redux/misc/imageUploadReducer'
 const acceptedMimeTypes = ['image/png', 'image/jpeg', 'image/gif'];
 const maxFileSize = 1000000;
 
-const UploadImage = ({ onSelectImage, imageUploadKey }) => {
+const UploadImage = ({ onSelectImage, imageUploadKey, uploadeText }) => {
   // const [files, setFiles] = useState(null);
   const [invalidFile, setInvalidFile] = useState({
     invalid: false,
@@ -66,7 +66,6 @@ const UploadImage = ({ onSelectImage, imageUploadKey }) => {
   }
 
   function addFile({ target }) {
-    console.log(target.files);
     const newFile = target.files[0];
     if (newFile) {
       const [fileValid, error] = verifyFile(newFile);
@@ -99,7 +98,9 @@ const UploadImage = ({ onSelectImage, imageUploadKey }) => {
       ref={fileInputContainerRef}
       className={classes.btn}
       onClick={() => fileInputRef.current.click()}>
-      <p style={{ textTransform: 'uppercase', color: colors.black2 }}>click to add image</p>
+      <p style={{ textTransform: 'uppercase', color: colors.black2, marginBottom: 0 }}>
+        {uploadeText || 'click to add image'}
+      </p>
       <input type="file" ref={fileInputRef} style={{ display: 'none' }} onInput={addFile} />
     </div>
   );

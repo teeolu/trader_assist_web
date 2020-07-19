@@ -13,6 +13,7 @@ const Buttons = ({
   isLoading,
   style = {},
   textStyle = {},
+  disabled,
   ...props
 }) => {
   const classes = useStyles({ bgColor });
@@ -22,6 +23,7 @@ const Buttons = ({
       onClick={btnAction || null}
       className={classes.btn}
       loading={isLoading}
+      disabled={disabled || false}
       style={{
         display: 'flex',
         alignItems: 'center',
