@@ -60,7 +60,6 @@ const SideBar = ({ collapsed, match }) => {
 
   if (currentView === PrivatePaths.CREATE_PLATFORM.split('/').pop()) return null;
   if (currentView === PrivatePaths.MY_PROFILE.split('/').pop()) return null;
-
   return (
     <Sider
       style={{
@@ -89,7 +88,7 @@ const SideBar = ({ collapsed, match }) => {
                   display: 'flex',
                   alignItems: 'center',
                 }}
-                key={el.name.toLowerCase().trim().replace(/\s/, '-')}
+                key={el.name.toLowerCase()}
                 icon={
                   <Icon
                     style={{
