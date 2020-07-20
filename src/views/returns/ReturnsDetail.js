@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { notification, Space, Spin, Row, Col } from 'antd';
+import { notification, Space, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 
 import {
@@ -15,20 +15,16 @@ import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { typography, colors } from '../../Css';
 import { humanReadableTime } from '../../utils/time';
 import { PrivatePaths } from '../../routes';
-import UploadImage from '../../atoms/UploadImage';
-import Buttons from '../../atoms/Buttons';
 import ApproveReturnBtn from './ApproveReturnBtn';
 import { getCurrentBusinessState } from '../../redux/business/addBusinessReducer';
+import ConfirmReturn from './ConfirmReturn';
 
 const ReportDetails = (props) => {
   let {
     match: {
       params: { returnId },
     },
-    selectedOption,
   } = props;
-  const imageUploadKey = 'confirmRetur';
-  const [selectedImage, setSelectedImage] = useState(null);
   const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
@@ -58,7 +54,7 @@ const ReportDetails = (props) => {
     ? isApproved
       ? isConfirmed
         ? colors.green
-        : colors.yellow
+        : colors.blue
       : colors.red
     : colors.black2;
   const tag = isReturnDue
@@ -93,74 +89,13 @@ const ReportDetails = (props) => {
     );
   }
 
-  function onSelectImage(img) {
-    setSelectedImage(img);
-  }
-
-  function onUploadImage() {
-    const data = new FormData();
-
-    data.append('photo', selectedImage);
-    Api.MiscRepository.uploadImage({
-      imageUploadUri: null,
-      formData: data,
-    }).then((data) => {
-      if (!!data) {
-        Api.InvestmentRepository.editInvesments({
-          formData: {
-            data: {
-              proofOfPayment: data,
-              isConfirmed: true,
-              _id,
-            },
-            tag: 'confirm',
-          },
-          selectedOption,
-        });
-        notification['open']({
-          ...notificationConfigs,
-          message: `Successfull! Investment has been verified`,
-          key: imageUploadKey,
-          duration: 5,
-        });
-      }
-    });
-  }
-
-  function renderConfirmReturn() {
-    return (
-      <Row justify="space-around" style={{ margin: 20 }}>
-        <Col>
-          <UploadImage
-            onSelectImage={onSelectImage}
-            imageUploadKey={imageUploadKey}
-            uploadeText="Select image to proof payment"
-          />
-          <Buttons
-            btnText="Confirm return"
-            size="small"
-            textColor={colors.pinkDark}
-            btnAction={onUploadImage}
-            // isLoading={isFetching}
-            disabled={!selectedImage}
-            style={{
-              padding: '7px 10px',
-              backgroundColor: 'transparent',
-              border: `1px solid ${colors.pinkDark}`,
-            }}
-          />
-        </Col>
-      </Row>
-    );
-  }
-
   return (
     <div>
       {!!isReturnDue ? (
         !isApproved ? (
           <ApproveReturnBtn investmentReturn={returnsById[returnId]} />
         ) : !isConfirmed ? (
-          renderConfirmReturn()
+          <ConfirmReturn investmentReturn={returnsById[returnId]} />
         ) : (
           <img src={proofOfPayment.secure_url} alt="bank" style={{ height: 300, width: '100%' }} />
         )

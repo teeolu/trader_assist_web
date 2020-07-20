@@ -17,7 +17,6 @@ import { overviewOptions } from '../../constants/dateFilter';
 import { humanReadableTime, sortBaseOnTime } from '../../utils/time';
 import history from '../../routes/history';
 import PrivateRoute from '../../routes/PrivateRoute';
-// import ReportDetails from './ReturnsDetail';
 import { makeStyles } from '@material-ui/styles';
 import InvestmentDetails from './InvestmentsDetail';
 
@@ -44,15 +43,6 @@ const Investments = (props) => {
   useEffect(() => {
     fetchInvestments();
   }, [selectedOption.option, activeTab]);
-
-  useEffect(() => {
-    if (!investmentIdFromParam) {
-      // if (!!investments.investments[selectedOption.option])
-      //   history.push(
-      //     `${path}/${sortBaseOnTime(investments.investments[selectedOption.option].data)[0]._id}`,
-      //   );
-    }
-  }, [investmentIdFromParam, investments]);
 
   useEffect(() => {
     if (status === Status.GET_INVESTMENTS_REQUEST_FAILURE) {
@@ -128,7 +118,7 @@ const Investments = (props) => {
       title: 'Confirmed',
       dataIndex: 'isConfirmed',
       render: (isConfirmed, { confirmedBy }) => {
-        const color = isConfirmed ? colors.green : colors.red;
+        const color = isConfirmed ? colors.blue : colors.red;
         const tag = isConfirmed ? confirmedBy.fullName : 'unconfirmed';
         return (
           <Row>

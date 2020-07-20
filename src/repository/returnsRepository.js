@@ -13,12 +13,13 @@ import {
   GET_RETURNS_CALENDAR_OVERVIEW_REQUEST_FAILURE,
 } from '../redux/returns/actionTypes';
 import store from '../redux/store';
+import { overviewOptions } from '../constants/dateFilter';
 
 const ReturnsRepository = function (axiosInstance) {
   let _ReturnsRepository = {
     getReturns: function ({ selectedOption = {}, params = {} }) {
       let businessId = store.getState().addBusiness.currentBusiness._id;
-      if (!selectedOption.startDate || !selectedOption.endDate) return;
+      if (!selectedOption.startDate || !selectedOption.endDate) selectedOption = overviewOptions[0];
       store.dispatch({
         type: GET_RETURNS_REQUEST,
       });

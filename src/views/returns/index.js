@@ -31,7 +31,6 @@ const Returns = (props) => {
   } = props;
   const returnIdFromParam = pathname.split(`${path}/`)[1];
 
-  console.log('returnIdFromParam returnIdFromParam returnIdFromParam ', returnIdFromParam, path);
   const [selectedOption, setSelectedOption] = useState(overviewOptions[0]);
   const [activeTab, setActiveTab] = useState(0);
   const classes = useStyles();
@@ -44,15 +43,6 @@ const Returns = (props) => {
   useEffect(() => {
     fetchReturns();
   }, [selectedOption.option, activeTab]);
-
-  useEffect(() => {
-    if (!returnIdFromParam) {
-      // if (!!returns.returns[selectedOption.option])
-      // history.push(
-      //   `${path}/${sortBaseOnTime(returns.returns[selectedOption.option].data)[0]._id}`,
-      // );
-    }
-  }, [returnIdFromParam, returns]);
 
   useEffect(() => {
     if (status === Status.GET_INVESTORS_REQUEST_FAILURE) {
@@ -112,7 +102,7 @@ const Returns = (props) => {
           ? isApproved
             ? isConfirmed
               ? colors.green
-              : colors.yellow
+              : colors.blue
             : colors.red
           : colors.black2;
         const tag = isReturnDue

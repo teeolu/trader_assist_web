@@ -18,9 +18,7 @@ const PrivateRoute = ({ component: Component, shouldRedirect, ...rest }) => {
               // state: { from: props.location },
             }}
           />
-        ) : (
-          <div>This is an issue from yhe router</div>
-        );
+        ) : null;
         return content;
       }}
     />

@@ -42,7 +42,7 @@ const InvestmentDetails = ({ selectedOption, ...props }) => {
   const { amount, isReturnDue, isConfirmed, confirmedBy, dueDate, investor, proofOfPayment, _id } =
     investmentsById[investmentId] || {};
 
-  const color = isConfirmed ? colors.green : colors.red;
+  const color = isConfirmed ? colors.blue : colors.red;
   const tag = isConfirmed ? 'confirmed' : 'unconfirmed';
   const caption = isConfirmed ? `Confirmed by ${confirmedBy.fullName}` : `Not yet confirmed`;
 
