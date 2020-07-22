@@ -111,7 +111,7 @@ const ReturnsRepository = function (axiosInstance) {
         })
         .then(function (response) {
           const { success, message, data } = response.data;
-          console.log('GET_RETURNS_CALENDAR_OVERVIEW_REQUEST ', response.data);
+          // console.log('GET_RETURNS_CALENDAR_OVERVIEW_REQUEST ', params, response.data);
           if (success) {
             store.dispatch({
               type: GET_RETURNS_CALENDAR_OVERVIEW_REQUEST_SUCCESS,

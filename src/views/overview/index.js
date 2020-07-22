@@ -37,16 +37,8 @@ const Overview = () => {
               <div
                 ref={calendarDetailContainerRef}
                 className="site-drawer-render-in-current-wrapper">
-                <PlatformActivities />
-                <CalendarDateDetails
-                  width={
-                    !!calendarDetailContainerRef.current
-                      ? calendarDetailContainerRef.current.getBoundingClientRect().width
-                      : 0
-                  }
-                  dateToShowDetails={dateToShowDetails}
-                  onClose={() => setDateToShowDetail(null)}
-                />
+                {/* <PlatformActivities /> */}
+                <CalendarDateDetails dateToShowDetails={dateToShowDetails} />
               </div>
             </Card>
           </Card>

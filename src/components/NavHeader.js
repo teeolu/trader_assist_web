@@ -28,8 +28,9 @@ const NavHeader = ({ toggle, collapsed, match }) => {
 
   useEffect(() => {
     if (!currentBusiness.businessImage) {
-      if (`/${currentView}` === PrivatePaths.MY_PROFILE) return null;
-      Api.BusinessRepository.getBusiness({ businessName });
+      if (`/${currentView}` !== PrivatePaths.MY_PROFILE) {
+        Api.BusinessRepository.getBusiness({ businessName });
+      }
     }
   }, [businessName, currentBusiness]);
 
@@ -53,7 +54,6 @@ const NavHeader = ({ toggle, collapsed, match }) => {
           gutter={20}>
           <Col
             span={12}
-            juti
             style={{
               display: 'flex',
               alignItems: 'center',

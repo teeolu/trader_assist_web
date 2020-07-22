@@ -12,6 +12,7 @@ import {
 } from '../../redux/returns/getReturnsCalendarOverviewReducer';
 import { colors } from '../../Css';
 import { Api } from '../../repository/Api';
+import { notificationConfigs } from '../../constants/ToastNotifincation';
 
 const OverviewCalendar = ({ showDateDetails }) => {
   const [calendarDate, setCalendarDate] = useState({
@@ -23,36 +24,50 @@ const OverviewCalendar = ({ showDateDetails }) => {
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
   const returnsCalendarOverview = useSelector(getReturnsCalendarOverviewState);
-  // console.log(
-  //   'GET_RETURNS_CALENDAR_OVERVIEW_REQUEST returnsCalendarOverview ',
-  //   returnsCalendarOverview,
-  // );
+
+  useEffect(() => {
+    if (status === Status.GET_RETURNS_CALENDAR_OVERVIEW_REQUEST_FAILURE) {
+      notification['error']({
+        message: errorMsg,
+        ...notificationConfigs,
+      });
+    }
+  }, [status]);
 
   useEffect(() => {
     Api.ReturnsRepository.getReturnsCalendarOverviewId({
       params: {
         ...calendarDate,
+        month: calendarDate.month + 1,
       },
     });
   }, [calendarDate]);
 
   function getListData(value) {
-    return [
-      // { type: 'error', content: <span>&#8358;1,200,000</span> },
-      // { type: 'success', content: <span>&#8358;300,000'</span> },
-      // { type: 'warning', content: '3' },
-    ];
+    return !!returnsCalendarOverview.summary
+      ? returnsCalendarOverview.summary[value.format('DD-MM-YY')]
+      : {};
   }
 
   function dateCellRender(value) {
-    const listData = getListData(value);
+    const listData = !!returnsCalendarOverview.summary
+      ? returnsCalendarOverview.summary[value.format('DD-MM-YYYY')]
+      : {};
     return (
       <ul className="events" style={{ color: colors.gray }}>
-        {listData.map((item) => (
-          <li key={item.content}>
-            <Badge status={item.type} text={item.content} />
-          </li>
-        ))}
+        {!!Object.keys(listData || {}).length > 0 && (
+          <>
+            {listData.returns !== 0 && (
+              <li style={{ fontSize: '1.2em', fontWeight: 'bold', color: colors.gray3 }}>
+                <Badge status="processing" text={listData.returns} />
+                <Badge
+                  status="success"
+                  text={<span>&#8358;{listData.amount.toLocaleString()}</span>}
+                />
+              </li>
+            )}
+          </>
+        )}
       </ul>
     );
   }
@@ -64,13 +79,6 @@ const OverviewCalendar = ({ showDateDetails }) => {
   }
 
   function monthCellRender(value) {
-    // const num = getMonthData(value);
-    // return num ? (
-    //   <div className="notes-month">
-    //     <section>{num}</section>
-    //     <span>Backlog number</span>
-    //   </div>
-    // ) : null;
     const listData = getListData(value);
     return (
       <ul className="events">
@@ -92,12 +100,23 @@ const OverviewCalendar = ({ showDateDetails }) => {
     <>
       <div style={{ display: 'flex', width: '100%' }}>
         <div style={{ flex: 1 }}>
-          <p>&#8358;1,230,000 Returns</p>
-          <div style={{ height: 3, width: '100%', backgroundColor: colors.red }}></div>
+          <p>
+            {!!returnsCalendarOverview.totalReturns
+              ? returnsCalendarOverview.totalReturns.toLocaleString()
+              : 0}{' '}
+            Investors
+          </p>
+          <div style={{ height: 3, width: '100%', backgroundColor: colors.blue }}></div>
         </div>
         <div style={{ flex: 1 }}>
-          <p>123 Investors</p>
-          <div style={{ height: 3, width: '100%', backgroundColor: colors.blue }}></div>
+          <p>
+            &#8358;
+            {!!returnsCalendarOverview.totalAmount
+              ? returnsCalendarOverview.totalAmount.toLocaleString()
+              : 0}{' '}
+            Returns
+          </p>
+          <div style={{ height: 3, width: '100%', backgroundColor: colors.green }}></div>
         </div>
       </div>
       <Calendar

@@ -1,13 +1,11 @@
 import React from 'react';
-import { Drawer, Button } from 'antd';
-import { makeStyles } from '@material-ui/styles';
-import { CloseOutlined } from '@ant-design/icons';
+// import { makeStyles } from '@material-ui/styles';
 
 import { dateFormat } from '../../constants/dateFilter';
-import { colors, fontsize } from '../../Css';
+import { typography } from '../../Css';
 import CalendarDateReturns from './CalendarDateReturn';
 
-const CalendarDateDetails = ({ onClose, dateToShowDetails, width }) => {
+const CalendarDateDetails = ({ dateToShowDetails }) => {
   // const classes = useStyles();
 
   const selectedOption = {
@@ -18,40 +16,19 @@ const CalendarDateDetails = ({ onClose, dateToShowDetails, width }) => {
   };
 
   return (
-    <Drawer
-      style={{ position: 'absolute', padding: 0 }}
-      bodyStyle={{ padding: 0 }}
-      title={
-        <p
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            marginBottom: 0,
-            justifyContent: 'space-between',
-          }}>
-          {!!dateToShowDetails && dateToShowDetails.format('ddd Do MMMM, YYYY')}{' '}
-          <Button
-            type="primary"
-            shape="circle"
-            onClick={onClose}
-            style={{ border: 'none', backgroundColor: 'transparent' }}
-            icon={
-              <CloseOutlined style={{ color: colors.pinkDark, fontSize: fontsize.paragraph }} />
-            }
-          />
-        </p>
-      }
-      placement="right"
-      closable={false}
-      onClose={onClose}
-      getContainer={false}
-      destroyOnClose={true}
-      maskStyle={{ backgroundColor: 'transparent' }}
-      width={width || 300}
-      keyboard={true}
-      visible={Boolean(dateToShowDetails)}>
+    <div style={{ padding: 10 }}>
+      <p
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: 0,
+          justifyContent: 'space-between',
+          ...typography.h4,
+        }}>
+        {!!dateToShowDetails && dateToShowDetails.format('ddd Do MMMM, YYYY')}{' '}
+      </p>
       <CalendarDateReturns dateToShowDetails={dateToShowDetails} selectedOption={selectedOption} />
-    </Drawer>
+    </div>
   );
 };
 
