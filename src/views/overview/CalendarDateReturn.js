@@ -16,17 +16,20 @@ import { colors, typography } from '../../Css';
 import { makeStyles } from '@material-ui/styles';
 import history from '../../routes/history';
 import { PrivatePaths } from '../../routes';
+import { getCurrentBusinessState } from '../../redux/business/addBusinessReducer';
 
 const CalendarDateReturns = ({ dateToShowDetails, selectedOption }) => {
   const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
   const returns = useSelector(getReturnsState);
+  const currentBusiness = useSelector(getCurrentBusinessState);
 
   const classes = useStyles();
 
   useEffect(() => {
     if (!!dateToShowDetails) fetchReturns();
+    // eslint-disable-next-line
   }, [dateToShowDetails]);
 
   useEffect(() => {
@@ -36,6 +39,7 @@ const CalendarDateReturns = ({ dateToShowDetails, selectedOption }) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   function fetchReturns() {
@@ -44,8 +48,17 @@ const CalendarDateReturns = ({ dateToShowDetails, selectedOption }) => {
     });
   }
 
+  const sum = !!returns.returns[selectedOption.option]
+    ? returns.returns[selectedOption.option].data
+        .map((item) => item.amount)
+        .reduce((prev, curr) => prev + curr, 0)
+    : null;
+
+  console.log('returns.returns[selectedOption.option] ', sum);
+
   return (
     <>
+      <p>{sum}</p>
       <List
         itemLayout="horizontal"
         loading={isFetching}
@@ -90,7 +103,9 @@ const CalendarDateReturns = ({ dateToShowDetails, selectedOption }) => {
           return (
             <List.Item
               className={classes.listItem}
-              onClick={() => history.push(`${PrivatePaths.RETURNS}/${_id}`)}>
+              onClick={() =>
+                history.push(`/${currentBusiness.businessName}${PrivatePaths.RETURNS}/${_id}`)
+              }>
               <List.Item.Meta
                 title={
                   <div

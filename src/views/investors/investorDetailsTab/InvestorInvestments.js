@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react';
 import { List, Collapse, Card, notification } from 'antd';
-import { makeStyles } from '@material-ui/styles';
 import { CaretRightOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 
 import { colors, typography } from '../../../Css';
 import {
-  getIsFetchingState,
   getInvestorInvestmentsState,
   getErrorMessageState,
   getStatusState,
@@ -30,6 +28,7 @@ const InvestorInvestments = ({ investor }) => {
 
   useEffect(() => {
     fetchInvestors();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -39,6 +38,7 @@ const InvestorInvestments = ({ investor }) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   function fetchInvestors() {
@@ -133,7 +133,7 @@ const InvestorInvestments = ({ investor }) => {
                     dataSource={generateInvestmentReturn(investment._id)}
                     renderItem={(returns) => {
                       const {
-                        _id,
+                        // _id,
                         amount,
                         isApproved,
                         isConfirmed,

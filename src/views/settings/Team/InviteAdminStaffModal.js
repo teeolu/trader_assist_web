@@ -36,6 +36,7 @@ const InviteAdminStaffModal = ({ isVisible, role, closeModal }) => {
       });
       store.dispatch({ type: RESET_ADMIN_STAFF_INVITE });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   function onFinish() {

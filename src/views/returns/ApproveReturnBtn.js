@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { notification, Row, Col } from 'antd';
 
@@ -26,6 +26,7 @@ const ApproveReturnBtn = (props) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   const { _id } = investmentReturn;

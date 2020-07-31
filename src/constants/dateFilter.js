@@ -34,7 +34,7 @@ export const investmentDuration = (duration) => {
   var futureMonthEnd = moment(futureMonth).endOf('month');
 
   if (
-    currentDate.date() != futureMonth.date() &&
+    currentDate.date() !== futureMonth.date() &&
     futureMonth.isSame(futureMonthEnd.format('YYYY-MM-DD'))
   ) {
     futureMonth = futureMonth.add(1, 'd');

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Layout, Input, Tooltip, Button, notification, Spin, Space, Row, Col, Card } from 'antd';
+import { Layout, Tooltip, Button, notification, Spin, Space, Row, Col, Card } from 'antd';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { PlusSquareOutlined } from '@ant-design/icons';
@@ -36,6 +36,7 @@ const Investors = (props) => {
 
   useEffect(() => {
     fetchInvestors();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -45,6 +46,7 @@ const Investors = (props) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   useEffect(() => {
@@ -55,6 +57,7 @@ const Investors = (props) => {
     ) {
       history.push(`${path}/${investorsData.investors[0]._id}`);
     }
+    // eslint-disable-next-line
   }, [investorsData]);
 
   function fetchInvestors(search = '') {

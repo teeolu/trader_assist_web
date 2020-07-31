@@ -47,7 +47,7 @@ const ReportDetails = (props) => {
     approvedBy,
     dueDate,
     investor,
-    _id,
+    // _id,
   } = returnsById[returnId] || {};
 
   const color = isReturnDue
@@ -79,6 +79,7 @@ const ReportDetails = (props) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   if (isFetching && !returnsById[returnId]) {

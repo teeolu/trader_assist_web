@@ -1,6 +1,5 @@
 import React from 'react';
 import { Tabs } from 'antd';
-import { makeStyles } from '@material-ui/styles';
 
 import { colors } from '../../../Css';
 import './investorDetailsTabCss.css';

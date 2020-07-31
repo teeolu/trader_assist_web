@@ -4,7 +4,7 @@ import { Layout, Row, Col, Card } from 'antd';
 import './index.css';
 import PlatformActivities from './PlatformActivities';
 import OverviewCalendar from './Calendar';
-import CalendarDateDetails from './CalendarDateDetails';
+// import CalendarDateDetails from './CalendarDateDetails';
 
 const { Content } = Layout;
 
@@ -37,8 +37,8 @@ const Overview = () => {
               <div
                 ref={calendarDetailContainerRef}
                 className="site-drawer-render-in-current-wrapper">
-                {/* <PlatformActivities /> */}
-                <CalendarDateDetails dateToShowDetails={dateToShowDetails} />
+                <PlatformActivities />
+                {/* <CalendarDateDetails dateToShowDetails={dateToShowDetails} /> */}
               </div>
             </Card>
           </Card>

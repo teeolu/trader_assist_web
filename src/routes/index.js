@@ -14,6 +14,7 @@ import UserProfile from '../views/UserProfile';
 import AddBusiness from '../views/AddBusiness';
 import Business from '../views/Business';
 import ErrorPage from '../views/ErrorPage';
+import ServerError from '../views/ServerError';
 
 export const PublicPaths = {
   LOGIN: '/login',
@@ -21,6 +22,7 @@ export const PublicPaths = {
   REGISTER: '/register',
   RESET_PASSWORD: '/reset-password',
   ERROR_UNAUTHORIZED: '/unathorized',
+  SERVER_ERROR: '/server-error',
 };
 
 const publicRoutes = [
@@ -70,6 +72,7 @@ const Routes = (props) => {
           <Route path="/login" exact component={Login} />
           <Route path="/register" exact component={Register} />
           <Route path={PublicPaths.ERROR_UNAUTHORIZED} exact render={() => <ErrorPage />} />
+          <Route path={PublicPaths.SERVER_ERROR} exact render={() => <ServerError />} />
         </Switch>
         <Switch>
           <Layout className="site-layout" style={{ height: '100%' }}>
@@ -90,9 +93,9 @@ const Routes = (props) => {
                 />
               );
             })}
-            {/* <Route exact path="/" render={() => <Redirect to="/my-profile" />} /> */}
+            <Route exact path="/" render={() => <Redirect to="/my-profile" />} />
           </Layout>
-          {/* <Redirect to={PublicPaths.LOGIN} /> */}
+          <Redirect to="/my-profile" />
         </Switch>
       </Router>
     </Layout>

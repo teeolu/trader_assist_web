@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { notification, Drawer, Select } from 'antd';
 
 import {
-  getIsFetchingState,
+  // getIsFetchingState,
   getBusinessHistoryState,
   getErrorMessageState,
   getStatusState,
@@ -21,13 +21,14 @@ const PlatformActivities = () => {
   const [selectedOption, setSelectedOption] = useState(overviewOptions[0]);
   const [drawerIsVisible, setDrawerIsVisible] = useState(false);
 
-  const isFetching = useSelector(getIsFetchingState);
+  // const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
   const businessHistory = useSelector(getBusinessHistoryState);
 
   useEffect(() => {
     fetchBusinessHistory();
+    // eslint-disable-next-line
   }, [selectedOption.option]);
 
   useEffect(() => {
@@ -37,6 +38,7 @@ const PlatformActivities = () => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   function fetchBusinessHistory() {

@@ -32,6 +32,7 @@ const NavHeader = ({ toggle, collapsed, match }) => {
         Api.BusinessRepository.getBusiness({ businessName });
       }
     }
+    // eslint-disable-next-line
   }, [businessName, currentBusiness]);
 
   if (`/${currentView}` === PrivatePaths.MY_PROFILE) return null;

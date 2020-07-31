@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Switch } from 'react-router-dom';
-import { Table, Tabs, Layout, Button, Row, Col, Card, notification, Select } from 'antd';
+import { Table, Tabs, Layout, Row, Col, Card, notification, Select } from 'antd';
 
 import {
   getIsFetchingState,
@@ -42,6 +42,7 @@ const Investments = (props) => {
 
   useEffect(() => {
     fetchInvestments();
+    // eslint-disable-next-line
   }, [selectedOption.option, activeTab]);
 
   useEffect(() => {
@@ -51,6 +52,7 @@ const Investments = (props) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   function getParamArgs() {
@@ -64,6 +66,8 @@ const Investments = (props) => {
         break;
       case 2:
         queryParams = { isConfirmed: true };
+        break;
+      default:
         break;
     }
     return queryParams;

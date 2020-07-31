@@ -33,7 +33,6 @@ export const colors = {
 };
 
 export const fontsize = {
-  font: 15,
   h1: 48,
   h2: 34,
   h3: 28,
@@ -44,7 +43,6 @@ export const fontsize = {
   captionMedium: 12,
 
   font: 14,
-  radius: 6,
   padding: 25,
 
   margin: 25,

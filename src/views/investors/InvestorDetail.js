@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import userAvatar from '../../assets/images/user.png';
 
 import {
-  getIsFetchingState as getIsFetchingReturnState,
+  // getIsFetchingState as getIsFetchingReturnState,
   getInvestorReturnsState,
   getErrorMessageState as getReturnsErrorMessageState,
   getStatusState as getReturnStatusState,
@@ -19,10 +19,9 @@ import {
   getStatusState,
   Status,
 } from '../../redux/investor/getInvestorReducer';
-import { colors, boxShadows, typography, fonts } from '../../Css';
+import { colors, typography, fonts } from '../../Css';
 import Buttons from '../../atoms/Buttons';
 import InvestorDetailsTab from './investorDetailsTab';
-import { PrivatePaths } from '../../routes';
 import history from '../../routes/history';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { Api } from '../../repository/Api';
@@ -33,7 +32,6 @@ const InvestorDetails = (props) => {
   let {
     match: {
       params: { investorId },
-      path,
       url,
     },
   } = props;
@@ -55,7 +53,7 @@ const InvestorDetails = (props) => {
     // numberOfReturns,
     // returnsSum,
     // createdAt,
-    _id,
+    // _id,
   } = investor[investorId] || {};
 
   useEffect(() => {
@@ -63,6 +61,7 @@ const InvestorDetails = (props) => {
       fetchInvestor();
       fetchInvestorReturns();
     }
+    // eslint-disable-next-line
   }, [investorId]);
 
   useEffect(() => {
@@ -72,6 +71,7 @@ const InvestorDetails = (props) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   useEffect(() => {
@@ -81,6 +81,7 @@ const InvestorDetails = (props) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [returnStatus]);
 
   function fetchInvestor() {
@@ -194,7 +195,6 @@ const useStyles = makeStyles({
   },
   activeInvestment: {
     lineHeight: 1.4,
-    fontWeight: 400,
     marginBottom: 5,
     fontWeight: 600,
     '& span': {

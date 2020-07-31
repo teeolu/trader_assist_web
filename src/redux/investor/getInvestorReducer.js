@@ -4,7 +4,6 @@ import {
   GET_INVESTOR_REQUEST_FAILURE,
   SET_CURRENT_INVESTOR,
 } from './actionTypes';
-import { Api } from '../../repository/Api';
 
 const initialState = {
   isFetching: false,

@@ -42,6 +42,7 @@ const Returns = (props) => {
 
   useEffect(() => {
     fetchReturns();
+    // eslint-disable-next-line
   }, [selectedOption.option, activeTab]);
 
   useEffect(() => {
@@ -51,6 +52,7 @@ const Returns = (props) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   function getParamArgs() {
@@ -67,6 +69,8 @@ const Returns = (props) => {
         break;
       case 3:
         queryParams = { isConfirmed: true };
+        break;
+      default:
         break;
     }
     return queryParams;

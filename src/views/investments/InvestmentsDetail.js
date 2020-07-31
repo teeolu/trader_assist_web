@@ -39,7 +39,7 @@ const InvestmentDetails = ({ selectedOption, ...props }) => {
         params: { investmentId },
       });
   }, [investmentId]);
-  const { amount, isReturnDue, isConfirmed, confirmedBy, dueDate, investor, proofOfPayment, _id } =
+  const { amount, isConfirmed, confirmedBy, investor, proofOfPayment, _id } =
     investmentsById[investmentId] || {};
 
   const color = isConfirmed ? colors.blue : colors.red;
@@ -53,6 +53,7 @@ const InvestmentDetails = ({ selectedOption, ...props }) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   function onSelectImage(img) {

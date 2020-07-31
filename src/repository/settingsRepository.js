@@ -21,7 +21,7 @@ const SettingsRepository = function (axiosInstance) {
       return axiosInstance
         .post('/api/business/invite', { data: { ...formData }, businessId })
         .then(function (response) {
-          const { success, message, data } = response.data;
+          const { success, message } = response.data;
           if (success) {
             store.dispatch({
               type: INVITE_ADMIN_STAFF_REQUEST_SUCCESS,
@@ -94,7 +94,7 @@ const SettingsRepository = function (axiosInstance) {
           },
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
+          const { success, message } = response.data;
           if (success) {
             store.dispatch({
               type: CANCEL_ADMIN_STAFF_INVITE_REQUEST_SUCCESS,

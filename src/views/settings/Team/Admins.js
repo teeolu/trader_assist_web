@@ -43,6 +43,7 @@ const Admins = ({ navigation }) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   function fetchBusinessStaffs() {

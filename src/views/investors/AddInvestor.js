@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Modal, Select, notification, Button, Checkbox, Spin } from 'antd';
+import { Form, Input, Modal, Select, notification, Button, Checkbox } from 'antd';
 import { useSelector } from 'react-redux';
 import { CheckCircleTwoTone, ArrowLeftOutlined } from '@ant-design/icons';
 import { makeStyles } from '@material-ui/styles';
@@ -22,7 +22,7 @@ import { banksArray } from '../../utils/banksArray';
 
 const { Option } = Select;
 
-const AddInvestor = ({}) => {
+const AddInvestor = () => {
   const [notifyInvestor, setNotifyInvestor] = useState(false);
   const [selectBank, setSelectBank] = useState('');
   const [form] = Form.useForm();
@@ -58,6 +58,7 @@ const AddInvestor = ({}) => {
         },
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   function onFinish(values) {

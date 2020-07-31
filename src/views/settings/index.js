@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
-import { Tabs, Layout, Row, Col, Card, Select, Menu } from 'antd';
-import { makeStyles } from '@material-ui/styles';
+import { Layout, Row, Col, Card, Menu } from 'antd';
 
 import { colors, typography } from '../../Css';
 import { PrivatePaths } from '../../routes';

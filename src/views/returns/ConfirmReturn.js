@@ -29,6 +29,7 @@ const ConfirmReturn = (props) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   const { _id } = investmentReturn;

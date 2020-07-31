@@ -20,12 +20,12 @@ import { ExclamationCircleOutlined, MoreOutlined } from '@ant-design/icons';
 const Staffs = ({ navigation }) => {
   const [addAdminModalVisible, setAddAdminModalVisible] = useState(false);
 
-  const isFetching = useSelector(getIsFetchingState);
+  // const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
   const businessStaffs = useSelector(getBusinessStaffState);
 
-  const classes = useStyles();
+  // const classes = useStyles();
 
   const pendingAdmin = businessStaffs.staffs.filter((el) => el.isActive === false);
   const activeAdmin = businessStaffs.staffs.filter((el) => el.isActive === true);
@@ -41,6 +41,7 @@ const Staffs = ({ navigation }) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   function fetchBusinessStaffs() {

@@ -1,10 +1,7 @@
 import React from 'react';
-import { Tabs, Card } from 'antd';
-import { makeStyles } from '@material-ui/styles';
+import { Card } from 'antd';
 
 import { colors, typography } from '../../../Css';
-
-const { TabPane } = Tabs;
 
 const InvestorOverview = ({ investor }) => {
   // const classes = useStyles();

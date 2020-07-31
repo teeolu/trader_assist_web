@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input, Card, notification } from 'antd';
+import { Form, Input, notification, Alert } from 'antd';
 import { useSelector } from 'react-redux';
 
 import {
@@ -25,6 +25,7 @@ const Login = () => {
         message: errorMsg,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   function onFinish(values) {
@@ -38,12 +39,16 @@ const Login = () => {
   }
 
   return (
-    <OnboardingLayout
-      title="Login to Trader assist"
-      caption="Enter your details below"
-      actionTxt="sign in"
-      id="login"
-      onSubmit={onFinish}>
+    <OnboardingLayout title="Login" actionTxt="sign in" id="login" onSubmit={onFinish}>
+      {status === Status.LOGIN_REQUEST_FAILURE && (
+        <Alert
+          message="Hmmm... an error occured"
+          description={errorMsg}
+          type="error"
+          closable
+          style={{ marginBottom: 20 }}
+        />
+      )}
       <Form
         form={form}
         name="joinWaitList"

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import Activities from '../../../components/Activities';
 import {
-  getIsFetchingState,
+  // getIsFetchingState,
   getInvestorHistoryState,
   getErrorMessageState,
   getStatusState,
@@ -21,6 +21,7 @@ const InvestorActivities = ({ investor }) => {
 
   useEffect(() => {
     fetchBusinessHistory();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -30,6 +31,7 @@ const InvestorActivities = ({ investor }) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   function fetchBusinessHistory() {

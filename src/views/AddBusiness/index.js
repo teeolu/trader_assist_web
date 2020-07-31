@@ -22,7 +22,7 @@ import { PrivatePaths } from '../../routes';
 const AddBusiness = ({ businessAsStaff }) => {
   const imageUploadKey = 'uploadBusinessImageKey';
   const isSelectoption = Array.isArray(businessAsStaff) && businessAsStaff.length > 0;
-  const [isAddBusinessVisible, setIsAddBusinessVisible] = useState(!isSelectoption);
+  const [isAddBusinessVisible] = useState(!isSelectoption);
   const [selectedImage, setSelectedImage] = useState(null);
   const [form] = Form.useForm();
   const classes = useStyles({ isVisible: Array.isArray(businessAsStaff) });
@@ -38,6 +38,7 @@ const AddBusiness = ({ businessAsStaff }) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   useEffect(() => {

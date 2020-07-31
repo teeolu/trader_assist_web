@@ -42,6 +42,7 @@ const UploadImage = ({ onSelectImage, imageUploadKey, uploadeText }) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [imageUploadProgress]);
 
   useEffect(() => {

@@ -32,7 +32,6 @@ import {
   CONFIRM_RETURNS_REQUEST_FAILURE,
 } from '../redux/investor/actionTypes';
 import store from '../redux/store';
-import { Api } from './Api';
 
 const InvestorRepository = function (axiosInstance) {
   let InvestorRepository = {
@@ -242,8 +241,7 @@ const InvestorRepository = function (axiosInstance) {
           phoneNumber,
         })
         .then(function (response) {
-          console.log('response response response ', response);
-          const { success, message, data } = response.data;
+          const { success, message } = response.data;
           if (success) {
             InvestorRepository.getInvestors({});
             store.dispatch({
@@ -263,7 +261,6 @@ const InvestorRepository = function (axiosInstance) {
           });
         })
         .catch(function (error) {
-          console.log('response response response ', error);
           store.dispatch({
             type: EDIT_INVESTOR_REQUEST_FAILURE,
             payload: error.message,
@@ -280,7 +277,7 @@ const InvestorRepository = function (axiosInstance) {
           ...formData,
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
+          const { success, message } = response.data;
           if (success) {
             const params = {
               investorId: formData.investor,
@@ -342,7 +339,7 @@ const InvestorRepository = function (axiosInstance) {
       return axiosInstance
         .patch('/api/investors/confirm-return', formData)
         .then(function (response) {
-          const { success, message, data } = response.data;
+          const { success, message } = response.data;
           if (success) {
             store.dispatch({
               type: CONFIRM_RETURNS_REQUEST_SUCCESS,
