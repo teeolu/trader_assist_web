@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Layout } from 'antd';
 
 import { PrivatePaths } from '../../routes';
 import Investors from '../investors';
@@ -10,19 +11,14 @@ import Settings from '../settings';
 import PrivateRoute from '../../routes/PrivateRoute';
 import { getCurrentBusinessState } from '../../redux/business/addBusinessReducer';
 import { Api } from '../../repository/Api';
+import SideBar from '../../components/SideBar';
+import NavHeader from '../../components/NavHeader';
 
 export default (props) => {
   let {
-    match: { params },
+    match: { params, path, url },
   } = props;
-  // useEffect(() => {
-  //   Api.BusinessRepository.getBusiness
-  //   return () => {
-  //     cleanup
-  //   }
-  // }, [input])
   const currentBusiness = useSelector(getCurrentBusinessState);
-  console.log('currentUser currentUser currentUser ', params);
 
   useEffect(() => {
     if (!!params.platformId) {
@@ -46,10 +42,14 @@ export default (props) => {
   ];
   return (
     <>
-      {businessRoutes.map((route) => {
-        const path = `/platform/${params.platformId}${route.path}`;
-        return <PrivateRoute path={path} exact={route.exact} component={route.component} />;
-      })}
+      <NavHeader />
+      <Layout className="site-layout" style={{ height: '100%' }}>
+        <SideBar url={url} />}
+        {businessRoutes.map((route) => {
+          const routePath = `${path}${route.path}`;
+          return <PrivateRoute path={routePath} exact={route.exact} component={route.component} />;
+        })}
+      </Layout>
     </>
   );
 };

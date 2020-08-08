@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Router, Switch, Route, Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
 import { makeStyles } from '@material-ui/styles';
@@ -8,8 +8,6 @@ import PrivateRoute from './PrivateRoute';
 import history from './history';
 import Login from '../views/Login';
 import Register from '../views/Register';
-import SideBar from '../components/SideBar';
-import NavHeader from '../components/NavHeader';
 import UserProfile from '../views/UserProfile';
 import AddBusiness from '../views/AddBusiness';
 import Business from '../views/Business';
@@ -50,26 +48,11 @@ const privateRoutes = [
 ];
 
 const Routes = (props) => {
-  const [collapsed, setCollapsed] = useState(false);
-  // let {
-  //   match: { path },
-  // } = props;
   const classes = useStyles();
-
-  function toggle() {
-    setCollapsed(!collapsed);
-  }
 
   return (
     <Layout className={classes.container}>
       <Router history={history}>
-        <Switch>
-          <PrivateRoute
-            path="/"
-            component={(props) => <NavHeader toggle={toggle} collapsed={collapsed} {...props} />}
-            shouldRedirect={false}
-          />
-        </Switch>
         <Switch>
           <Route path={PublicPaths.VERIFY_USER} exact component={VerifyUser} />
           <Route path="/login" exact component={Login} />
@@ -78,27 +61,17 @@ const Routes = (props) => {
           <Route path={PublicPaths.SERVER_ERROR} exact render={() => <ServerError />} />
         </Switch>
         <Switch>
-          <Layout className="site-layout" style={{ height: '100%' }}>
-            <Switch>
+          {privateRoutes.map((route) => {
+            return (
               <PrivateRoute
-                path="/"
-                component={(props) => <SideBar collapsed={collapsed} toggle={toggle} {...props} />}
-                shouldRedirect={false}
+                key={route.path}
+                path={route.path}
+                component={route.component}
+                exact={route.exact}
               />
-            </Switch>
-            {privateRoutes.map((route) => {
-              return (
-                <PrivateRoute
-                  key={route.path}
-                  path={route.path}
-                  component={route.component}
-                  exact={route.exact}
-                />
-              );
-            })}
-            <Route exact path="/" render={() => <Redirect to="/my-profile" />} />
-          </Layout>
-          {/* <Redirect to="/my-profile" /> */}
+            );
+          })}
+          <Route exact path="/" render={() => <Redirect to="/my-profile" />} />
         </Switch>
       </Router>
     </Layout>

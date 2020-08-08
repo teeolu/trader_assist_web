@@ -1,6 +1,5 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
-import { useSelector } from 'react-redux';
 import {
   DashboardOutlined,
   UsergroupAddOutlined,
@@ -14,42 +13,37 @@ import { Link } from 'react-router-dom';
 
 import { colors, fontsize, boxShadows } from '../Css';
 import { PrivatePaths } from '../routes';
-import { getCurrentBusinessState } from '../redux/business/addBusinessReducer';
 
 const { Sider } = Layout;
 
-const SideBar = ({ collapsed, match }) => {
-  let { path } = match;
+const SideBar = ({ url }) => {
   const classes = useStyles();
-  const currentBusiness = useSelector(getCurrentBusinessState);
-  console.log('currentUser currentUser currentUser ', path);
-  if (!currentBusiness.platformId) return null;
 
   const SideBarContents = [
     {
       name: 'Overview',
       icon: DashboardOutlined,
-      path: `platform/${currentBusiness.platformId}${PrivatePaths.OVERVIEW}`,
+      path: `${url}${PrivatePaths.OVERVIEW}`,
     },
     {
       name: 'Investors',
       icon: UsergroupAddOutlined,
-      path: `platform/${currentBusiness.platformId}${PrivatePaths.INVESTORS}`,
+      path: `${url}${PrivatePaths.INVESTORS}`,
     },
     {
       name: 'Returns',
       icon: UploadOutlined,
-      path: `platform/${currentBusiness.platformId}${PrivatePaths.RETURNS}`,
+      path: `${url}${PrivatePaths.RETURNS}`,
     },
     {
       name: 'Investments',
       icon: DownloadOutlined,
-      path: `platform/${currentBusiness.platformId}${PrivatePaths.INVESTMENTS}`,
+      path: `${url}${PrivatePaths.INVESTMENTS}`,
     },
     {
       name: 'Settings',
       icon: SettingOutlined,
-      path: `platform/${currentBusiness.platformId}${PrivatePaths.SETTINGS}`,
+      path: `${url}${PrivatePaths.SETTINGS}`,
     },
   ];
 
@@ -59,18 +53,13 @@ const SideBar = ({ collapsed, match }) => {
     .split('/')
     .pop();
 
-  if (currentView === PrivatePaths.CREATE_PLATFORM.split('/').pop()) return null;
-  if (currentView === PrivatePaths.MY_PROFILE.split('/').pop()) return null;
   return (
     <Sider
       style={{
         borderRight: boxShadows.border,
         height: '100%',
       }}
-      theme="light"
-      trigger={null}
-      collapsible
-      collapsed={collapsed}>
+      theme="light">
       <div
         style={{
           height: '100%',

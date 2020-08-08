@@ -1,32 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Layout, Avatar, Row, Col, Button, Badge, Input } from 'antd';
-// import { makeStyles } from '@material-ui/styles';
 import { useSelector } from 'react-redux';
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  BellOutlined,
-  WechatOutlined,
-  MailOutlined,
-} from '@ant-design/icons';
+import { BellOutlined, WechatOutlined, MailOutlined } from '@ant-design/icons';
 
 import { fontsize, boxShadows, typography, colors } from '../Css';
 import { getCurrentBusinessState } from '../redux/business/addBusinessReducer';
-import { PrivatePaths, PublicPaths } from '../routes';
 
 const { Header } = Layout;
 const { Search } = Input;
 
-const NavHeader = ({ toggle, collapsed, match }) => {
-  const currentView = window.location.href
-    .replace(new RegExp(`${window.location.origin}/|/$`, 'g'), '')
-    .trim()
-    .split('/')[0];
+const NavHeader = () => {
   const currentBusiness = useSelector(getCurrentBusinessState);
 
-  if (`/${currentView}` === PrivatePaths.MY_PROFILE) return null;
-  if (`/${currentView}` === PublicPaths.LOGIN) return null;
-  if (`/${currentView}` === PublicPaths.REGISTER) return null;
   return (
     <Layout className="site-layout">
       <Header
@@ -50,7 +35,7 @@ const NavHeader = ({ toggle, collapsed, match }) => {
               justifyContent: 'flex-start',
               paddingRight: 30,
             }}>
-            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+            {/* {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
               className: 'trigger',
               onClick: toggle,
               style: {
@@ -59,7 +44,7 @@ const NavHeader = ({ toggle, collapsed, match }) => {
                 marginLeft: 20,
                 marginRight: 20,
               },
-            })}
+            })} */}
             <Button style={{ margin: '0 5px' }} shape="circle">
               <Badge style={{ backgroundColor: colors.pinkDark }} count={1}>
                 <BellOutlined size="large" style={{ fontSize: fontsize.h4, color: colors.pink }} />
@@ -104,19 +89,5 @@ const NavHeader = ({ toggle, collapsed, match }) => {
     </Layout>
   );
 };
-
-// const useStyles = makeStyles({
-//   menuItem: {
-//     borderRadius: 5,
-//     padding: '17px 30px',
-//     border: 'none',
-//     height: 'auto',
-//     width: 'auto',
-//     marginTop: 20,
-//   },
-//   menuIcon: {
-//     fontSize: fontsize.h4,
-//   },
-// });
 
 export default NavHeader;
