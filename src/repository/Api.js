@@ -13,8 +13,7 @@ import history from '../routes/history';
 import { PublicPaths } from '../routes';
 
 const config = {
-  baseURL: `https://trader-assistant-backend.herokuapp.com/trader-assistant`,
-  // withCredentials: true,
+  baseURL: `https://trader-assistant-backend.herokuapp.com/trader-assistant`, //`http://localhost:4000/trader-assistant`, //
 };
 
 const instance = axios.create(config);

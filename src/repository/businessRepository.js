@@ -18,7 +18,8 @@ import {
 } from '../redux/business/actionTypes';
 import store from '../redux/store';
 import { overviewOptions } from '../constants/dateFilter';
-import Auth from '../utils/auth';
+import history from '../routes/history';
+import { PrivatePaths } from '../routes';
 
 const BusinessRepository = function (axiosInstance) {
   let _BusinessRepository = {
@@ -27,25 +28,21 @@ const BusinessRepository = function (axiosInstance) {
         type: ADD_BUSINESS_REQUEST,
       });
       return axiosInstance
-        .post('/api/business/business', formData)
+        .post('/platform', formData)
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (status) {
             store.dispatch({
               type: ADD_BUSINESS_REQUEST_SUCCESS,
             });
-            store.dispatch({
-              type: SET_CURRENT_BUSINESS,
-              payload: data,
-            });
-            Auth.setCurrentBusiness(data);
+            history.push(PrivatePaths.MY_PROFILE);
           } else {
             store.dispatch({
               type: ADD_BUSINESS_REQUEST_FAILURE,
               payload: message,
             });
           }
-          return success;
+          return status;
         })
         .catch(function (error) {
           store.dispatch({
@@ -61,7 +58,7 @@ const BusinessRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .get('/api/business/businesses')
+        .get('/platform')
         .then(function (response) {
           const { success, message, data } = response.data;
           if (success) {
@@ -99,35 +96,27 @@ const BusinessRepository = function (axiosInstance) {
           });
         });
     },
-    getBusiness: function ({ businessName }) {
+    getBusiness: function ({ platformId }) {
       store.dispatch({
         type: GET_BUSINESS_REQUEST,
       });
 
       return axiosInstance
-        .get('/api/business/business', {
+        .get(`/platform/${platformId}`, {
           params: {
-            businessName,
+            platformId,
           },
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
-            let selectedBusiness;
+          const { status, message, data } = response.data;
+          if (!!status) {
             store.dispatch({
               type: SET_CURRENT_BUSINESS,
               payload: data,
             });
-            function callBack() {
-              store.dispatch({
-                type: GET_BUSINESS_REQUEST_SUCCESS,
-                payload: data,
-              });
-            }
-
-            _BusinessRepository.getBusinessOverview({
-              callBack,
-              businessId: !!selectedBusiness ? selectedBusiness._id : data[0]._id,
+            store.dispatch({
+              type: GET_BUSINESS_REQUEST_SUCCESS,
+              payload: data,
             });
             return;
           }

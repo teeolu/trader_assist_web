@@ -12,6 +12,9 @@ import {
   LOGOUT_REQUEST,
   LOGOUT_REQUEST_SUCCESS,
   LOGOUT_REQUEST_FAILURE,
+  APPROVE_USER,
+  APPROVE_USER_SUCCESS,
+  APPROVE_USER_FAILURE,
 } from '../redux/auth/actionTypes';
 import Auth from '../utils/auth';
 import store from '../redux/store';
@@ -92,12 +95,12 @@ const AuthRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .post('/create', {
+        .post('/register', {
           ...formData,
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (!!status) {
             store.dispatch({
               type: REGISTER_REQUEST_SUCCESS,
             });
@@ -150,6 +153,33 @@ const AuthRepository = function (axiosInstance) {
         .catch(function (error) {
           store.dispatch({
             type: REQUEST_USER_REQUEST_FAILURE,
+            payload: error.message,
+          });
+        });
+    },
+    approveUser: function (token) {
+      store.dispatch({
+        type: APPROVE_USER,
+      });
+
+      return axiosInstance
+        .put(`/verify/${token}`)
+        .then(function (response) {
+          const { status, message } = response.data;
+          if (!!status) {
+            store.dispatch({
+              type: APPROVE_USER_SUCCESS,
+            });
+          } else {
+            store.dispatch({
+              type: APPROVE_USER_FAILURE,
+              payload: message,
+            });
+          }
+        })
+        .catch(function (error) {
+          store.dispatch({
+            type: APPROVE_USER_FAILURE,
             payload: error.message,
           });
         });

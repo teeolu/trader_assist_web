@@ -19,36 +19,37 @@ import { getCurrentBusinessState } from '../redux/business/addBusinessReducer';
 const { Sider } = Layout;
 
 const SideBar = ({ collapsed, match }) => {
+  let { path } = match;
   const classes = useStyles();
   const currentBusiness = useSelector(getCurrentBusinessState);
-
-  if (!currentBusiness.businessImage) return null;
+  console.log('currentUser currentUser currentUser ', path);
+  if (!currentBusiness.platformId) return null;
 
   const SideBarContents = [
     {
       name: 'Overview',
       icon: DashboardOutlined,
-      path: `/${currentBusiness.businessName}${PrivatePaths.OVERVIEW}`,
+      path: `platform/${currentBusiness.platformId}${PrivatePaths.OVERVIEW}`,
     },
     {
       name: 'Investors',
       icon: UsergroupAddOutlined,
-      path: `/${currentBusiness.businessName}${PrivatePaths.INVESTORS}`,
+      path: `platform/${currentBusiness.platformId}${PrivatePaths.INVESTORS}`,
     },
     {
       name: 'Returns',
       icon: UploadOutlined,
-      path: `/${currentBusiness.businessName}${PrivatePaths.RETURNS}`,
+      path: `platform/${currentBusiness.platformId}${PrivatePaths.RETURNS}`,
     },
     {
       name: 'Investments',
       icon: DownloadOutlined,
-      path: `/${currentBusiness.businessName}${PrivatePaths.INVESTMENTS}`,
+      path: `platform/${currentBusiness.platformId}${PrivatePaths.INVESTMENTS}`,
     },
     {
       name: 'Settings',
       icon: SettingOutlined,
-      path: `/${currentBusiness.businessName}${PrivatePaths.SETTINGS}`,
+      path: `platform/${currentBusiness.platformId}${PrivatePaths.SETTINGS}`,
     },
   ];
 

@@ -16,6 +16,8 @@ const { Content } = Layout;
 const UserProfile = (props) => {
   const classes = useStyles();
   const currentUser = useSelector(getCurrentUserState);
+
+  console.log('currentUser currentUser currentUser ', currentUser);
   useEffect(() => {
     Api.AuthRepository.requestUser();
   }, []);
@@ -49,23 +51,21 @@ const UserProfile = (props) => {
       </div>
       <Row gutter={20}>
         {!!currentUser
-          ? !!currentUser.businessAsStaff &&
-            currentUser.businessAsStaff.map((business) => {
+          ? !!currentUser.platformDetails &&
+            currentUser.platformDetails.map((platform) => {
               return (
-                <Col key={business._id} span={6} className={classes.businessCard}>
+                <Col key={platform._id} span={6} className={classes.businessCard}>
                   <div>
-                    <Link to={`${business.business.businessName.split(' ').join('.')}/overview`}>
-                      <Avatar
+                    <Link to={`platform/${platform.platformId}/overview`}>
+                      {/* <Avatar
                         size="large"
                         style={{ marginBottom: 10 }}
-                        src={business.business.businessImage.secure_url}
-                        alt={business.business.businessName}
-                      />
-                      <p style={{ margin: 0, font: fonts.regular }}>
-                        {business.business.businessName}
-                      </p>
+                        src={business.businessImage.secure_url}
+                        alt={business.platformName}
+                      /> */}
+                      <p style={{ margin: 0, font: fonts.regular }}>{platform.platformName}</p>
                       <p style={{ ...typography.caption, margin: 0, font: fonts.regular }}>
-                        {business.role}
+                        {platform.role}
                       </p>
                     </Link>
                   </div>
