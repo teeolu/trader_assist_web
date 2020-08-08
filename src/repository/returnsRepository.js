@@ -18,7 +18,7 @@ import { overviewOptions } from '../constants/dateFilter';
 const ReturnsRepository = function (axiosInstance) {
   let _ReturnsRepository = {
     getReturns: function ({ selectedOption = {}, params = {} }) {
-      let businessId = store.getState().addBusiness.currentBusiness._id;
+      let businessId = store.getState().addBusiness.currentBusiness.platformId;
       if (!selectedOption.startDate || !selectedOption.endDate) selectedOption = overviewOptions[0];
       store.dispatch({
         type: GET_RETURNS_REQUEST,
@@ -62,7 +62,7 @@ const ReturnsRepository = function (axiosInstance) {
         });
     },
     getReturnById: function ({ params = {} }) {
-      let businessId = store.getState().addBusiness.currentBusiness._id;
+      let businessId = store.getState().addBusiness.currentBusiness.platformId;
       store.dispatch({
         type: GET_RETURN_REQUEST,
       });
@@ -97,7 +97,7 @@ const ReturnsRepository = function (axiosInstance) {
         });
     },
     getReturnsCalendarOverviewId: function ({ params = {} }) {
-      let businessId = store.getState().addBusiness.currentBusiness._id;
+      let businessId = store.getState().addBusiness.currentBusiness.platformId;
       store.dispatch({
         type: GET_RETURNS_CALENDAR_OVERVIEW_REQUEST,
       });

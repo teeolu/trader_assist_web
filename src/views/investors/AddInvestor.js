@@ -22,7 +22,8 @@ import { banksArray } from '../../utils/banksArray';
 
 const { Option } = Select;
 
-const AddInvestor = () => {
+const AddInvestor = ({ match }) => {
+  const { path } = match;
   const [notifyInvestor, setNotifyInvestor] = useState(false);
   const [selectBank, setSelectBank] = useState('');
   const [form] = Form.useForm();
@@ -49,11 +50,11 @@ const AddInvestor = () => {
         icon: <CheckCircleTwoTone />,
         content: `Will you like to add an investment for ${addedInvestor.fullName}?`,
         onOk() {
-          history.push(`${PrivatePaths.INVESTORS}/new-investment/${addedInvestor._id}`);
+          history.push(`${path}/new-investment/${addedInvestor.investorId}`);
         },
         onCancel() {
           history.push(
-            `/${currentBusiness.businessName}${PrivatePaths.INVESTORS}/${addedInvestor._id}`,
+            `/${currentBusiness.businessName}${PrivatePaths.INVESTORS}/${addedInvestor.investorId}`,
           );
         },
       });
@@ -67,7 +68,7 @@ const AddInvestor = () => {
         ...values,
         bank: selectBank,
         notifyInvestor,
-        businessId: currentBusiness._id,
+        platformId: currentBusiness.platformId,
       },
     }).then((success) => {
       if (success === true) {
@@ -123,13 +124,13 @@ const AddInvestor = () => {
             <hr />
           </div>
           <Form.Item
-            name="fullName"
+            name="investorFullName"
             label="Investor name"
             rules={[{ required: true, message: 'Investor name is required!' }]}>
             <Input autoFocus size="large" placeholder="e.g John Doe" />
           </Form.Item>
           <Form.Item
-            name="email"
+            name="investorEmail"
             label="Investor email"
             rules={[
               { required: true, message: 'Investor email is required!' },
@@ -141,7 +142,7 @@ const AddInvestor = () => {
             <Input size="large" placeholder="Enter an email addres" />
           </Form.Item>
           <Form.Item
-            name="phoneNumber"
+            name="investorPhoneNumber"
             label="Investor phone number"
             rules={[{ required: true, message: 'Investor phone number is required!' }]}>
             <Input size="large" placeholder="e.g 090987654321" />
@@ -150,7 +151,7 @@ const AddInvestor = () => {
             <p style={{ marginBottom: 5 }}>Bank details</p>
             <hr />
           </div>
-          <Form.Item name="bank" label="Select bank">
+          <Form.Item name="investorBank" label="Select bank">
             <Select
               labelInValue
               placeholder="Select bank"
@@ -166,7 +167,7 @@ const AddInvestor = () => {
               })}
             </Select>
           </Form.Item>
-          <Form.Item name="accountNumber" label="Account number">
+          <Form.Item name="investorAccountNumber" label="Account number">
             <Input size="large" placeholder="Nuban account number" />
           </Form.Item>
           <Checkbox onChange={(e) => setNotifyInvestor(e.target.checked)}>

@@ -18,7 +18,7 @@ import { sortBaseOnTime, humanReadableTime } from '../../../utils/time';
 const { Panel } = Collapse;
 
 const InvestorInvestments = ({ investor }) => {
-  const investorId = investor._id;
+  const investorId = investor.investorId;
   // const classes = useStyles();
   // const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);

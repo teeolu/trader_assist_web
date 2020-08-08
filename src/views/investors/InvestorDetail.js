@@ -47,9 +47,9 @@ const InvestorDetails = (props) => {
   const returnStatus = useSelector(getReturnStatusState);
 
   const {
-    fullName,
+    investorFullName,
     investmentSum,
-    numberOfInvestment,
+    meta,
     // numberOfReturns,
     // returnsSum,
     // createdAt,
@@ -86,9 +86,8 @@ const InvestorDetails = (props) => {
 
   function fetchInvestor() {
     Api.InvestorRepository.getInvestor({
-      params: {
-        investorId,
-      },
+      investorId,
+      params: {},
     });
   }
 
@@ -105,7 +104,7 @@ const InvestorDetails = (props) => {
       style={{
         padding: '50px 100px 50px 50px',
       }}>
-      {!!fullName ? (
+      {!!investorFullName ? (
         <>
           <div style={{ display: 'flex' }}>
             <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
@@ -114,11 +113,11 @@ const InvestorDetails = (props) => {
               </div>
             </div>
             <div style={{ flex: 3 }}>
-              <p className={classes.investorFullname}>{fullName}</p>
+              <p className={classes.investorFullname}>{investorFullName}</p>
               <p className={classes.activeInvestment}>
                 <span
                   style={{
-                    backgroundColor: numberOfInvestment > 0 ? colors.green : colors.red,
+                    backgroundColor: meta.numberOfInvestment > 0 ? colors.green : colors.red,
                   }}></span>
                 NGN{investmentSum.toLocaleString()} - sum of active investment
               </p>

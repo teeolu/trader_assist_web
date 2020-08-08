@@ -37,20 +37,20 @@ const InvestorActivities = ({ investor }) => {
   function fetchBusinessHistory() {
     Api.InvestorRepository.getInvestorHistory({
       params: {
-        investorId: investor._id,
+        investorId: investor.investorId,
       },
     });
   }
 
   // console.log(
-  //   'investorsHistory[investor._id] investorsHistory[investor._id] ',
-  //   investorsHistory[investor._id],
+  //   'investorsHistory[investor.investorId] investorsHistory[investor.investorId] ',
+  //   investorsHistory[investor.investorId],
   // );
 
   return (
     <>
       <Card bordered={true} bodyStyle={{ padding: 15 }}>
-        <Activities activities={investorsHistory[investor._id]} />
+        <Activities activities={investorsHistory[investor.investorId]} />
       </Card>
     </>
   );

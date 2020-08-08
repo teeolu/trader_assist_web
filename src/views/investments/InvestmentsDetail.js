@@ -143,7 +143,7 @@ const InvestmentDetails = ({ selectedOption, ...props }) => {
       <p>
         <Link
           to={`/${currentBusiness.businessName}${PrivatePaths.INVESTORS}/${
-            !!investor && investor._id
+            !!investor && investor.investorId
           }`}>
           {!!investor && investor.fullName}
         </Link>

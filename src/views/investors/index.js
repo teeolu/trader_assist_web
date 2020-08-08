@@ -3,7 +3,7 @@ import { Layout, Tooltip, Button, notification, Spin, Space, Row, Col, Card } fr
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { PlusSquareOutlined } from '@ant-design/icons';
-import { Switch } from 'react-router-dom';
+import { Switch, Link } from 'react-router-dom';
 
 import {
   getIsFetchingState,
@@ -21,18 +21,16 @@ import EditInvestor from './EditInvestor';
 import AddInvestment from './AddInvestment';
 import { Api } from '../../repository/Api';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
-import { getCurrentBusinessState } from '../../redux/business/addBusinessReducer';
 const { Content } = Layout;
 
 const Investors = (props) => {
   let {
-    match: { path },
+    match: { url, path },
   } = props;
   const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
   const investorsData = useSelector(getInvestorsState);
-  const currentBusiness = useSelector(getCurrentBusinessState);
 
   useEffect(() => {
     fetchInvestors();
@@ -55,7 +53,7 @@ const Investors = (props) => {
       investorsData.size !== null &&
       investorsData.size !== 0
     ) {
-      history.push(`${path}/${investorsData.investors[0]._id}`);
+      history.push(`${url}/${investorsData.investors[0]._id}`);
     }
     // eslint-disable-next-line
   }, [investorsData]);
@@ -64,7 +62,6 @@ const Investors = (props) => {
     Api.InvestorRepository.getInvestors({
       params: {
         search,
-        businessId: currentBusiness._id,
       },
     });
   }
@@ -74,33 +71,42 @@ const Investors = (props) => {
     return (
       <div className={classes.inventorListContainer}>
         {investorsData.investors.map((investor, i) => {
-          const idFromParam = !!props.location.pathname.split(`${path}/`)[1]
-            ? props.location.pathname.split(`${path}/`)[1].split('/')[0]
+          const idFromParam = !!props.location.pathname.split(`${url}/`)[1]
+            ? props.location.pathname.split(`${url}/`)[1].split('/')[0]
             : null;
-          const isActive = investor._id === idFromParam;
+          const isActive = investor.investorId === idFromParam;
           return (
-            <div
-              key={investor._id}
-              className={classes.investorContainer}
-              onClick={() => history.push(`${path}/${investor._id}`)}
-              style={{
-                backgroundColor: isActive && colors.pinkLight,
-                borderLeft: `3px solid ${isActive ? colors.pinkDark : 'transparent'}`,
-              }}>
-              <div className={classes.investorIsActiveIndicator}>
-                an
-                <div
-                  style={{
-                    backgroundColor: colors.green,
-                  }}></div>
+            <Link to={`${url}/${investor.investorId}`}>
+              <div
+                key={investor.investorId}
+                className={classes.investorContainer}
+                // onClick={() => history.push(`${url}/${investor.investorId}`)}
+                style={{
+                  backgroundColor: isActive && colors.pinkLight,
+                  borderLeft: `3px solid ${isActive ? colors.pinkDark : 'transparent'}`,
+                }}>
+                <div className={classes.investorIsActiveIndicator}>
+                  an
+                  <div
+                    style={{
+                      backgroundColor: colors.green,
+                    }}></div>
+                </div>
+                <div className={classes.investorInfo}>
+                  <p
+                    style={{
+                      ...typography.paragraph,
+                      fontFamily: fonts.semiBold,
+                      marginBottom: 0,
+                    }}>
+                    {investor.investorFullName}
+                  </p>
+                  <p style={{ ...typography.caption, marginBottom: 0 }}>
+                    Added on tuesday, 13 2020
+                  </p>
+                </div>
               </div>
-              <div className={classes.investorInfo}>
-                <p style={{ ...typography.paragraph, fontFamily: fonts.semiBold, marginBottom: 0 }}>
-                  {investor.fullName}
-                </p>
-                <p style={{ ...typography.caption, marginBottom: 0 }}>Added on tuesday, 13 2020</p>
-              </div>
-            </div>
+            </Link>
           );
         })}
       </div>
@@ -122,21 +128,20 @@ const Investors = (props) => {
                 <p className={classes.investorText}>
                   <b>Investors</b>
                 </p>
-                <div>
-                  <Tooltip title="Add investor" placement="bottom">
-                    <Button
-                      type="primary"
-                      shape="circle"
-                      onClick={() => history.push(`${path}/new-investor`)}
-                      style={{ backgroundColor: colors.pinkLight, border: 'none' }}
-                      icon={
+                <Tooltip title="Add investor" placement="bottom">
+                  <Button
+                    type="primary"
+                    shape="circle"
+                    style={{ backgroundColor: colors.pinkLight, border: 'none' }}
+                    icon={
+                      <Link to={`${url}/new-investor`}>
                         <PlusSquareOutlined
                           style={{ color: colors.pinkDark, fontSize: fontsize.h4 }}
                         />
-                      }
-                    />
-                  </Tooltip>
-                </div>
+                      </Link>
+                    }
+                  />
+                </Tooltip>
               </div>
               {isFetching && investorsData.size === null && (
                 <Space
@@ -155,15 +160,15 @@ const Investors = (props) => {
         <Col span={17} style={{}}>
           <Card bodyStyle={{ padding: 0 }}>
             <Switch>
-              <PrivateRoute path={`${path}/new-investor`} exact={true} component={AddInvestor} />
-              <PrivateRoute path={`${path}/:investorId`} exact={true} component={InvestorDetails} />
+              <PrivateRoute path={`${url}/new-investor`} exact={true} component={AddInvestor} />
+              <PrivateRoute path={`${url}/:investorId`} exact={true} component={InvestorDetails} />
               <PrivateRoute
-                path={`${path}/:investorId/new-investment`}
+                path={`${url}/:investorId/new-investment`}
                 exact={true}
                 component={AddInvestment}
               />
               <PrivateRoute
-                path={`${path}/:investorId/edit-investor`}
+                path={`${url}/:investorId/edit-investor`}
                 exact={true}
                 component={EditInvestor}
               />

@@ -132,24 +132,24 @@ const InvestorRepository = function (axiosInstance) {
           });
         });
     },
-    getInvestor: function ({ params = {} }) {
+    getInvestor: function ({ investorId, params = {} }) {
       store.dispatch({
         type: GET_INVESTOR_REQUEST,
       });
 
       return axiosInstance
-        .get('/api/investors/investor', {
-          params,
-        })
+        .get(`/investor/${investorId}`, { params })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+
+          console.log('fetchInvestors fetchInvestors fetchInvestors ', investorId, data);
+          if (!!status) {
             store.dispatch({
               type: GET_INVESTOR_REQUEST_SUCCESS,
             });
             store.dispatch({
               type: SET_CURRENT_INVESTOR,
-              payload: { [data._id]: data },
+              payload: { [data.investorId]: data },
             });
             return;
           }
@@ -166,24 +166,24 @@ const InvestorRepository = function (axiosInstance) {
         });
     },
     getInvestors: function ({ params = {} }) {
-      const businessId = store.getState().addBusiness.currentBusiness._id;
+      const platformId = store.getState().addBusiness.currentBusiness.platformId;
       store.dispatch({
         type: GET_INVESTORS_REQUEST,
       });
 
       return axiosInstance
-        .get('/api/investors/investors', {
-          params: {
-            ...params,
-            businessId,
-          },
+        .get(`/investors/${platformId}`, {
+          params,
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (!!status) {
             store.dispatch({
               type: GET_INVESTORS_REQUEST_SUCCESS,
-              payload: data,
+              payload: {
+                investors: data.data,
+                total: data.total,
+              },
             });
             return;
           }
@@ -205,17 +205,17 @@ const InvestorRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .post('/api/investors/investor', {
+        .post('/investor', {
           ...formData,
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (!!status) {
             store.dispatch({
               type: ADD_INVESTOR_REQUEST_SUCCESS,
               payload: data,
             });
-            return success;
+            return status;
           }
           store.dispatch({
             type: ADD_INVESTOR_REQUEST_FAILURE,

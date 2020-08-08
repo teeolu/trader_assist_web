@@ -134,7 +134,7 @@ const BusinessRepository = function (axiosInstance) {
     },
     getBusinessOverview: function ({ callBack }) {
       let selectedOption = store.getState().businessMisc.selectedOption,
-        businessId = store.getState().addBusiness.currentBusiness._id;
+        businessId = store.getState().addBusiness.currentBusiness.platformId;
       if (!selectedOption.startDate || !selectedOption.endDate) selectedOption = overviewOptions[0];
       store.dispatch({
         type: GET_BUSINESS_OVERVIEW_REQUEST,
@@ -178,7 +178,7 @@ const BusinessRepository = function (axiosInstance) {
       return axiosInstance
         .get('/api/business/history', {
           params: {
-            businessId: store.getState().addBusiness.currentBusiness._id,
+            businessId: store.getState().addBusiness.currentBusiness.platformId,
             startDate: selectedOption.startDate,
             endDate: selectedOption.endDate,
           },

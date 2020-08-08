@@ -14,7 +14,7 @@ import store from '../redux/store';
 const InvestmentRepository = function (axiosInstance) {
   let _InvestmentRepository = {
     getInvesments: function ({ selectedOption, params = {} }) {
-      let businessId = store.getState().addBusiness.currentBusiness._id;
+      let businessId = store.getState().addBusiness.currentBusiness.platformId;
       if (!selectedOption.startDate || !selectedOption.endDate) return;
       store.dispatch({
         type: GET_INVESTMENTS_REQUEST,
@@ -58,7 +58,7 @@ const InvestmentRepository = function (axiosInstance) {
         });
     },
     getInvestmentById: function ({ params = {} }) {
-      let businessId = store.getState().addBusiness.currentBusiness._id;
+      let businessId = store.getState().addBusiness.currentBusiness.platformId;
       store.dispatch({
         type: GET_INVESTMENT_REQUEST,
       });

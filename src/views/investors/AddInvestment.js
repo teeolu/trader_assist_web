@@ -60,7 +60,7 @@ const AddInvestment = ({ match }) => {
         investor: investorId,
         startDate: moment(values.startDate).format('YYYY-MM-DD h:mm:ss a'),
         duration: investmentDuration(values.interval),
-        businessId: currentBusiness._id,
+        businessId: currentBusiness.platformId,
       },
     });
   }

@@ -14,7 +14,7 @@ import {
 const SettingsRepository = function (axiosInstance) {
   let _SettingsRepository = {
     inviteAdminStaff: function ({ formData }) {
-      const businessId = store.getState().addBusiness.currentBusiness._id;
+      const businessId = store.getState().addBusiness.currentBusiness.platformId;
       store.dispatch({
         type: INVITE_ADMIN_STAFF_REQUEST,
       });
@@ -41,7 +41,7 @@ const SettingsRepository = function (axiosInstance) {
         });
     },
     getAdminStaff: function () {
-      const businessId = store.getState().addBusiness.currentBusiness._id;
+      const businessId = store.getState().addBusiness.currentBusiness.platformId;
       store.dispatch({
         type: GET_ADMIN_STAFF_REQUEST,
       });
@@ -80,7 +80,7 @@ const SettingsRepository = function (axiosInstance) {
         });
     },
     cancelAdminStaffInvite: function ({ params }) {
-      const businessId = store.getState().addBusiness.currentBusiness._id;
+      const businessId = store.getState().addBusiness.currentBusiness.platformId;
       store.dispatch({
         type: CANCEL_ADMIN_STAFF_INVITE_REQUEST,
         payload: params.staffId,
