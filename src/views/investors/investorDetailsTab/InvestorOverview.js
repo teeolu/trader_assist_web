@@ -5,7 +5,7 @@ import { colors, typography } from '../../../Css';
 
 const InvestorOverview = ({ investor }) => {
   // const classes = useStyles();
-  const { investmentSum, numberOfInvestment, numberOfReturns, returnsSum } = investor;
+  const { meta, numberOfInvestment, numberOfReturns, returnsSum } = investor;
 
   return (
     <>
@@ -31,7 +31,7 @@ const InvestorOverview = ({ investor }) => {
               marginRight: 20,
             }}>
             <p>Number of investments</p>
-            <p style={{ ...typography.h2, color: colors.blue }}>{numberOfInvestment}</p>
+            <p style={{ ...typography.h2, color: colors.blue }}>{meta.numberOfInvestment}</p>
           </div>
           <div
             style={{
@@ -43,7 +43,7 @@ const InvestorOverview = ({ investor }) => {
             }}>
             <p>Investments sum</p>
             <p style={{ ...typography.h3, color: colors.pinkDark }}>
-              NGN{investmentSum.toLocaleString()}
+              NGN{meta.investmentTotal.toLocaleString()}
             </p>
           </div>
         </div>
@@ -70,7 +70,7 @@ const InvestorOverview = ({ investor }) => {
               marginRight: 20,
             }}>
             <p>Number of returns</p>
-            <p style={{ ...typography.h2, color: colors.blue }}>{numberOfReturns}</p>
+            <p style={{ ...typography.h2, color: colors.blue }}>{meta.numberOfReturns}</p>
           </div>
           <div
             style={{
@@ -82,7 +82,7 @@ const InvestorOverview = ({ investor }) => {
             }}>
             <p>Returns sum</p>
             <p style={{ ...typography.h3, color: colors.pinkDark }}>
-              NGN{returnsSum.toLocaleString()}
+              NGN{meta.returnsTotal.toLocaleString()}
             </p>
           </div>
         </div>

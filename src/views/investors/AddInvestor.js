@@ -17,13 +17,11 @@ import { Api } from '../../repository/Api';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { colors, typography, boxShadows, fontsize } from '../../Css';
 import history from '../../routes/history';
-import { PrivatePaths } from '../../routes';
 import { banksArray } from '../../utils/banksArray';
 
 const { Option } = Select;
 
 const AddInvestor = ({ match }) => {
-  const { path } = match;
   const [notifyInvestor, setNotifyInvestor] = useState(false);
   const [selectBank, setSelectBank] = useState('');
   const [form] = Form.useForm();
@@ -45,18 +43,17 @@ const AddInvestor = ({ match }) => {
     }
 
     if (status === Status.ADD_INVESTOR_REQUEST_SUCCESS) {
+      form.resetFields();
       confirm({
-        title: `${addedInvestor.fullName} added successfully`,
+        title: `${addedInvestor.investorFullName} added successfully`,
         icon: <CheckCircleTwoTone />,
-        content: `Will you like to add an investment for ${addedInvestor.fullName}?`,
+        content: `Will you like to add an investment for ${addedInvestor.investorFullName}?`,
         onOk() {
-          history.push(`${path}/new-investment/${addedInvestor.investorId}`);
-        },
-        onCancel() {
           history.push(
-            `/${currentBusiness.businessName}${PrivatePaths.INVESTORS}/${addedInvestor.investorId}`,
+            `/platform/${currentBusiness.platformId}/investors/${addedInvestor.investorId}/new-investment`,
           );
         },
+        cancelText: 'No',
       });
     }
     // eslint-disable-next-line

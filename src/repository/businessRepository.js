@@ -52,50 +52,50 @@ const BusinessRepository = function (axiosInstance) {
           return error;
         });
     },
-    getBusinesses: function ({ businessId }) {
-      store.dispatch({
-        type: GET_BUSINESSES_REQUEST,
-      });
+    // getBusinesses: function ({ businessId }) {
+    //   store.dispatch({
+    //     type: GET_BUSINESSES_REQUEST,
+    //   });
 
-      return axiosInstance
-        .get('/platform')
-        .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
-            let selectedBusiness;
-            if (!!businessId) {
-              selectedBusiness = data.filter((el) => el._id === businessId);
-            }
+    //   return axiosInstance
+    //     .get('/platform')
+    //     .then(function (response) {
+    //       const { success, message, data } = response.data;
+    //       if (success) {
+    //         let selectedBusiness;
+    //         if (!!businessId) {
+    //           selectedBusiness = data.filter((el) => el._id === businessId);
+    //         }
 
-            store.dispatch({
-              type: SET_CURRENT_BUSINESS,
-              payload: !!selectedBusiness ? selectedBusiness : data[0],
-            });
-            function callBack() {
-              store.dispatch({
-                type: GET_BUSINESSES_REQUEST_SUCCESS,
-                payload: data,
-              });
-            }
+    //         store.dispatch({
+    //           type: SET_CURRENT_BUSINESS,
+    //           payload: !!selectedBusiness ? selectedBusiness : data[0],
+    //         });
+    //         function callBack() {
+    //           store.dispatch({
+    //             type: GET_BUSINESSES_REQUEST_SUCCESS,
+    //             payload: data,
+    //           });
+    //         }
 
-            _BusinessRepository.getBusinessOverview({
-              callBack,
-              businessId: !!selectedBusiness ? selectedBusiness._id : data[0]._id,
-            });
-            return;
-          }
-          store.dispatch({
-            type: GET_BUSINESSES_REQUEST_FAILURE,
-            payload: message,
-          });
-        })
-        .catch(function (error) {
-          store.dispatch({
-            type: GET_BUSINESSES_REQUEST_FAILURE,
-            payload: error.message,
-          });
-        });
-    },
+    //         _BusinessRepository.getBusinessOverview({
+    //           callBack,
+    //           businessId: !!selectedBusiness ? selectedBusiness._id : data[0]._id,
+    //         });
+    //         return;
+    //       }
+    //       store.dispatch({
+    //         type: GET_BUSINESSES_REQUEST_FAILURE,
+    //         payload: message,
+    //       });
+    //     })
+    //     .catch(function (error) {
+    //       store.dispatch({
+    //         type: GET_BUSINESSES_REQUEST_FAILURE,
+    //         payload: error.message,
+    //       });
+    //     });
+    // },
     getBusiness: function ({ platformId }) {
       store.dispatch({
         type: GET_BUSINESS_REQUEST,
@@ -103,9 +103,7 @@ const BusinessRepository = function (axiosInstance) {
 
       return axiosInstance
         .get(`/platform/${platformId}`, {
-          params: {
-            platformId,
-          },
+          params: {},
         })
         .then(function (response) {
           const { status, message, data } = response.data;

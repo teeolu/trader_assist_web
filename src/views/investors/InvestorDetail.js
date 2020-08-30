@@ -119,7 +119,7 @@ const InvestorDetails = (props) => {
                   style={{
                     backgroundColor: meta.numberOfInvestment > 0 ? colors.green : colors.red,
                   }}></span>
-                NGN{investmentSum.toLocaleString()} - sum of active investment
+                NGN{meta.investmentTotal.toLocaleString()} - sum of active investment
               </p>
               <p className={classes.prevReturn}>
                 {!!investorsReturns[investorId] &&

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Layout, Menu } from 'antd';
 import {
   DashboardOutlined,
@@ -13,11 +14,14 @@ import { Link } from 'react-router-dom';
 
 import { colors, fontsize, boxShadows } from '../Css';
 import { PrivatePaths } from '../routes';
+import { existInUrl } from '../utils/url';
+import { getCurrentUserState } from '../redux/auth/userRequestReducer';
 
 const { Sider } = Layout;
 
 const SideBar = ({ url }) => {
   const classes = useStyles();
+  const currentUser = useSelector(getCurrentUserState);
 
   const SideBarContents = [
     {
@@ -47,12 +51,6 @@ const SideBar = ({ url }) => {
     },
   ];
 
-  const currentView = window.location.href
-    .replace(new RegExp(`${window.location.origin}/|/$`, 'g'), '')
-    .trim()
-    .split('/')
-    .pop();
-
   return (
     <Sider
       style={{
@@ -66,7 +64,10 @@ const SideBar = ({ url }) => {
           display: 'flex',
           flexDirection: 'column',
         }}>
-        <Menu mode="inline" selectedKeys={[currentView]} style={{ flex: 1 }}>
+        <Menu
+          mode="inline"
+          selectedKeys={[existInUrl(SideBarContents.map((el) => el.name.toLowerCase()))]}
+          style={{ flex: 1 }}>
           {SideBarContents.map((el) => {
             const Icon = el.icon;
             return (
@@ -105,7 +106,7 @@ const SideBar = ({ url }) => {
               }}
               key="user-profile"
               icon={<UserOutlined className={classes.userProfileIcon} />}>
-              <Link to={PrivatePaths.MY_PROFILE}>Olusola Oyinloye</Link>
+              <Link to={PrivatePaths.MY_PROFILE}>{currentUser.fullName}</Link>
             </Menu.Item>
           </Menu>
         </div>

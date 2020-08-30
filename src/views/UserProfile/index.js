@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Layout, Row, Col, Avatar } from 'antd';
+import { Layout, Row, Col } from 'antd';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -17,7 +17,8 @@ const UserProfile = (props) => {
   const classes = useStyles();
   const currentUser = useSelector(getCurrentUserState);
 
-  console.log('currentUser currentUser currentUser ', currentUser);
+  console.log('currentUser currentUser ', currentUser);
+
   useEffect(() => {
     Api.AuthRepository.requestUser();
   }, []);

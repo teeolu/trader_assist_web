@@ -21,6 +21,7 @@ export default (props) => {
   const currentBusiness = useSelector(getCurrentBusinessState);
 
   useEffect(() => {
+    Api.AuthRepository.requestUser();
     if (!!params.platformId) {
       Api.BusinessRepository.getBusiness({ platformId: params.platformId }).then((res) => {
         if (!res) {

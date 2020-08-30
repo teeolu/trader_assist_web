@@ -21,6 +21,7 @@ import EditInvestor from './EditInvestor';
 import AddInvestment from './AddInvestment';
 import { Api } from '../../repository/Api';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
+import { existInUrl } from '../../utils/url';
 const { Content } = Layout;
 
 const Investors = (props) => {
@@ -71,42 +72,36 @@ const Investors = (props) => {
     return (
       <div className={classes.inventorListContainer}>
         {investorsData.investors.map((investor, i) => {
-          const idFromParam = !!props.location.pathname.split(`${url}/`)[1]
-            ? props.location.pathname.split(`${url}/`)[1].split('/')[0]
-            : null;
-          const isActive = investor.investorId === idFromParam;
+          const isActive = existInUrl(investor.investorId) === investor.investorId;
           return (
-            <Link to={`${url}/${investor.investorId}`}>
-              <div
-                key={investor.investorId}
-                className={classes.investorContainer}
-                // onClick={() => history.push(`${url}/${investor.investorId}`)}
-                style={{
-                  backgroundColor: isActive && colors.pinkLight,
-                  borderLeft: `3px solid ${isActive ? colors.pinkDark : 'transparent'}`,
-                }}>
-                <div className={classes.investorIsActiveIndicator}>
-                  an
-                  <div
-                    style={{
-                      backgroundColor: colors.green,
-                    }}></div>
-                </div>
-                <div className={classes.investorInfo}>
-                  <p
-                    style={{
-                      ...typography.paragraph,
-                      fontFamily: fonts.semiBold,
-                      marginBottom: 0,
-                    }}>
-                    {investor.investorFullName}
-                  </p>
-                  <p style={{ ...typography.caption, marginBottom: 0 }}>
-                    Added on tuesday, 13 2020
-                  </p>
-                </div>
+            <div
+              key={investor.investorId}
+              className={classes.investorContainer}
+              onClick={() => history.push(`${url}/${investor.investorId}`)}
+              style={{
+                backgroundColor: isActive && colors.pinkLight,
+                borderLeft: `3px solid ${isActive ? colors.pinkDark : 'transparent'}`,
+              }}>
+              <div className={classes.investorIsActiveIndicator}>
+                {investor.investorFullName.substring(0, 2)}
+                <div
+                  style={{
+                    backgroundColor:
+                      investor.meta.numberOfInvestment > 0 ? colors.green : colors.red,
+                  }}></div>
               </div>
-            </Link>
+              <div className={classes.investorInfo}>
+                <p
+                  style={{
+                    ...typography.paragraph,
+                    fontFamily: fonts.semiBold,
+                    marginBottom: 0,
+                  }}>
+                  {investor.investorFullName}
+                </p>
+                <p style={{ ...typography.caption, marginBottom: 0 }}>Added on tuesday, 13 2020</p>
+              </div>
+            </div>
           );
         })}
       </div>
@@ -217,7 +212,7 @@ const useStyles = makeStyles({
   },
   inventorListContainer: {
     height: '100%',
-    overflowY: 'scroll',
+    overflowX: 'scroll',
     '& > div': {
       padding: 5,
       cursor: 'pointer',
@@ -238,7 +233,8 @@ const useStyles = makeStyles({
     height: 40,
     width: 40,
     borderRadius: 56,
-    backgroundColor: colors.pinkDark,
+    backgroundColor: '#1ee9a4',
+    color: colors.pinkDark,
     textTransform: 'uppercase',
     display: 'flex',
     alignItems: 'center',
