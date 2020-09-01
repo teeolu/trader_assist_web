@@ -19,7 +19,6 @@ export default (props) => {
     match: { params },
   } = props;
   const token = !!params ? params.id : null;
-  console.log('className className className ', params.id);
 
   const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
@@ -29,6 +28,7 @@ export default (props) => {
     if (!!token) {
       Api.AuthRepository.approveUser(token);
     }
+    // eslint-disable-next-line
   }, []);
 
   return (

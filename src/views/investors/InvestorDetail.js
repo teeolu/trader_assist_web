@@ -48,7 +48,7 @@ const InvestorDetails = (props) => {
 
   const {
     investorFullName,
-    investmentSum,
+    // investmentSum,
     meta,
     // numberOfReturns,
     // returnsSum,

@@ -1,14 +1,14 @@
 import React from 'react';
 import { Input, AutoComplete } from 'antd';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { UserOutlined } from '@ant-design/icons';
 
-import { getCurrentBusinessState } from '../redux/business/addBusinessReducer';
+// import { getCurrentBusinessState } from '../redux/business/addBusinessReducer';
 
 const { Search } = Input;
 
 const SearchBox = () => {
-  const currentBusiness = useSelector(getCurrentBusinessState);
+  // const currentBusiness = useSelector(getCurrentBusinessState);
 
   const renderTitle = (title) => {
     return (

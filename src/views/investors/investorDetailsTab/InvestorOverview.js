@@ -5,7 +5,10 @@ import { colors, typography } from '../../../Css';
 
 const InvestorOverview = ({ investor }) => {
   // const classes = useStyles();
-  const { meta, numberOfInvestment, numberOfReturns, returnsSum } = investor;
+  const {
+    meta,
+    // numberOfInvestment, numberOfReturns, returnsSum
+  } = investor;
 
   return (
     <>

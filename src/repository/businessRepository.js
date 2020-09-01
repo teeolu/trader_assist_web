@@ -3,9 +3,9 @@ import {
   ADD_BUSINESS_REQUEST_SUCCESS,
   ADD_BUSINESS_REQUEST_FAILURE,
   SET_CURRENT_BUSINESS,
-  GET_BUSINESSES_REQUEST,
-  GET_BUSINESSES_REQUEST_SUCCESS,
-  GET_BUSINESSES_REQUEST_FAILURE,
+  // GET_BUSINESSES_REQUEST,
+  // GET_BUSINESSES_REQUEST_SUCCESS,
+  // GET_BUSINESSES_REQUEST_FAILURE,
   GET_BUSINESS_REQUEST,
   GET_BUSINESS_REQUEST_SUCCESS,
   GET_BUSINESS_REQUEST_FAILURE,
@@ -30,7 +30,7 @@ const BusinessRepository = function (axiosInstance) {
       return axiosInstance
         .post('/platform', formData)
         .then(function (response) {
-          const { status, message, data } = response.data;
+          const { status, message } = response.data;
           if (status) {
             store.dispatch({
               type: ADD_BUSINESS_REQUEST_SUCCESS,
