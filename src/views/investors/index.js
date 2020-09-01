@@ -109,8 +109,8 @@ const Investors = (props) => {
   }
 
   return (
-    <Content style={{}}>
-      <Row gutter={0}>
+    <Content style={{ height: '100%' }}>
+      <Row gutter={0} style={{ height: '100%' }}>
         <Col span={7}>
           <Card
             bodyStyle={{ padding: 0, height: 'calc(100vh - 64px)' }}
@@ -152,7 +152,7 @@ const Investors = (props) => {
             </div>
           </Card>
         </Col>
-        <Col span={17} style={{}}>
+        <Col span={17} style={{ height: '100%' }}>
           <Card bodyStyle={{ padding: 0 }}>
             <Switch>
               <PrivateRoute path={`${url}/new-investor`} exact={true} component={AddInvestor} />
@@ -181,11 +181,10 @@ const useStyles = makeStyles({
     height: '100%',
   },
   investors: {
-    // height: '100%',
-    // width: '100%',
-    // borderRight: boxShadows.border,
-    // display: 'flex',
-    // flexDirection: 'column',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    // position: 'fixed',
   },
   investorsHeading: {
     padding: 15,
@@ -211,8 +210,8 @@ const useStyles = makeStyles({
     letterSpacing: '1px',
   },
   inventorListContainer: {
-    height: '100%',
-    overflowX: 'scroll',
+    flex: 1,
+    overflowY: 'scroll',
     '& > div': {
       padding: 5,
       cursor: 'pointer',

@@ -57,10 +57,12 @@ const AddInvestment = ({ match }) => {
     Api.InvestorRepository.addInvestment({
       formData: {
         ...values,
-        investor: investorId,
+        investorId,
+        amount: parseFloat(values.amount),
+        investmentProfit: parseFloat(values.investmentProfit),
         startDate: moment(values.startDate).format('YYYY-MM-DD h:mm:ss a'),
         duration: investmentDuration(values.interval),
-        businessId: currentBusiness.platformId,
+        platformId: currentBusiness.platformId,
       },
     });
   }
@@ -121,7 +123,7 @@ const AddInvestment = ({ match }) => {
               <Input size="large" placeholder="e.g 1 for montly" />
             </Form.Item>
             <Form.Item
-              name="percentProfit"
+              name="investmentProfit"
               label="Percent profit per interval"
               rules={[{ required: true, message: 'Percent profit is required!' }]}>
               <Input

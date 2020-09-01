@@ -20,7 +20,7 @@ const InvestorActivities = ({ investor }) => {
   // const classes = useStyles();
 
   useEffect(() => {
-    fetchBusinessHistory();
+    fetchInvstorHistory();
     // eslint-disable-next-line
   }, []);
 
@@ -34,7 +34,7 @@ const InvestorActivities = ({ investor }) => {
     // eslint-disable-next-line
   }, [status]);
 
-  function fetchBusinessHistory() {
+  function fetchInvstorHistory() {
     Api.InvestorRepository.getInvestorHistory({
       params: {
         investorId: investor.investorId,

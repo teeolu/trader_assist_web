@@ -27,7 +27,7 @@ const InvestorInvestments = ({ investor }) => {
   const investorsReturns = useSelector(getInvestorReturnsState);
 
   useEffect(() => {
-    fetchInvestors();
+    fetchInvestorInvestment();
     // eslint-disable-next-line
   }, []);
 
@@ -41,7 +41,7 @@ const InvestorInvestments = ({ investor }) => {
     // eslint-disable-next-line
   }, [status]);
 
-  function fetchInvestors() {
+  function fetchInvestorInvestment() {
     Api.InvestorRepository.getInvestorInvestment({
       params: {
         investorId,

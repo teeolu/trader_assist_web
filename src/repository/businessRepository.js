@@ -147,8 +147,8 @@ const BusinessRepository = function (axiosInstance) {
           },
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (status) {
             store.dispatch({
               type: GET_BUSINESS_OVERVIEW_REQUEST_SUCCESS,
               payload: { [selectedOption.option]: data },
@@ -174,7 +174,7 @@ const BusinessRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .get('/api/business/history', {
+        .get(`/history/platform`, {
           params: {
             businessId: store.getState().addBusiness.currentBusiness.platformId,
             startDate: selectedOption.startDate,
@@ -182,8 +182,8 @@ const BusinessRepository = function (axiosInstance) {
           },
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (status) {
             store.dispatch({
               type: GET_BUSINESS_HISTORY_REQUEST_SUCCESS,
               payload: {

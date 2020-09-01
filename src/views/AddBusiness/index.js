@@ -59,7 +59,6 @@ const AddBusiness = ({ businessAsStaff }) => {
       imageUploadUri: null,
       formData: data,
     }).then((data) => {
-      console.log('notificationConfigs notificationConfigs ', data);
       if (!!data) {
         notification['open']({
           message: `Registering your platform...`,
@@ -70,7 +69,7 @@ const AddBusiness = ({ businessAsStaff }) => {
         Api.BusinessRepository.addBusiness({
           formData: {
             ...values,
-            image: data,
+            platformImage: data,
           },
         }).then((success) => {
           if (success === true) {

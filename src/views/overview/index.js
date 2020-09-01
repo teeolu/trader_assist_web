@@ -2,9 +2,9 @@ import React, { useState, useRef } from 'react';
 import { Layout, Row, Col, Card } from 'antd';
 
 import './index.css';
-import PlatformActivities from './PlatformActivities';
+// import PlatformActivities from './PlatformActivities';
 import OverviewCalendar from './Calendar';
-// import CalendarDateDetails from './CalendarDateDetails';
+import CalendarDateReturns from './CalendarDateReturn';
 
 const { Content } = Layout;
 
@@ -37,8 +37,8 @@ const Overview = () => {
               <div
                 ref={calendarDetailContainerRef}
                 className="site-drawer-render-in-current-wrapper">
-                <PlatformActivities />
-                {/* <CalendarDateDetails dateToShowDetails={dateToShowDetails} /> */}
+                {/* <PlatformActivities /> */}
+                <CalendarDateReturns dateToShowDetails={dateToShowDetails} />
               </div>
             </Card>
           </Card>
