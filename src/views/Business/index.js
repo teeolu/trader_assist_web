@@ -13,6 +13,7 @@ import { getCurrentBusinessState } from '../../redux/business/addBusinessReducer
 import { Api } from '../../repository/Api';
 import SideBar from '../../components/SideBar';
 import NavHeader from '../../components/NavHeader';
+import Activities from '../Activities';
 
 export default (props) => {
   let {
@@ -39,13 +40,14 @@ export default (props) => {
     { path: PrivatePaths.OVERVIEW, exact: false, component: Overview },
     { path: PrivatePaths.RETURNS, exact: false, component: Returns },
     { path: PrivatePaths.INVESTMENTS, exact: false, component: Investments },
+    { path: PrivatePaths.ACTIVITIES, exact: false, component: Activities },
     { path: PrivatePaths.SETTINGS, exact: false, component: Settings },
   ];
   return (
     <>
       <NavHeader />
       <Layout className="site-layout" style={{ height: '100%' }}>
-        <SideBar url={url} />}
+        <SideBar url={url} />
         {businessRoutes.map((route) => {
           const routePath = `${path}${route.path}`;
           return <PrivateRoute path={routePath} exact={route.exact} component={route.component} />;

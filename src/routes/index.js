@@ -39,6 +39,7 @@ export const PrivatePaths = {
   MY_PROFILE: '/my-profile',
   CREATE_PLATFORM: '/my-profile/create-platform',
   BUSINESS: '/platform/:platformId',
+  ACTIVITIES: '/activities',
 };
 
 const privateRoutes = [

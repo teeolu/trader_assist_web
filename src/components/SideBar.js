@@ -8,6 +8,7 @@ import {
   DownloadOutlined,
   SettingOutlined,
   UserOutlined,
+  HistoryOutlined,
 } from '@ant-design/icons';
 import { makeStyles } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
@@ -33,6 +34,11 @@ const SideBar = ({ url }) => {
       name: 'Investors',
       icon: UsergroupAddOutlined,
       path: `${url}${PrivatePaths.INVESTORS}`,
+    },
+    {
+      name: 'Activities',
+      icon: HistoryOutlined,
+      path: `${url}${PrivatePaths.ACTIVITIES}`,
     },
     {
       name: 'Returns',

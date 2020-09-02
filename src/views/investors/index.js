@@ -3,7 +3,7 @@ import { Layout, Tooltip, Button, notification, Spin, Space, Row, Col, Card } fr
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { PlusSquareOutlined } from '@ant-design/icons';
-import { Switch, Link } from 'react-router-dom';
+import { Switch, Link, Route } from 'react-router-dom';
 
 import {
   getIsFetchingState,
@@ -32,6 +32,8 @@ const Investors = (props) => {
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
   const investorsData = useSelector(getInvestorsState);
+
+  const colorPairs = ['#f8b703', '#0fa2a9', '#949217', '#7d3865', '#d7743b'];
 
   useEffect(() => {
     fetchInvestors();
@@ -68,22 +70,47 @@ const Investors = (props) => {
   }
   const classes = useStyles();
 
+  function renderEmptyInvestorView() {
+    return (
+      <div
+        style={{
+          ...typography.caption,
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <p>Details of an investor will appear here </p>
+        <p style={{ color: colors.black }}>Click on an investor to view the investor details</p>
+        <p style={{ color: colors.black }}>
+          Or <Link to={`${url}/new-investor`}>Add an Investor</Link> to start
+        </p>
+      </div>
+    );
+  }
+
   function renderInvestorsList() {
     return (
       <div className={classes.inventorListContainer}>
         {investorsData.investors.map((investor, i) => {
           const isActive = existInUrl(investor.investorId) === investor.investorId;
+          const bgColor = colorPairs[Math.floor(Math.random() * Math.floor(5))];
           return (
             <div
               key={investor.investorId}
               className={classes.investorContainer}
               onClick={() => history.push(`${url}/${investor.investorId}`)}
               style={{
-                backgroundColor: isActive && colors.pinkLight,
-                borderLeft: `3px solid ${isActive ? colors.pinkDark : 'transparent'}`,
+                backgroundColor: isActive && colors.gray3,
               }}>
-              <div className={classes.investorIsActiveIndicator}>
-                {investor.investorFullName.substring(0, 2)}
+              <div
+                style={{
+                  backgroundColor: bgColor,
+                  color: colors.white,
+                }}
+                className={classes.investorIsActiveIndicator}>
+                {investor.investorFullName[0]}
                 <div
                   style={{
                     backgroundColor:
@@ -93,9 +120,10 @@ const Investors = (props) => {
               <div className={classes.investorInfo}>
                 <p
                   style={{
-                    ...typography.paragraph,
-                    fontFamily: fonts.semiBold,
                     marginBottom: 0,
+                    color: colors.black,
+                    textTransform: 'capitalize',
+                    fontSize: '1.2em',
                   }}>
                   {investor.investorFullName}
                 </p>
@@ -110,8 +138,8 @@ const Investors = (props) => {
 
   return (
     <Content style={{ height: '100%' }}>
-      <Row gutter={0} style={{ height: '100%' }}>
-        <Col span={7}>
+      <Row gutter={0}>
+        <Col span={8}>
           <Card
             bodyStyle={{ padding: 0, height: 'calc(100vh - 64px)' }}
             style={{
@@ -152,23 +180,23 @@ const Investors = (props) => {
             </div>
           </Card>
         </Col>
-        <Col span={17} style={{ height: '100%' }}>
-          <Card bodyStyle={{ padding: 0 }}>
-            <Switch>
-              <PrivateRoute path={`${url}/new-investor`} exact={true} component={AddInvestor} />
-              <PrivateRoute path={`${url}/:investorId`} exact={true} component={InvestorDetails} />
-              <PrivateRoute
-                path={`${url}/:investorId/new-investment`}
-                exact={true}
-                component={AddInvestment}
-              />
-              <PrivateRoute
-                path={`${url}/:investorId/edit-investor`}
-                exact={true}
-                component={EditInvestor}
-              />
-            </Switch>
-          </Card>
+        <Col span={16} style={{ backgroundColor: colors.white }}>
+          <Switch>
+            <PrivateRoute path={`${url}/new-investor`} exact={true} component={AddInvestor} />
+            <PrivateRoute path={`${url}/:investorId`} exact={true} component={InvestorDetails} />
+            <PrivateRoute
+              path={`${url}/:investorId/new-investment`}
+              exact={true}
+              component={AddInvestment}
+            />
+            <PrivateRoute
+              path={`${url}/:investorId/edit-investor`}
+              exact={true}
+              component={EditInvestor}
+            />
+
+            <Route render={renderEmptyInvestorView} />
+          </Switch>
         </Col>
       </Row>
     </Content>
@@ -189,7 +217,7 @@ const useStyles = makeStyles({
   investorsHeading: {
     padding: 15,
     width: '100%',
-    height: 50,
+    height: 70,
     borderBottom: boxShadows.border,
     display: 'flex',
     alignItems: 'center',
@@ -198,6 +226,7 @@ const useStyles = makeStyles({
   investorContainer: {
     transition: '.3s all',
     backgroundColor: 'transparent',
+    padding: 15,
     '&:hover': {
       backgroundColor: colors.gray2,
     },
@@ -213,7 +242,7 @@ const useStyles = makeStyles({
     flex: 1,
     overflowY: 'scroll',
     '& > div': {
-      padding: 5,
+      padding: 15,
       cursor: 'pointer',
       display: 'flex',
       alignItems: 'center',
@@ -232,8 +261,6 @@ const useStyles = makeStyles({
     height: 40,
     width: 40,
     borderRadius: 56,
-    backgroundColor: '#1ee9a4',
-    color: colors.pinkDark,
     textTransform: 'uppercase',
     display: 'flex',
     alignItems: 'center',
