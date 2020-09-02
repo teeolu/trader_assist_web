@@ -95,10 +95,12 @@ const Investments = (props) => {
         <Link to={`${path}/${investmentId}`}>
           <Row key={1} gutter={0} className={classes.activitiesRow}>
             <Col span={15}>
-              <p style={{ color: colors.black, width: '80%', margin: 0 }}>ACU/INVEST/5667</p>
+              <p style={{ color: colors.black, width: '80%', margin: 0, letterSpacing: '1px' }}>
+                ACU/INVEST/5667
+              </p>
             </Col>
             <Col span={3}>
-              <span>&#8358;{'12999'.toLocaleString()}</span>
+              <p style={{ margin: 0, color: colors.black2 }}>&#8358;{'12999'.toLocaleString()}</p>
             </Col>
             <Col span={3}>
               <Row>
@@ -156,18 +158,19 @@ const Investments = (props) => {
               style={{
                 padding: 20,
                 borderBottom: boxShadows.border,
+                alignItems: 'center',
               }}>
               <Col span={12}>
-                <Select
-                  size="large"
-                  defaultValue="lucy"
-                  style={{ width: 120 }}
-                  onChange={handleChange}>
-                  <Option value="jack">All</Option>
-                  <Option value="lucy">Investors</Option>
-                  <Option value="Yiminghe">Investment</Option>
-                  <Option value="Yiminghe">Returns</Option>
-                </Select>
+                <p
+                  style={{
+                    ...typography.h4,
+                    color: colors.pinkDark,
+                    width: '80%',
+                    margin: 0,
+                    letterSpacing: '1px',
+                  }}>
+                  Investments
+                </p>
               </Col>
               <Col
                 span={12}
