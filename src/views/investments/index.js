@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Switch } from 'react-router-dom';
-import { Table, Tabs, Layout, Row, Col, Card, notification, Select } from 'antd';
+import { Switch, Link } from 'react-router-dom';
+import { DatePicker, Layout, Row, Col, Card, notification, Select } from 'antd';
 
 import {
   getIsFetchingState,
@@ -10,7 +10,7 @@ import {
   getStatusState,
   Status,
 } from '../../redux/investment/getInvestmentsReducer';
-import { colors, typography } from '../../Css';
+import { colors, typography, boxShadows } from '../../Css';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { Api } from '../../repository/Api';
 import { overviewOptions } from '../../constants/dateFilter';
@@ -19,17 +19,17 @@ import history from '../../routes/history';
 import PrivateRoute from '../../routes/PrivateRoute';
 import { makeStyles } from '@material-ui/styles';
 import InvestmentDetails from './InvestmentsDetail';
+import { activites } from '../Activities/mock';
 
-const { TabPane } = Tabs;
 const { Content } = Layout;
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const Investments = (props) => {
   let {
     match: { path },
     location: { pathname },
   } = props;
-  const investmentIdFromParam = pathname.split(`${path}/`)[1];
 
   const [selectedOption, setSelectedOption] = useState(overviewOptions[0]);
   const [activeTab, setActiveTab] = useState(0);
@@ -80,106 +80,64 @@ const Investments = (props) => {
     });
   }
 
-  const columns = [
-    {
-      title: 'Investor',
-      dataIndex: 'investor',
-      ellipsis: true,
-      render: (investor) => {
-        return <p style={{ marginBottom: 0 }}>{investor.fullName}</p>;
-      },
-      width: 150,
-    },
-    {
-      title: 'Amount',
-      dataIndex: 'amount',
-      render: (amount) => <span>&#8358;{amount.toLocaleString()}</span>,
-    },
-    {
-      title: 'Status',
-      dataIndex: 'isActive',
-      render: (isActive) => {
-        const color = isActive ? colors.green : colors.red;
-        const tag = isActive ? 'Active' : 'Inactive';
-        return (
-          <Row>
-            <span
-              style={{
-                ...typography.captionMedium,
-                border: `1px solid ${color}`,
-                borderRadius: 5,
-                padding: '3px 5px',
-                color,
-                display: 'inline-block',
-              }}>
-              {tag}
-            </span>
-          </Row>
-        );
-      },
-    },
-    {
-      title: 'Confirmed',
-      dataIndex: 'isConfirmed',
-      render: (isConfirmed, { confirmedBy }) => {
-        const color = isConfirmed ? colors.blue : colors.red;
-        const tag = isConfirmed ? confirmedBy.fullName : 'unconfirmed';
-        return (
-          <Row>
-            <span
-              style={
-                !isConfirmed
-                  ? {
-                      ...typography.captionMedium,
-                      border: `1px solid ${color}`,
-                      borderRadius: 5,
-                      padding: '3px 5px',
-                      color,
-                      display: 'inline-block',
-                    }
-                  : null
-              }>
-              {tag}
-            </span>
-          </Row>
-        );
-      },
-    },
-    {
-      title: 'Start date',
-      dataIndex: 'startDate',
-      render: (date, record) => {
-        /** You should ensure you add startDate to the schema */
-        return humanReadableTime(record.startDate ? record.startDate : record.createdAt);
-      },
-    },
-  ];
-
   function renderTable() {
-    return (
-      <Table
-        loading={isFetching}
-        columns={columns}
-        rowClassName={(investment) => {
-          if (!!investmentIdFromParam) {
-            if (investment._id === investmentIdFromParam) return classes.activeRow;
-          }
-        }}
-        dataSource={
-          !!investments.investments[selectedOption.option]
-            ? sortBaseOnTime(investments.investments[selectedOption.option].data)
-            : []
-        }
-        onRow={(investment) => {
-          return {
-            onClick: (event) => {
-              history.push(`${path}/${investment._id}`);
-            },
-          };
-        }}
-        pagination={{ pageSize: 10 }}
-      />
-    );
+    const dataSource = !!investments.investments[selectedOption.option]
+      ? sortBaseOnTime(investments.investments[selectedOption.option].data)
+      : [];
+    return activites.map((el, i) => {
+      const investmentId = 1; // investment._id;
+      const color = el.isConfirmed ? colors.blue : colors.red;
+      const tag = el.isConfirmed ? el.confirmedBy.fullName : 'unconfirmed';
+      const isActiveColor = el.isActive ? colors.green : colors.red;
+      const isActiveTag = el.isActive ? 'Active' : 'Inactive';
+
+      return (
+        <Link to={`${path}/${investmentId}`}>
+          <Row key={1} gutter={0} className={classes.activitiesRow}>
+            <Col span={15}>
+              <p style={{ color: colors.black, width: '80%', margin: 0 }}>ACU/INVEST/5667</p>
+            </Col>
+            <Col span={3}>
+              <span>&#8358;{'12999'.toLocaleString()}</span>
+            </Col>
+            <Col span={3}>
+              <Row>
+                <span
+                  style={{
+                    ...typography.captionMedium,
+                    border: `1px solid ${isActiveColor}`,
+                    borderRadius: 5,
+                    padding: '3px 5px',
+                    color,
+                    display: 'inline-block',
+                  }}>
+                  {isActiveTag}
+                </span>
+              </Row>
+            </Col>
+            <Col span={3}>
+              <Row>
+                <span
+                  style={
+                    !el.isConfirmed
+                      ? {
+                          ...typography.captionMedium,
+                          border: `1px solid ${color}`,
+                          borderRadius: 5,
+                          padding: '3px 5px',
+                          color,
+                          display: 'inline-block',
+                        }
+                      : null
+                  }>
+                  {tag}
+                </span>
+              </Row>
+            </Col>
+          </Row>
+        </Link>
+      );
+    });
   }
 
   function handleChange(value) {
@@ -187,35 +145,48 @@ const Investments = (props) => {
     setSelectedOption(option);
   }
 
-  const operations = (
-    <Select defaultValue={overviewOptions[0].option} style={{ width: 120 }} onChange={handleChange}>
-      {overviewOptions.map((el) => (
-        <Option key={el.option} value={el.option}>
-          {el.option}
-        </Option>
-      ))}
-    </Select>
-  );
-
   return (
     <Content>
       <Row gutter={0}>
         <Col span={17}>
           <Card style={{ minHeight: 'calc(100vh - 64px)' }} bodyStyle={{ padding: 0 }}>
-            <Tabs
-              tabBarExtraContent={operations}
-              animated={false}
-              onChange={(activeKey) => setActiveTab(activeKey)}>
-              <TabPane tab="All" key="0">
-                {renderTable()}
-              </TabPane>
-              <TabPane tab="Unconfirmed" key="1">
-                {renderTable()}
-              </TabPane>
-              <TabPane tab="Confirmed" key="2">
-                {renderTable()}
-              </TabPane>
-            </Tabs>
+            <Row
+              key={1}
+              gutter={0}
+              style={{
+                padding: 20,
+                borderBottom: boxShadows.border,
+              }}>
+              <Col span={12}>
+                <Select
+                  size="large"
+                  defaultValue="lucy"
+                  style={{ width: 120 }}
+                  onChange={handleChange}>
+                  <Option value="jack">All</Option>
+                  <Option value="lucy">Investors</Option>
+                  <Option value="Yiminghe">Investment</Option>
+                  <Option value="Yiminghe">Returns</Option>
+                </Select>
+              </Col>
+              <Col
+                span={12}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                }}>
+                <RangePicker size="large" />
+              </Col>
+            </Row>
+            <Row key={1} gutter={0} className={classes.activitiesRow}>
+              <Col span={15}>
+                <p style={{ color: colors.black, width: '80%', margin: 0 }}>Investment ref</p>
+              </Col>
+              <Col span={3}>Amount</Col>
+              <Col span={3}>Status</Col>
+              <Col span={3}>Confirmed</Col>
+            </Row>
+            {renderTable()}
           </Card>
         </Col>
         <Col span={7}>
@@ -246,6 +217,111 @@ const useStyles = makeStyles({
   activeRow: {
     backgroundColor: colors.pinkLight,
   },
+  activitiesRow: {
+    padding: 20,
+    borderBottom: boxShadows.border,
+    cursor: 'pointer',
+    transition: '.3s all',
+    '&:hover': { backgroundColor: colors.gray3 },
+  },
 });
 
 export default Investments;
+
+// <Table
+//   loading={isFetching}
+//   columns={columns}
+//   rowClassName={(investment) => {
+//     if (!!investmentIdFromParam) {
+//       if (investment._id === investmentIdFromParam) return classes.activeRow;
+//     }
+//   }}
+//   dataSource={
+//     !!investments.investments[selectedOption.option]
+//       ? sortBaseOnTime(investments.investments[selectedOption.option].data)
+//       : []
+//   }
+//   onRow={(investment) => {
+//     return {
+//       onClick: (event) => {
+//         history.push(`${path}/${investment._id}`);
+//       },
+//     };
+//   }}
+//   pagination={{ pageSize: 10 }}
+// />
+
+// const columns = [
+//   {
+//     title: 'Investor',
+//     dataIndex: 'investor',
+//     ellipsis: true,
+//     render: (investor) => {
+//       return <p style={{ marginBottom: 0 }}>{investor.fullName}</p>;
+//     },
+//     width: 150,
+//   },
+//   {
+//     title: 'Amount',
+//     dataIndex: 'amount',
+//     render: (amount) => <span>&#8358;{amount.toLocaleString()}</span>,
+//   },
+//   {
+//     title: 'Status',
+//     dataIndex: 'isActive',
+//     render: (isActive) => {
+//       const color = isActive ? colors.green : colors.red;
+//       const tag = isActive ? 'Active' : 'Inactive';
+//       return (
+//         <Row>
+//           <span
+//             style={{
+//               ...typography.captionMedium,
+//               border: `1px solid ${color}`,
+//               borderRadius: 5,
+//               padding: '3px 5px',
+//               color,
+//               display: 'inline-block',
+//             }}>
+//             {tag}
+//           </span>
+//         </Row>
+//       );
+//     },
+//   },
+//   {
+//     title: 'Confirmed',
+//     dataIndex: 'isConfirmed',
+//     render: (isConfirmed, { confirmedBy }) => {
+//       const color = isConfirmed ? colors.blue : colors.red;
+//       const tag = isConfirmed ? confirmedBy.fullName : 'unconfirmed';
+//       return (
+//         <Row>
+//           <span
+//             style={
+//               !isConfirmed
+//                 ? {
+//                     ...typography.captionMedium,
+//                     border: `1px solid ${color}`,
+//                     borderRadius: 5,
+//                     padding: '3px 5px',
+//                     color,
+//                     display: 'inline-block',
+//                   }
+//                 : null
+//             }>
+//             {tag}
+//           </span>
+//         </Row>
+//       );
+//     },
+//   },
+//   {
+//     title: 'Start date',
+//     dataIndex: 'startDate',
+//     render: (date, record) => {
+//       /** You should ensure you add startDate to the schema */
+//       return humanReadableTime(record.startDate ? record.startDate : record.createdAt);
+//     },
+//   },
+// ];
