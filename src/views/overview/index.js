@@ -2,9 +2,9 @@ import React, { useState, useRef } from 'react';
 import { Layout, Row, Col, Card } from 'antd';
 
 import './index.css';
-// import PlatformActivities from './PlatformActivities';
 import OverviewCalendar from './Calendar';
 import CalendarDateReturns from './CalendarDateReturn';
+import { typography, colors, boxShadows } from '../../Css';
 
 const { Content } = Layout;
 
@@ -21,27 +21,34 @@ const Overview = () => {
           </Card>
         </Col>
         <Col span={7} style={{}}>
-          <Card
-            bodyStyle={{ padding: 0 }}
+          <div
             style={{
               height: 'calc(100vh - 64px)',
               position: 'sticky',
-              backgroundColor: 'transparent',
+              backgroundColor: colors.white,
               top: 0,
             }}>
-            <Card
-              bodyStyle={{ padding: 0 }}
-              style={{
-                height: 'calc(100vh - 64px)',
-              }}>
+            {!!dateToShowDetails ? (
+              <CalendarDateReturns dateToShowDetails={dateToShowDetails} />
+            ) : (
               <div
-                ref={calendarDetailContainerRef}
-                className="site-drawer-render-in-current-wrapper">
-                {/* <PlatformActivities /> */}
-                <CalendarDateReturns dateToShowDetails={dateToShowDetails} />
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: 0,
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  fontSize: '1.3em',
+                  height: '100%',
+                  textAlign: 'center',
+                  color: colors.pinkDark,
+                }}>
+                <p style={{ width: '80%', borderBottom: boxShadows.border, paddingBottom: 15 }}>
+                  Click on a date in the calendar to see all the returns and investment for the day
+                </p>
               </div>
-            </Card>
-          </Card>
+            )}
+          </div>
         </Col>
       </Row>
     </Content>

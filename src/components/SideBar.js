@@ -76,11 +76,12 @@ const SideBar = ({ url }) => {
           style={{ flex: 1 }}>
           {SideBarContents.map((el) => {
             const Icon = el.icon;
+            const color = existInUrl(el.name.toLowerCase()) ? colors.pinkDark : colors.black3;
+
             return (
               <Menu.Item
                 style={{
                   height: 50,
-                  color: colors.black2,
                   fontWeight: 600,
                   display: 'flex',
                   alignItems: 'center',
@@ -90,11 +91,17 @@ const SideBar = ({ url }) => {
                   <Icon
                     style={{
                       fontSize: fontsize.h4,
-                      color: colors.black,
+                      color,
                     }}
                   />
                 }>
-                <Link to={el.path}>{el.name}</Link>
+                <Link
+                  style={{
+                    color,
+                  }}
+                  to={el.path}>
+                  {el.name}
+                </Link>
               </Menu.Item>
             );
           })}

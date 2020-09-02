@@ -48,32 +48,20 @@ const SearchBox = () => {
       label: renderTitle('Libraries'),
       options: [renderItem('AntDesign', 10000), renderItem('AntDesign UI', 10600)],
     },
-    {
-      label: renderTitle('Solutions'),
-      options: [renderItem('AntDesign UI FAQ', 60100), renderItem('AntDesign FAQ', 30010)],
-    },
-    {
-      label: renderTitle('Articles'),
-      options: [renderItem('AntDesign design language', 100000)],
-    },
   ];
 
   return (
     <AutoComplete
       dropdownClassName="certain-category-search-dropdown"
       dropdownMatchSelectWidth={500}
-      style={{ width: 250 }}
-      // children={(...arg) => {
-      //   console.log('arg arg ', arg);
-      //   return <div>Render your component here</div>;
-      // }}
       options={options}>
       <Search
-        placeholder="input search text"
+        placeholder="Search for investor, investment, and returns"
         onSearch={(value) => console.log(value)}
         enterButton
+        size="large"
         style={{
-          marginLeft: 50,
+          width: 500,
         }}
       />
     </AutoComplete>

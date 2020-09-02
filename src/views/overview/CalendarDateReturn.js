@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { notification, List } from 'antd';
+import { notification, List, Spin } from 'antd';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 
@@ -62,6 +62,10 @@ const CalendarDateReturns = ({ dateToShowDetails }) => {
         .reduce((prev, curr) => prev + curr, 0)
     : null;
 
+  const dataSource = !!returns.returns[selectedOption.option]
+    ? sortBaseOnTime(returns.returns[selectedOption.option].data)
+    : [];
+
   return (
     <>
       <div style={{ padding: 10 }}>
@@ -79,11 +83,7 @@ const CalendarDateReturns = ({ dateToShowDetails }) => {
         <List
           itemLayout="horizontal"
           loading={isFetching}
-          dataSource={
-            !!returns.returns[selectedOption.option]
-              ? sortBaseOnTime(returns.returns[selectedOption.option].data)
-              : []
-          }
+          dataSource={dataSource}
           renderItem={(returns) => {
             const {
               _id,

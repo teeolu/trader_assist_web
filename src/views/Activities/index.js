@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { UploadOutlined, DownloadOutlined, UserOutlined } from '@ant-design/icons';
-import { Layout, Row, Card, notification, Col } from 'antd';
+import { Layout, Row, Card, notification, Col, Select, DatePicker } from 'antd';
 
 import {
   getIsFetchingState,
@@ -19,6 +19,10 @@ import { humanReadableTime } from '../../utils/time';
 import { makeStyles } from '@material-ui/styles';
 import { activites } from './mock';
 
+const { Content } = Layout;
+const { Option } = Select;
+const { RangePicker } = DatePicker;
+
 const ActivityIcons = {
   investor: UserOutlined,
   investment: DownloadOutlined,
@@ -30,8 +34,6 @@ const ActivityColors = {
   investment: '#0fa2a9',
   return: '#949217',
 };
-
-const { Content } = Layout;
 
 const Activities = (props) => {
   const [selectedOption, setSelectedOption] = useState(overviewOptions[0]);
@@ -83,6 +85,10 @@ const Activities = (props) => {
     });
   }
 
+  function handleChange(value) {
+    console.log(`selected ${value}`);
+  }
+
   function renderActivitiesRows() {
     return activites.map((el, i) => {
       const Icon = ActivityIcons[el.type];
@@ -92,8 +98,8 @@ const Activities = (props) => {
             <Col span={2}>
               <div
                 style={{
-                  height: 50,
-                  width: 50,
+                  height: 40,
+                  width: 40,
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
@@ -126,6 +132,30 @@ const Activities = (props) => {
   return (
     <Content>
       <Card style={{ minHeight: 'calc(100vh - 64px)' }} bodyStyle={{ padding: 0 }}>
+        <Row
+          key={1}
+          gutter={0}
+          style={{
+            padding: 20,
+            borderBottom: boxShadows.border,
+          }}>
+          <Col span={12}>
+            <Select size="large" defaultValue="lucy" style={{ width: 120 }} onChange={handleChange}>
+              <Option value="jack">All</Option>
+              <Option value="lucy">Investors</Option>
+              <Option value="Yiminghe">Investment</Option>
+              <Option value="Yiminghe">Returns</Option>
+            </Select>
+          </Col>
+          <Col
+            span={12}
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+            }}>
+            <RangePicker size="large" />
+          </Col>
+        </Row>
         {renderActivitiesRows()}
       </Card>
     </Content>

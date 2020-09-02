@@ -102,7 +102,7 @@ const ReturnsRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .get('/api/business/return-overview', {
+        .get('/return-overview', {
           params: {
             businessId,
             ...params,
@@ -117,11 +117,12 @@ const ReturnsRepository = function (axiosInstance) {
               payload: data,
             });
             return;
+          } else {
+            store.dispatch({
+              type: GET_RETURNS_CALENDAR_OVERVIEW_REQUEST_FAILURE,
+              payload: message,
+            });
           }
-          store.dispatch({
-            type: GET_RETURNS_CALENDAR_OVERVIEW_REQUEST_FAILURE,
-            payload: message,
-          });
         })
         .catch(function (error) {
           store.dispatch({
