@@ -171,8 +171,11 @@ const InvestorRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .get(`/investors/${platformId}`, {
-          params,
+        .get(`/investors`, {
+          params: {
+            ...params,
+            platformId,
+          },
         })
         .then(function (response) {
           const { status, message, data } = response.data;
@@ -180,8 +183,8 @@ const InvestorRepository = function (axiosInstance) {
             store.dispatch({
               type: GET_INVESTORS_REQUEST_SUCCESS,
               payload: {
-                investors: data.data,
-                total: data.total,
+                investors: data,
+                total: data.length,
               },
             });
             return;

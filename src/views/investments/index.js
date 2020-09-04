@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Switch, Link } from 'react-router-dom';
+import { Switch, Link, Route } from 'react-router-dom';
 import { DatePicker, Layout, Row, Col, Card, notification, Select } from 'antd';
 
 import {
@@ -14,15 +14,13 @@ import { colors, typography, boxShadows } from '../../Css';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { Api } from '../../repository/Api';
 import { overviewOptions } from '../../constants/dateFilter';
-import { humanReadableTime, sortBaseOnTime } from '../../utils/time';
-import history from '../../routes/history';
 import PrivateRoute from '../../routes/PrivateRoute';
 import { makeStyles } from '@material-ui/styles';
 import InvestmentDetails from './InvestmentsDetail';
 import { activites } from '../Activities/mock';
+import { sortBaseOnTime } from '../../utils/time';
 
 const { Content } = Layout;
-const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 const Investments = (props) => {
@@ -43,7 +41,7 @@ const Investments = (props) => {
   useEffect(() => {
     fetchInvestments();
     // eslint-disable-next-line
-  }, [selectedOption.option, activeTab]);
+  }, [selectedOption.option]);
 
   useEffect(() => {
     if (status === Status.GET_INVESTMENTS_REQUEST_FAILURE) {
@@ -142,11 +140,6 @@ const Investments = (props) => {
     });
   }
 
-  function handleChange(value) {
-    let option = overviewOptions.find((el) => el.option === value);
-    setSelectedOption(option);
-  }
-
   return (
     <Content>
       <Row gutter={0}>
@@ -193,11 +186,12 @@ const Investments = (props) => {
           </Card>
         </Col>
         <Col span={7}>
-          <Card
+          <div
             style={{
               height: 'calc(100vh - 64px)',
               position: 'sticky',
-              top: 20,
+              backgroundColor: colors.white,
+              top: 0,
             }}
             bodyStyle={{ padding: 15 }}>
             <Switch>
@@ -208,8 +202,29 @@ const Investments = (props) => {
                   <InvestmentDetails selectedOption={selectedOption} {...props} />
                 )}
               />
+              <Route
+                render={() => (
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      marginBottom: 0,
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      fontSize: '1.3em',
+                      height: '100%',
+                      textAlign: 'center',
+                      color: colors.pinkDark,
+                    }}>
+                    <p style={{ width: '80%', borderBottom: boxShadows.border, paddingBottom: 15 }}>
+                      Click on a date in the calendar to see all the returns and investment for the
+                      day
+                    </p>
+                  </div>
+                )}
+              />
             </Switch>
-          </Card>
+          </div>
         </Col>
       </Row>
     </Content>

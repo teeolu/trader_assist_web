@@ -68,7 +68,7 @@ const CalendarDateReturns = ({ dateToShowDetails }) => {
 
   return (
     <>
-      <div style={{ padding: 10 }}>
+      <div style={{ padding: '20px 10px' }}>
         <p
           style={{
             display: 'flex',

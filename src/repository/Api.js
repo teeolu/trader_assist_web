@@ -16,7 +16,7 @@ const config = {
   baseURL: `https://trader-assistant-backend.herokuapp.com/trader-assistant`, //`http://localhost:4000/trader-assistant`, //
 };
 
-const instance = axios.create(config);
+export const instance = axios.create(config);
 
 if (Auth.isAuthenticated() === true) {
   instance.defaults.headers.common['authorization'] = `Bearer ${Auth.getToken()}`;

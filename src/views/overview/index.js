@@ -10,7 +10,6 @@ const { Content } = Layout;
 
 const Overview = () => {
   const [dateToShowDetails, setDateToShowDetail] = useState(null);
-  const calendarDetailContainerRef = useRef();
 
   return (
     <Content>

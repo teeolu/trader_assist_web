@@ -64,7 +64,7 @@ const Investors = (props) => {
   function fetchInvestors(search = '') {
     Api.InvestorRepository.getInvestors({
       params: {
-        search,
+        // search,
       },
     });
   }
@@ -194,7 +194,6 @@ const Investors = (props) => {
               exact={true}
               component={EditInvestor}
             />
-
             <Route render={renderEmptyInvestorView} />
           </Switch>
         </Col>
