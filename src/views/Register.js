@@ -27,6 +27,7 @@ const Register = () => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   function onFinish(values) {
@@ -41,12 +42,7 @@ const Register = () => {
 
   return (
     <div style={{ position: 'relative' }}>
-      <OnboardingLayout
-        title="Register on Trader assist"
-        caption="Enter your details below"
-        actionTxt="sign in"
-        id="rgister"
-        onSubmit={onFinish}>
+      <OnboardingLayout title="Register" actionTxt="sign in" id="register" onSubmit={onFinish}>
         <Form
           form={form}
           name="register"

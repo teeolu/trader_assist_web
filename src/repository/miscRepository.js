@@ -19,7 +19,7 @@ const MiscRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .post('/api/image-upload/add', formData, {
+        .post('/image-upload', formData, {
           onUploadProgress: function (progressEvent) {
             var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
 
@@ -30,8 +30,8 @@ const MiscRepository = function (axiosInstance) {
           },
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (status) {
             store.dispatch({
               type: IMAGE_UPLOAD_REQUEST_SUCCESS,
             });

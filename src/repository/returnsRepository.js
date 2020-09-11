@@ -18,31 +18,30 @@ import { overviewOptions } from '../constants/dateFilter';
 const ReturnsRepository = function (axiosInstance) {
   let _ReturnsRepository = {
     getReturns: function ({ selectedOption = {}, params = {} }) {
-      let businessId = store.getState().addBusiness.currentBusiness._id;
+      let businessId = store.getState().addBusiness.currentBusiness.platformId;
       if (!selectedOption.startDate || !selectedOption.endDate) selectedOption = overviewOptions[0];
       store.dispatch({
         type: GET_RETURNS_REQUEST,
       });
 
       return axiosInstance
-        .get('/api/business/returns', {
+        .get(`/returns/${businessId}`, {
           params: {
-            businessId,
             startDate: selectedOption.startDate,
             endDate: selectedOption.endDate,
             ...params,
           },
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (status) {
             store.dispatch({
               type: GET_RETURNS_REQUEST_SUCCESS,
               payload: {
                 returns: {
                   [selectedOption.option]: {
-                    data: data.returns,
-                    size: data.size,
+                    data: data.data,
+                    size: data.total,
                   },
                 },
               },
@@ -62,7 +61,7 @@ const ReturnsRepository = function (axiosInstance) {
         });
     },
     getReturnById: function ({ params = {} }) {
-      let businessId = store.getState().addBusiness.currentBusiness._id;
+      let businessId = store.getState().addBusiness.currentBusiness.platformId;
       store.dispatch({
         type: GET_RETURN_REQUEST,
       });
@@ -75,9 +74,9 @@ const ReturnsRepository = function (axiosInstance) {
           },
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
+          const { status, message, data } = response.data;
 
-          if (success) {
+          if (status) {
             store.dispatch({
               type: GET_RETURN_REQUEST_SUCCESS,
               payload: { [data._id]: data },
@@ -97,32 +96,33 @@ const ReturnsRepository = function (axiosInstance) {
         });
     },
     getReturnsCalendarOverviewId: function ({ params = {} }) {
-      let businessId = store.getState().addBusiness.currentBusiness._id;
+      let businessId = store.getState().addBusiness.currentBusiness.platformId;
       store.dispatch({
         type: GET_RETURNS_CALENDAR_OVERVIEW_REQUEST,
       });
 
       return axiosInstance
-        .get('/api/business/return-overview', {
+        .get('/return-overview', {
           params: {
             businessId,
             ...params,
           },
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
+          const { status, message, data } = response.data;
           // console.log('GET_RETURNS_CALENDAR_OVERVIEW_REQUEST ', params, response.data);
-          if (success) {
+          if (status) {
             store.dispatch({
               type: GET_RETURNS_CALENDAR_OVERVIEW_REQUEST_SUCCESS,
               payload: data,
             });
             return;
+          } else {
+            store.dispatch({
+              type: GET_RETURNS_CALENDAR_OVERVIEW_REQUEST_FAILURE,
+              payload: message,
+            });
           }
-          store.dispatch({
-            type: GET_RETURNS_CALENDAR_OVERVIEW_REQUEST_FAILURE,
-            payload: message,
-          });
         })
         .catch(function (error) {
           store.dispatch({
@@ -139,8 +139,8 @@ const ReturnsRepository = function (axiosInstance) {
       return axiosInstance
         .put('/api/business/returns', formData)
         .then(function (response) {
-          const { success, message } = response.data;
-          if (success) {
+          const { status, message } = response.data;
+          if (status) {
             _ReturnsRepository.getReturns({ selectedOption, params });
             store.dispatch({
               type: EDIT_RETURNS_REQUEST_SUCCESS,

@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react';
 import { List, Collapse, Card, notification } from 'antd';
-import { makeStyles } from '@material-ui/styles';
 import { CaretRightOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 
 import { colors, typography } from '../../../Css';
 import {
-  getIsFetchingState,
   getInvestorInvestmentsState,
   getErrorMessageState,
   getStatusState,
@@ -20,7 +18,7 @@ import { sortBaseOnTime, humanReadableTime } from '../../../utils/time';
 const { Panel } = Collapse;
 
 const InvestorInvestments = ({ investor }) => {
-  const investorId = investor._id;
+  const investorId = investor.investorId;
   // const classes = useStyles();
   // const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
@@ -29,7 +27,8 @@ const InvestorInvestments = ({ investor }) => {
   const investorsReturns = useSelector(getInvestorReturnsState);
 
   useEffect(() => {
-    fetchInvestors();
+    fetchInvestorInvestment();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -39,9 +38,10 @@ const InvestorInvestments = ({ investor }) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
-  function fetchInvestors() {
+  function fetchInvestorInvestment() {
     Api.InvestorRepository.getInvestorInvestment({
       params: {
         investorId,
@@ -133,7 +133,7 @@ const InvestorInvestments = ({ investor }) => {
                     dataSource={generateInvestmentReturn(investment._id)}
                     renderItem={(returns) => {
                       const {
-                        _id,
+                        // _id,
                         amount,
                         isApproved,
                         isConfirmed,

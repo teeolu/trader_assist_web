@@ -5,6 +5,7 @@ import { combineReducers } from 'redux';
 import userRequestReducer from './auth/userRequestReducer';
 import loginReducer from './auth/loginReducer';
 import logoutReducer from './auth/logoutReducer';
+import approveUserReducer from './auth/approveUserReducer';
 
 import addInvestorReducer from './investor/addInvestorReducer';
 import addInvestmentReducer from './investor/addInvestmentReducer';
@@ -46,6 +47,7 @@ export default combineReducers({
   login: loginReducer,
   register: registerReducer,
   logout: logoutReducer,
+  approveUser: approveUserReducer,
 
   addInvestor: addInvestorReducer,
   getInvestors: getInvestorsReducer,

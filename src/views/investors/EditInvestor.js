@@ -55,6 +55,7 @@ const EditInvestor = (props) => {
       });
       history.goBack();
     }
+    // eslint-disable-next-line
   }, [status]);
 
   useEffect(() => {
@@ -65,6 +66,7 @@ const EditInvestor = (props) => {
         },
       });
     }
+    // eslint-disable-next-line
   }, [investorId]);
 
   function onFinish(values) {

@@ -47,7 +47,7 @@ const ReportDetails = (props) => {
     approvedBy,
     dueDate,
     investor,
-    _id,
+    // _id,
   } = returnsById[returnId] || {};
 
   const color = isReturnDue
@@ -79,6 +79,7 @@ const ReportDetails = (props) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   if (isFetching && !returnsById[returnId]) {
@@ -106,7 +107,7 @@ const ReportDetails = (props) => {
       <p>
         <Link
           to={`/${currentBusiness.businessName}${PrivatePaths.INVESTORS}/${
-            !!investor && investor._id
+            !!investor && investor.investorId
           }`}>
           {!!investor && investor.fullName}
         </Link>

@@ -32,7 +32,6 @@ import {
   CONFIRM_RETURNS_REQUEST_FAILURE,
 } from '../redux/investor/actionTypes';
 import store from '../redux/store';
-import { Api } from './Api';
 
 const InvestorRepository = function (axiosInstance) {
   let InvestorRepository = {
@@ -78,8 +77,8 @@ const InvestorRepository = function (axiosInstance) {
           params,
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (status) {
             store.dispatch({
               type: GET_INVESTOR_RETURNS_REQUEST_SUCCESS,
               payload: {
@@ -106,25 +105,26 @@ const InvestorRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .get('/api/investors/investments-by-investor', {
+        .get(`/investments/platform`, {
           params,
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (status) {
             store.dispatch({
               type: GET_INVESTOR_INVESTMENT_REQUEST_SUCCESS,
               payload: {
-                investments: { [params.investorId]: data.investments },
-                size: data.size,
+                investments: { [params.investorId]: data.data },
+                size: data.total,
               },
             });
             return;
+          } else {
+            store.dispatch({
+              type: GET_INVESTOR_INVESTMENT_REQUEST_FAILURE,
+              payload: message,
+            });
           }
-          store.dispatch({
-            type: GET_INVESTOR_INVESTMENT_REQUEST_FAILURE,
-            payload: message,
-          });
         })
         .catch(function (error) {
           store.dispatch({
@@ -133,31 +133,31 @@ const InvestorRepository = function (axiosInstance) {
           });
         });
     },
-    getInvestor: function ({ params = {} }) {
+    getInvestor: function ({ investorId, params = {} }) {
       store.dispatch({
         type: GET_INVESTOR_REQUEST,
       });
 
       return axiosInstance
-        .get('/api/investors/investor', {
-          params,
-        })
+        .get(`/investor/${investorId}`, { params })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+
+          if (!!status) {
             store.dispatch({
               type: GET_INVESTOR_REQUEST_SUCCESS,
             });
             store.dispatch({
               type: SET_CURRENT_INVESTOR,
-              payload: { [data._id]: data },
+              payload: { [data.investorId]: data },
             });
             return;
+          } else {
+            store.dispatch({
+              type: GET_INVESTOR_REQUEST_FAILURE,
+              payload: message,
+            });
           }
-          store.dispatch({
-            type: GET_INVESTOR_REQUEST_FAILURE,
-            payload: message,
-          });
         })
         .catch(function (error) {
           store.dispatch({
@@ -167,31 +167,35 @@ const InvestorRepository = function (axiosInstance) {
         });
     },
     getInvestors: function ({ params = {} }) {
-      const businessId = store.getState().addBusiness.currentBusiness._id;
+      const platformId = store.getState().addBusiness.currentBusiness.platformId;
       store.dispatch({
         type: GET_INVESTORS_REQUEST,
       });
 
       return axiosInstance
-        .get('/api/investors/investors', {
+        .get(`/investors`, {
           params: {
             ...params,
-            businessId,
+            platformId,
           },
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (!!status) {
             store.dispatch({
               type: GET_INVESTORS_REQUEST_SUCCESS,
-              payload: data,
+              payload: {
+                investors: data,
+                total: data.length,
+              },
             });
             return;
+          } else {
+            store.dispatch({
+              type: GET_INVESTORS_REQUEST_FAILURE,
+              payload: message,
+            });
           }
-          store.dispatch({
-            type: GET_INVESTORS_REQUEST_FAILURE,
-            payload: message,
-          });
         })
         .catch(function (error) {
           store.dispatch({
@@ -206,17 +210,17 @@ const InvestorRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .post('/api/investors/investor', {
+        .post('/investor', {
           ...formData,
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (!!status) {
             store.dispatch({
               type: ADD_INVESTOR_REQUEST_SUCCESS,
               payload: data,
             });
-            return success;
+            return status;
           }
           store.dispatch({
             type: ADD_INVESTOR_REQUEST_FAILURE,
@@ -242,8 +246,7 @@ const InvestorRepository = function (axiosInstance) {
           phoneNumber,
         })
         .then(function (response) {
-          console.log('response response response ', response);
-          const { success, message, data } = response.data;
+          const { success, message } = response.data;
           if (success) {
             InvestorRepository.getInvestors({});
             store.dispatch({
@@ -263,7 +266,6 @@ const InvestorRepository = function (axiosInstance) {
           });
         })
         .catch(function (error) {
-          console.log('response response response ', error);
           store.dispatch({
             type: EDIT_INVESTOR_REQUEST_FAILURE,
             payload: error.message,
@@ -276,11 +278,11 @@ const InvestorRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .post('/api/investors/investment', {
+        .post('/investment', {
           ...formData,
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
+          const { success, message } = response.data;
           if (success) {
             const params = {
               investorId: formData.investor,
@@ -311,22 +313,23 @@ const InvestorRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .get('/api/investors/history', {
+        .get('/history/investor', {
           params,
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (status) {
             store.dispatch({
               type: GET_INVESTOR_HISTORY_REQUEST_SUCCESS,
               payload: { [params.investorId]: data },
             });
             return;
+          } else {
+            store.dispatch({
+              type: GET_INVESTOR_HISTORY_REQUEST_FAILURE,
+              payload: message,
+            });
           }
-          store.dispatch({
-            type: GET_INVESTOR_HISTORY_REQUEST_FAILURE,
-            payload: message,
-          });
         })
         .catch(function (error) {
           store.dispatch({
@@ -342,7 +345,7 @@ const InvestorRepository = function (axiosInstance) {
       return axiosInstance
         .patch('/api/investors/confirm-return', formData)
         .then(function (response) {
-          const { success, message, data } = response.data;
+          const { success, message } = response.data;
           if (success) {
             store.dispatch({
               type: CONFIRM_RETURNS_REQUEST_SUCCESS,

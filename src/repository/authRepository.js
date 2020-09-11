@@ -12,6 +12,9 @@ import {
   LOGOUT_REQUEST,
   LOGOUT_REQUEST_SUCCESS,
   LOGOUT_REQUEST_FAILURE,
+  APPROVE_USER,
+  APPROVE_USER_SUCCESS,
+  APPROVE_USER_FAILURE,
 } from '../redux/auth/actionTypes';
 import Auth from '../utils/auth';
 import store from '../redux/store';
@@ -20,26 +23,25 @@ import history from '../routes/history';
 
 const AuthRepository = function (axiosInstance) {
   let _AuthRepository = {
-    login: function ({ formData, navigation }) {
+    login: function ({ formData }) {
       store.dispatch({
         type: LOGIN_REQUEST,
       });
       return axiosInstance
-        .post('/api/users/login', { ...formData })
+        .post('/login', { ...formData })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (!!status) {
             store.dispatch({
               type: LOGIN_REQUEST_SUCCESS,
             });
             store.dispatch({
               type: SET_CURRENT_USER,
-              payload: response.data,
+              payload: data,
             });
             Auth.setToken(data.token);
+            axiosInstance.defaults.withCredentials = true;
             history.push(PrivatePaths.MY_PROFILE);
-            // axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.user.token}`;
-            // axiosInstance.defaults.withCredentials = true;
           } else {
             store.dispatch({
               type: LOGIN_REQUEST_FAILURE,
@@ -93,12 +95,12 @@ const AuthRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .post('/api/users/register', {
+        .post('/register', {
           ...formData,
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (!!status) {
             store.dispatch({
               type: REGISTER_REQUEST_SUCCESS,
             });
@@ -106,7 +108,7 @@ const AuthRepository = function (axiosInstance) {
               type: SET_CURRENT_USER,
               payload: data.user,
             });
-            axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.user.token}`;
+            axiosInstance.defaults.headers.common['authorization'] = `Bearer ${data.user.token}`;
             Auth.setToken(data.user.token);
             history.push(PrivatePaths.MY_PROFILE);
             return data;
@@ -130,10 +132,10 @@ const AuthRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .get('/api/users/auth', { params: { token } })
+        .get(`/me`, { params: { token } })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (status) {
             store.dispatch({
               type: REQUEST_USER_REQUEST_SUCCESS,
             });
@@ -151,6 +153,33 @@ const AuthRepository = function (axiosInstance) {
         .catch(function (error) {
           store.dispatch({
             type: REQUEST_USER_REQUEST_FAILURE,
+            payload: error.message,
+          });
+        });
+    },
+    approveUser: function (token) {
+      store.dispatch({
+        type: APPROVE_USER,
+      });
+
+      return axiosInstance
+        .put(`/verify/${token}`)
+        .then(function (response) {
+          const { status, message } = response.data;
+          if (!!status) {
+            store.dispatch({
+              type: APPROVE_USER_SUCCESS,
+            });
+          } else {
+            store.dispatch({
+              type: APPROVE_USER_FAILURE,
+              payload: message,
+            });
+          }
+        })
+        .catch(function (error) {
+          store.dispatch({
+            type: APPROVE_USER_FAILURE,
             payload: error.message,
           });
         });

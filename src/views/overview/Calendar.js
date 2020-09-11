@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
-import { Calendar, Badge, Drawer, notification } from 'antd';
+import { Calendar, Badge, notification } from 'antd';
 
 import {
-  getIsFetchingState,
+  // getIsFetchingState,
   getReturnsCalendarOverviewState,
   getErrorMessageState,
   getStatusState,
@@ -20,7 +20,7 @@ const OverviewCalendar = ({ showDateDetails }) => {
     year: moment().year(),
   });
 
-  const isFetching = useSelector(getIsFetchingState);
+  // const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
   const returnsCalendarOverview = useSelector(getReturnsCalendarOverviewState);
@@ -32,6 +32,7 @@ const OverviewCalendar = ({ showDateDetails }) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   useEffect(() => {
@@ -72,11 +73,11 @@ const OverviewCalendar = ({ showDateDetails }) => {
     );
   }
 
-  function getMonthData(value) {
-    if (value.month() === 8) {
-      return 1394;
-    }
-  }
+  // function getMonthData(value) {
+  //   if (value.month() === 8) {
+  //     return 1394;
+  //   }
+  // }
 
   function monthCellRender(value) {
     const listData = getListData(value);

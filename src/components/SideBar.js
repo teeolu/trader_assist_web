@@ -1,89 +1,87 @@
 import React from 'react';
-import { Layout, Menu } from 'antd';
 import { useSelector } from 'react-redux';
+import { Layout, Menu } from 'antd';
 import {
   DashboardOutlined,
   UsergroupAddOutlined,
-  UploadOutlined,
-  DownloadOutlined,
+  VerticalAlignTopOutlined,
+  VerticalAlignBottomOutlined,
   SettingOutlined,
   UserOutlined,
+  HistoryOutlined,
 } from '@ant-design/icons';
 import { makeStyles } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
 
 import { colors, fontsize, boxShadows } from '../Css';
 import { PrivatePaths } from '../routes';
-import { getCurrentBusinessState } from '../redux/business/addBusinessReducer';
+import { existInUrl } from '../utils/url';
+import { getCurrentUserState } from '../redux/auth/userRequestReducer';
 
 const { Sider } = Layout;
 
-const SideBar = ({ collapsed, match }) => {
+const SideBar = ({ url }) => {
   const classes = useStyles();
-  const currentBusiness = useSelector(getCurrentBusinessState);
-
-  if (!currentBusiness.businessImage) return null;
+  const currentUser = useSelector(getCurrentUserState);
 
   const SideBarContents = [
     {
       name: 'Overview',
       icon: DashboardOutlined,
-      path: `/${currentBusiness.businessName}${PrivatePaths.OVERVIEW}`,
+      path: `${url}${PrivatePaths.OVERVIEW}`,
     },
     {
       name: 'Investors',
       icon: UsergroupAddOutlined,
-      path: `/${currentBusiness.businessName}${PrivatePaths.INVESTORS}`,
+      path: `${url}${PrivatePaths.INVESTORS}`,
     },
     {
-      name: 'Returns',
-      icon: UploadOutlined,
-      path: `/${currentBusiness.businessName}${PrivatePaths.RETURNS}`,
+      name: 'Activities',
+      icon: HistoryOutlined,
+      path: `${url}${PrivatePaths.ACTIVITIES}`,
     },
     {
       name: 'Investments',
-      icon: DownloadOutlined,
-      path: `/${currentBusiness.businessName}${PrivatePaths.INVESTMENTS}`,
+      icon: VerticalAlignBottomOutlined,
+      path: `${url}${PrivatePaths.INVESTMENTS}`,
+    },
+    {
+      name: 'Returns',
+      icon: VerticalAlignTopOutlined,
+      path: `${url}${PrivatePaths.RETURNS}`,
     },
     {
       name: 'Settings',
       icon: SettingOutlined,
-      path: `/${currentBusiness.businessName}${PrivatePaths.SETTINGS}`,
+      path: `${url}${PrivatePaths.SETTINGS}`,
     },
   ];
 
-  const currentView = window.location.href
-    .replace(new RegExp(`${window.location.origin}/|/$`, 'g'), '')
-    .trim()
-    .split('/')
-    .pop();
-
-  if (currentView === PrivatePaths.CREATE_PLATFORM.split('/').pop()) return null;
-  if (currentView === PrivatePaths.MY_PROFILE.split('/').pop()) return null;
   return (
     <Sider
       style={{
         borderRight: boxShadows.border,
         height: '100%',
       }}
-      theme="light"
-      trigger={null}
-      collapsible
-      collapsed={collapsed}>
+      theme="light">
       <div
         style={{
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
         }}>
-        <Menu mode="inline" selectedKeys={[currentView]} style={{ flex: 1 }}>
+        <Menu
+          mode="inline"
+          selectedKeys={[existInUrl(SideBarContents.map((el) => el.name.toLowerCase()))]}
+          style={{ flex: 1 }}>
           {SideBarContents.map((el) => {
             const Icon = el.icon;
+            const color = existInUrl(el.name.toLowerCase()) ? colors.pinkDark : colors.black3;
+
             return (
               <Menu.Item
                 style={{
                   height: 50,
-                  color: colors.black2,
                   fontWeight: 600,
                   display: 'flex',
                   alignItems: 'center',
@@ -93,11 +91,17 @@ const SideBar = ({ collapsed, match }) => {
                   <Icon
                     style={{
                       fontSize: fontsize.h4,
-                      color: colors.black,
+                      color,
                     }}
                   />
                 }>
-                <Link to={el.path}>{el.name}</Link>
+                <Link
+                  style={{
+                    color,
+                  }}
+                  to={el.path}>
+                  {el.name}
+                </Link>
               </Menu.Item>
             );
           })}
@@ -115,7 +119,7 @@ const SideBar = ({ collapsed, match }) => {
               }}
               key="user-profile"
               icon={<UserOutlined className={classes.userProfileIcon} />}>
-              <Link to={PrivatePaths.MY_PROFILE}>Olusola Oyinloye</Link>
+              <Link to={PrivatePaths.MY_PROFILE}>{currentUser.fullName}</Link>
             </Menu.Item>
           </Menu>
         </div>

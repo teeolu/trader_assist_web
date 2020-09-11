@@ -14,31 +14,35 @@ import store from '../redux/store';
 const InvestmentRepository = function (axiosInstance) {
   let _InvestmentRepository = {
     getInvesments: function ({ selectedOption, params = {} }) {
-      let businessId = store.getState().addBusiness.currentBusiness._id;
+      let businessId = store.getState().addBusiness.currentBusiness.platformId;
       if (!selectedOption.startDate || !selectedOption.endDate) return;
       store.dispatch({
         type: GET_INVESTMENTS_REQUEST,
       });
 
       return axiosInstance
-        .get('/api/business/investments', {
+        .get('/investments/platform', {
           params: {
-            businessId,
-            startDate: selectedOption.startDate,
-            endDate: selectedOption.endDate,
+            platformId: businessId,
+            dateFrom: selectedOption.startDate,
+            dateTo: selectedOption.endDate,
+            page: 1,
+            limit: 10,
             ...params,
           },
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (status) {
             store.dispatch({
               type: GET_INVESTMENTS_REQUEST_SUCCESS,
               payload: {
                 investments: {
                   [selectedOption.option]: {
-                    data: data.investments,
-                    size: data.size,
+                    data: data.docs,
+                    size: data.total,
+                    currentPage: data.page,
+                    totalPages: data.pages,
                   },
                 },
               },
@@ -58,7 +62,7 @@ const InvestmentRepository = function (axiosInstance) {
         });
     },
     getInvestmentById: function ({ params = {} }) {
-      let businessId = store.getState().addBusiness.currentBusiness._id;
+      let businessId = store.getState().addBusiness.currentBusiness.platformId;
       store.dispatch({
         type: GET_INVESTMENT_REQUEST,
       });

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import Activities from '../../../components/Activities';
 import {
-  getIsFetchingState,
+  // getIsFetchingState,
   getInvestorHistoryState,
   getErrorMessageState,
   getStatusState,
@@ -20,7 +20,8 @@ const InvestorActivities = ({ investor }) => {
   // const classes = useStyles();
 
   useEffect(() => {
-    fetchBusinessHistory();
+    fetchInvstorHistory();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -30,25 +31,26 @@ const InvestorActivities = ({ investor }) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
-  function fetchBusinessHistory() {
+  function fetchInvstorHistory() {
     Api.InvestorRepository.getInvestorHistory({
       params: {
-        investorId: investor._id,
+        investorId: investor.investorId,
       },
     });
   }
 
   // console.log(
-  //   'investorsHistory[investor._id] investorsHistory[investor._id] ',
-  //   investorsHistory[investor._id],
+  //   'investorsHistory[investor.investorId] investorsHistory[investor.investorId] ',
+  //   investorsHistory[investor.investorId],
   // );
 
   return (
     <>
       <Card bordered={true} bodyStyle={{ padding: 15 }}>
-        <Activities activities={investorsHistory[investor._id]} />
+        <Activities activities={investorsHistory[investor.investorId]} />
       </Card>
     </>
   );

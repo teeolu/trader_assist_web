@@ -43,6 +43,7 @@ const Admins = ({ navigation }) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   function fetchBusinessStaffs() {
@@ -131,7 +132,10 @@ const Admins = ({ navigation }) => {
                       avatar={
                         <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>U</Avatar>
                       }
-                      title={<a href="#">{item.person.fullName}</a>}
+                      title={
+                        // <a href="#">{item.person.fullName}</a>
+                        item.person.fullName
+                      }
                     />
                   </List.Item>
                 )}

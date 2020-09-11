@@ -3,9 +3,9 @@ import {
   ADD_BUSINESS_REQUEST_SUCCESS,
   ADD_BUSINESS_REQUEST_FAILURE,
   SET_CURRENT_BUSINESS,
-  GET_BUSINESSES_REQUEST,
-  GET_BUSINESSES_REQUEST_SUCCESS,
-  GET_BUSINESSES_REQUEST_FAILURE,
+  // GET_BUSINESSES_REQUEST,
+  // GET_BUSINESSES_REQUEST_SUCCESS,
+  // GET_BUSINESSES_REQUEST_FAILURE,
   GET_BUSINESS_REQUEST,
   GET_BUSINESS_REQUEST_SUCCESS,
   GET_BUSINESS_REQUEST_FAILURE,
@@ -18,7 +18,8 @@ import {
 } from '../redux/business/actionTypes';
 import store from '../redux/store';
 import { overviewOptions } from '../constants/dateFilter';
-import Auth from '../utils/auth';
+import history from '../routes/history';
+import { PrivatePaths } from '../routes';
 
 const BusinessRepository = function (axiosInstance) {
   let _BusinessRepository = {
@@ -27,25 +28,21 @@ const BusinessRepository = function (axiosInstance) {
         type: ADD_BUSINESS_REQUEST,
       });
       return axiosInstance
-        .post('/api/business/business', formData)
+        .post('/platform', formData)
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message } = response.data;
+          if (status) {
             store.dispatch({
               type: ADD_BUSINESS_REQUEST_SUCCESS,
             });
-            store.dispatch({
-              type: SET_CURRENT_BUSINESS,
-              payload: data,
-            });
-            Auth.setCurrentBusiness(data);
+            history.push(PrivatePaths.MY_PROFILE);
           } else {
             store.dispatch({
               type: ADD_BUSINESS_REQUEST_FAILURE,
               payload: message,
             });
           }
-          return success;
+          return status;
         })
         .catch(function (error) {
           store.dispatch({
@@ -55,79 +52,69 @@ const BusinessRepository = function (axiosInstance) {
           return error;
         });
     },
-    getBusinesses: function ({ businessId }) {
-      store.dispatch({
-        type: GET_BUSINESSES_REQUEST,
-      });
+    // getBusinesses: function ({ businessId }) {
+    //   store.dispatch({
+    //     type: GET_BUSINESSES_REQUEST,
+    //   });
 
-      return axiosInstance
-        .get('/api/business/businesses')
-        .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
-            let selectedBusiness;
-            if (!!businessId) {
-              selectedBusiness = data.filter((el) => el._id === businessId);
-            }
+    //   return axiosInstance
+    //     .get('/platform')
+    //     .then(function (response) {
+    //       const { success, message, data } = response.data;
+    //       if (success) {
+    //         let selectedBusiness;
+    //         if (!!businessId) {
+    //           selectedBusiness = data.filter((el) => el._id === businessId);
+    //         }
 
-            store.dispatch({
-              type: SET_CURRENT_BUSINESS,
-              payload: !!selectedBusiness ? selectedBusiness : data[0],
-            });
-            function callBack() {
-              store.dispatch({
-                type: GET_BUSINESSES_REQUEST_SUCCESS,
-                payload: data,
-              });
-            }
+    //         store.dispatch({
+    //           type: SET_CURRENT_BUSINESS,
+    //           payload: !!selectedBusiness ? selectedBusiness : data[0],
+    //         });
+    //         function callBack() {
+    //           store.dispatch({
+    //             type: GET_BUSINESSES_REQUEST_SUCCESS,
+    //             payload: data,
+    //           });
+    //         }
 
-            _BusinessRepository.getBusinessOverview({
-              callBack,
-              businessId: !!selectedBusiness ? selectedBusiness._id : data[0]._id,
-            });
-            return;
-          }
-          store.dispatch({
-            type: GET_BUSINESSES_REQUEST_FAILURE,
-            payload: message,
-          });
-        })
-        .catch(function (error) {
-          store.dispatch({
-            type: GET_BUSINESSES_REQUEST_FAILURE,
-            payload: error.message,
-          });
-        });
-    },
-    getBusiness: function ({ businessName }) {
+    //         _BusinessRepository.getBusinessOverview({
+    //           callBack,
+    //           businessId: !!selectedBusiness ? selectedBusiness._id : data[0]._id,
+    //         });
+    //         return;
+    //       }
+    //       store.dispatch({
+    //         type: GET_BUSINESSES_REQUEST_FAILURE,
+    //         payload: message,
+    //       });
+    //     })
+    //     .catch(function (error) {
+    //       store.dispatch({
+    //         type: GET_BUSINESSES_REQUEST_FAILURE,
+    //         payload: error.message,
+    //       });
+    //     });
+    // },
+    getBusiness: function ({ platformId }) {
       store.dispatch({
         type: GET_BUSINESS_REQUEST,
       });
 
       return axiosInstance
-        .get('/api/business/business', {
-          params: {
-            businessName,
-          },
+        .get(`/platform/${platformId}`, {
+          params: {},
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
-            let selectedBusiness;
+          const { status, message, data } = response.data;
+          if (!!status) {
             store.dispatch({
               type: SET_CURRENT_BUSINESS,
               payload: data,
             });
-            function callBack() {
-              store.dispatch({
-                type: GET_BUSINESS_REQUEST_SUCCESS,
-                payload: data,
-              });
-            }
-
-            _BusinessRepository.getBusinessOverview({
-              callBack,
-              businessId: !!selectedBusiness ? selectedBusiness._id : data[0]._id,
+            store.dispatch({
+              type: GET_BUSINESS_REQUEST_SUCCESS,
+              payload: data,
             });
             return;
           }
@@ -145,7 +132,7 @@ const BusinessRepository = function (axiosInstance) {
     },
     getBusinessOverview: function ({ callBack }) {
       let selectedOption = store.getState().businessMisc.selectedOption,
-        businessId = store.getState().addBusiness.currentBusiness._id;
+        businessId = store.getState().addBusiness.currentBusiness.platformId;
       if (!selectedOption.startDate || !selectedOption.endDate) selectedOption = overviewOptions[0];
       store.dispatch({
         type: GET_BUSINESS_OVERVIEW_REQUEST,
@@ -160,8 +147,8 @@ const BusinessRepository = function (axiosInstance) {
           },
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (status) {
             store.dispatch({
               type: GET_BUSINESS_OVERVIEW_REQUEST_SUCCESS,
               payload: { [selectedOption.option]: data },
@@ -187,16 +174,18 @@ const BusinessRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .get('/api/business/history', {
+        .get(`/history/platform`, {
           params: {
-            businessId: store.getState().addBusiness.currentBusiness._id,
-            startDate: selectedOption.startDate,
-            endDate: selectedOption.endDate,
+            platformId: store.getState().addBusiness.currentBusiness.platformId,
+            dateFrom: selectedOption.startDate,
+            dateTo: selectedOption.endDate,
+            page: 1,
+            limit: 10,
           },
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (status) {
             store.dispatch({
               type: GET_BUSINESS_HISTORY_REQUEST_SUCCESS,
               payload: {

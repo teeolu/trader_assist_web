@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import userAvatar from '../../assets/images/user.png';
 
 import {
-  getIsFetchingState as getIsFetchingReturnState,
+  // getIsFetchingState as getIsFetchingReturnState,
   getInvestorReturnsState,
   getErrorMessageState as getReturnsErrorMessageState,
   getStatusState as getReturnStatusState,
@@ -19,10 +19,9 @@ import {
   getStatusState,
   Status,
 } from '../../redux/investor/getInvestorReducer';
-import { colors, boxShadows, typography, fonts } from '../../Css';
+import { colors, typography, fonts } from '../../Css';
 import Buttons from '../../atoms/Buttons';
 import InvestorDetailsTab from './investorDetailsTab';
-import { PrivatePaths } from '../../routes';
 import history from '../../routes/history';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { Api } from '../../repository/Api';
@@ -33,7 +32,6 @@ const InvestorDetails = (props) => {
   let {
     match: {
       params: { investorId },
-      path,
       url,
     },
   } = props;
@@ -49,13 +47,13 @@ const InvestorDetails = (props) => {
   const returnStatus = useSelector(getReturnStatusState);
 
   const {
-    fullName,
-    investmentSum,
-    numberOfInvestment,
+    investorFullName,
+    // investmentSum,
+    meta,
     // numberOfReturns,
     // returnsSum,
     // createdAt,
-    _id,
+    // _id,
   } = investor[investorId] || {};
 
   useEffect(() => {
@@ -63,6 +61,7 @@ const InvestorDetails = (props) => {
       fetchInvestor();
       fetchInvestorReturns();
     }
+    // eslint-disable-next-line
   }, [investorId]);
 
   useEffect(() => {
@@ -72,6 +71,7 @@ const InvestorDetails = (props) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [status]);
 
   useEffect(() => {
@@ -81,13 +81,13 @@ const InvestorDetails = (props) => {
         ...notificationConfigs,
       });
     }
+    // eslint-disable-next-line
   }, [returnStatus]);
 
   function fetchInvestor() {
     Api.InvestorRepository.getInvestor({
-      params: {
-        investorId,
-      },
+      investorId,
+      params: {},
     });
   }
 
@@ -104,7 +104,7 @@ const InvestorDetails = (props) => {
       style={{
         padding: '50px 100px 50px 50px',
       }}>
-      {!!fullName ? (
+      {!!investorFullName ? (
         <>
           <div style={{ display: 'flex' }}>
             <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
@@ -113,13 +113,13 @@ const InvestorDetails = (props) => {
               </div>
             </div>
             <div style={{ flex: 3 }}>
-              <p className={classes.investorFullname}>{fullName}</p>
+              <p className={classes.investorFullname}>{investorFullName}</p>
               <p className={classes.activeInvestment}>
                 <span
                   style={{
-                    backgroundColor: numberOfInvestment > 0 ? colors.green : colors.red,
+                    backgroundColor: meta.numberOfInvestment > 0 ? colors.green : colors.red,
                   }}></span>
-                NGN{investmentSum.toLocaleString()} - sum of active investment
+                NGN{meta.investmentTotal.toLocaleString()} - sum of active investment
               </p>
               <p className={classes.prevReturn}>
                 {!!investorsReturns[investorId] &&
@@ -194,7 +194,6 @@ const useStyles = makeStyles({
   },
   activeInvestment: {
     lineHeight: 1.4,
-    fontWeight: 400,
     marginBottom: 5,
     fontWeight: 600,
     '& span': {

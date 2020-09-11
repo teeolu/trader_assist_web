@@ -2,26 +2,26 @@ import moment from 'moment';
 export const dateFormat = 'YYYY-MM-DD';
 export const overviewOptions = [
   {
-    startDate: moment(new Date()).subtract(90, 'd').startOf('day').format(),
-    endDate: moment(new Date()).endOf('day').format(),
+    startDate: moment(new Date()).subtract(90, 'd').startOf('day').format(dateFormat),
+    endDate: moment(new Date()).endOf('day').format(dateFormat),
     caption: '',
     option: '90 days',
   },
   {
-    startDate: moment().startOf('month').format(),
-    endDate: moment().endOf('month').format(),
+    startDate: moment().startOf('month').format(dateFormat),
+    endDate: moment().endOf('month').format(dateFormat),
     caption: 'May',
     option: 'This month',
   },
   {
-    startDate: moment().startOf('week').format(),
-    endDate: moment().endOf('week').format(),
+    startDate: moment().startOf('week').format(dateFormat),
+    endDate: moment().endOf('week').format(dateFormat),
     caption: 'sun - sat',
     option: 'This week',
   },
   {
-    startDate: moment().startOf('day').format(),
-    endDate: moment().endOf('day').format(),
+    startDate: moment().startOf('day').format(dateFormat),
+    endDate: moment().endOf('day').format(dateFormat),
     caption: '',
     option: 'Today',
   },
@@ -34,7 +34,7 @@ export const investmentDuration = (duration) => {
   var futureMonthEnd = moment(futureMonth).endOf('month');
 
   if (
-    currentDate.date() != futureMonth.date() &&
+    currentDate.date() !== futureMonth.date() &&
     futureMonth.isSame(futureMonthEnd.format('YYYY-MM-DD'))
   ) {
     futureMonth = futureMonth.add(1, 'd');
