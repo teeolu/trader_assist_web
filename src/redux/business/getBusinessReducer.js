@@ -1,7 +1,7 @@
 import {
-  GET_BUSINESSES_REQUEST,
-  GET_BUSINESSES_REQUEST_FAILURE,
-  GET_BUSINESSES_REQUEST_SUCCESS,
+  GET_BUSINESS_REQUEST,
+  GET_BUSINESS_REQUEST_FAILURE,
+  GET_BUSINESS_REQUEST_SUCCESS,
 } from './actionTypes';
 
 const initialState = {
@@ -12,31 +12,31 @@ const initialState = {
 };
 
 export const Status = {
-  GET_BUSINESSES_REQUEST_SUCCESS: `GET_BUSINESSES_REQUEST_SUCCESS`,
-  GET_BUSINESSES_REQUEST_FAILURE: `GET_BUSINESSES_REQUEST_FAILURE`,
+  GET_BUSINESS_REQUEST_SUCCESS: `GET_BUSINESS_REQUEST_SUCCESS`,
+  GET_BUSINESS_REQUEST_FAILURE: `GET_BUSINESS_REQUEST_FAILURE`,
 };
 
 const getBusinessReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_BUSINESSES_REQUEST:
+    case GET_BUSINESS_REQUEST:
       return {
         ...state,
         status: null,
         errorMessage: '',
         isFetching: true,
       };
-    case GET_BUSINESSES_REQUEST_SUCCESS:
+    case GET_BUSINESS_REQUEST_SUCCESS:
       return {
         ...state,
         isFetching: false,
-        status: Status.GET_BUSINESSES_REQUEST_SUCCESS,
+        status: Status.GET_BUSINESS_REQUEST_SUCCESS,
         business: action.payload,
       };
-    case GET_BUSINESSES_REQUEST_FAILURE:
+    case GET_BUSINESS_REQUEST_FAILURE:
       return {
         ...state,
         isFetching: false,
-        status: Status.GET_BUSINESSES_REQUEST_FAILURE,
+        status: Status.GET_BUSINESS_REQUEST_FAILURE,
         errorMessage: action.payload,
       };
     default:

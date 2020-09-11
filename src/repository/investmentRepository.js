@@ -21,24 +21,28 @@ const InvestmentRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .get('/api/business/investments', {
+        .get('/investments/platform', {
           params: {
-            businessId,
-            startDate: selectedOption.startDate,
-            endDate: selectedOption.endDate,
+            platformId: businessId,
+            dateFrom: selectedOption.startDate,
+            dateTo: selectedOption.endDate,
+            page: 1,
+            limit: 10,
             ...params,
           },
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
-          if (success) {
+          const { status, message, data } = response.data;
+          if (status) {
             store.dispatch({
               type: GET_INVESTMENTS_REQUEST_SUCCESS,
               payload: {
                 investments: {
                   [selectedOption.option]: {
-                    data: data.investments,
-                    size: data.size,
+                    data: data.docs,
+                    size: data.total,
+                    currentPage: data.page,
+                    totalPages: data.pages,
                   },
                 },
               },

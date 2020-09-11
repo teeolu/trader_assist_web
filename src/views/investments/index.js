@@ -82,23 +82,26 @@ const Investments = (props) => {
     const dataSource = !!investments.investments[selectedOption.option]
       ? sortBaseOnTime(investments.investments[selectedOption.option].data)
       : [];
-    return activites.map((el, i) => {
-      const investmentId = 1; // investment._id;
-      const color = el.isConfirmed ? colors.blue : colors.red;
-      const tag = el.isConfirmed ? el.confirmedBy.fullName : 'unconfirmed';
-      const isActiveColor = el.isActive ? colors.green : colors.red;
-      const isActiveTag = el.isActive ? 'Active' : 'Inactive';
+    console.log('data data ', pathname);
+    return dataSource.map((investment, i) => {
+      const investmentId = investment.investmentId;
+      const color = investment.isConfirmed ? colors.blue : colors.red;
+      const tag = investment.isConfirmed ? investment.confirmedBy.fullName : 'unconfirmed';
+      const isActiveColor = investment.isActive ? colors.green : colors.red;
+      const isActiveTag = investment.isActive ? 'Active' : 'Inactive';
 
       return (
-        <Link to={`${path}/${investmentId}`}>
+        <Link to={`${pathname}?investmentId=${investmentId}`}>
           <Row key={1} gutter={0} className={classes.activitiesRow}>
             <Col span={15}>
               <p style={{ color: colors.black, width: '80%', margin: 0, letterSpacing: '1px' }}>
-                ACU/INVEST/5667
+                {investment.investmentRef}
               </p>
             </Col>
             <Col span={3}>
-              <p style={{ margin: 0, color: colors.black2 }}>&#8358;{'12999'.toLocaleString()}</p>
+              <p style={{ margin: 0, color: colors.black2 }}>
+                &#8358;{investment.investmentAmount.toLocaleString()}
+              </p>
             </Col>
             <Col span={3}>
               <Row>
@@ -119,7 +122,7 @@ const Investments = (props) => {
               <Row>
                 <span
                   style={
-                    !el.isConfirmed
+                    !investment.isConfirmed
                       ? {
                           ...typography.captionMedium,
                           border: `1px solid ${color}`,

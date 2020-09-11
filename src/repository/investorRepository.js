@@ -105,7 +105,9 @@ const InvestorRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .get(`/investments/${params.investorId}`, {})
+        .get(`/investments/platform`, {
+          params,
+        })
         .then(function (response) {
           const { status, message, data } = response.data;
           if (status) {

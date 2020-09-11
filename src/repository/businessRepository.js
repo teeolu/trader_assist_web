@@ -176,9 +176,11 @@ const BusinessRepository = function (axiosInstance) {
       return axiosInstance
         .get(`/history/platform`, {
           params: {
-            businessId: store.getState().addBusiness.currentBusiness.platformId,
-            startDate: selectedOption.startDate,
-            endDate: selectedOption.endDate,
+            platformId: store.getState().addBusiness.currentBusiness.platformId,
+            dateFrom: selectedOption.startDate,
+            dateTo: selectedOption.endDate,
+            page: 1,
+            limit: 10,
           },
         })
         .then(function (response) {

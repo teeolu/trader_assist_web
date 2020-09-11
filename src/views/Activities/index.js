@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { UploadOutlined, DownloadOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  VerticalAlignTopOutlined,
+  VerticalAlignBottomOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { Layout, Row, Card, notification, Col, Select, DatePicker } from 'antd';
 
 import {
@@ -25,8 +29,8 @@ const { RangePicker } = DatePicker;
 
 const ActivityIcons = {
   investor: UserOutlined,
-  investment: DownloadOutlined,
-  return: UploadOutlined,
+  investment: VerticalAlignBottomOutlined,
+  return: VerticalAlignTopOutlined,
 };
 
 const ActivityColors = {
@@ -79,7 +83,7 @@ const Activities = (props) => {
   }
 
   function fetchInvestments() {
-    Api.InvestmentRepository.getInvesments({
+    Api.BusinessRepository.getBusinessHistory({
       selectedOption,
       params: { ...getParamArgs() },
     });

@@ -5,23 +5,26 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { colors, typography, fonts } from '../../Css';
-import { getCurrentUserState } from '../../redux/auth/userRequestReducer';
+import { getCurrentUserState, getIsFetchingState } from '../../redux/auth/userRequestReducer';
 import { Api } from '../../repository/Api';
 import Buttons from '../../atoms/Buttons';
 import history from '../../routes/history';
 import { PrivatePaths } from '../../routes';
+import Loading from '../../atoms/Loading';
 
 const { Content } = Layout;
 
 const UserProfile = (props) => {
   const classes = useStyles();
   const currentUser = useSelector(getCurrentUserState);
-
-  console.log('currentUser currentUser ', currentUser);
+  const isFetching = useSelector(getIsFetchingState);
 
   useEffect(() => {
     Api.AuthRepository.requestUser();
   }, []);
+
+  if (isFetching) return <Loading />;
+
   return (
     <Content style={{ padding: 20 }}>
       <div
@@ -52,27 +55,28 @@ const UserProfile = (props) => {
       </div>
       <Row gutter={20}>
         {!!currentUser
-          ? !!currentUser.platformDetails &&
-            currentUser.platformDetails.map((platform) => {
-              return (
-                <Col key={platform._id} span={6} className={classes.businessCard}>
-                  <div>
-                    <Link to={`platform/${platform.platformId}/overview`}>
-                      {/* <Avatar
+          ? !!Array.isArray(currentUser.platformDetails)
+            ? currentUser.platformDetails.map((platform) => {
+                return (
+                  <Col key={platform._id} span={6} className={classes.businessCard}>
+                    <div>
+                      <Link to={`platform/${platform.platformId}/overview`}>
+                        {/* <Avatar
                         size="large"
                         style={{ marginBottom: 10 }}
                         src={business.businessImage.secure_url}
                         alt={business.platformName}
                       /> */}
-                      <p style={{ margin: 0, font: fonts.regular }}>{platform.platformName}</p>
-                      <p style={{ ...typography.caption, margin: 0, font: fonts.regular }}>
-                        {platform.role}
-                      </p>
-                    </Link>
-                  </div>
-                </Col>
-              );
-            })
+                        <p style={{ margin: 0, font: fonts.regular }}>{platform.platformName}</p>
+                        <p style={{ ...typography.caption, margin: 0, font: fonts.regular }}>
+                          {platform.role}
+                        </p>
+                      </Link>
+                    </div>
+                  </Col>
+                );
+              })
+            : null
           : null}
       </Row>
       {!!currentUser.businessAsStaff && currentUser.businessAsStaff.length === 0 && (

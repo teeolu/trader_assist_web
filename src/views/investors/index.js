@@ -2,7 +2,11 @@ import React, { useEffect } from 'react';
 import { Layout, Tooltip, Button, notification, Spin, Space, Row, Col, Card } from 'antd';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
-import { PlusSquareOutlined } from '@ant-design/icons';
+import {
+  PlusSquareOutlined,
+  VerticalAlignBottomOutlined,
+  VerticalAlignTopOutlined,
+} from '@ant-design/icons';
 import { Switch, Link, Route } from 'react-router-dom';
 
 import {
@@ -118,15 +122,29 @@ const Investors = (props) => {
                   }}></div>
               </div>
               <div className={classes.investorInfo}>
-                <p
-                  style={{
-                    marginBottom: 0,
-                    color: colors.black,
-                    textTransform: 'capitalize',
-                    fontSize: '1.2em',
-                  }}>
-                  {investor.investorFullName}
-                </p>
+                <Row style={{ alignItems: 'center' }}>
+                  <Col span={16}>
+                    <p
+                      style={{
+                        marginBottom: 0,
+                        color: colors.black,
+                        textTransform: 'capitalize',
+                        fontSize: '1.2em',
+                      }}>
+                      {investor.investorFullName}
+                    </p>
+                  </Col>
+                  <Col span={8}>
+                    <Row justify="space-around">
+                      <Col span={12} style={{ ...typography.caption }}>
+                        {investor.meta.numberOfInvestment} <VerticalAlignBottomOutlined />
+                      </Col>
+                      <Col span={12} style={{ ...typography.caption }}>
+                        {investor.meta.numberOfReturns} <VerticalAlignTopOutlined />
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
                 <p style={{ ...typography.caption, marginBottom: 0 }}>Added on tuesday, 13 2020</p>
               </div>
             </div>
@@ -252,6 +270,7 @@ const useStyles = makeStyles({
   },
   investorInfo: {
     marginLeft: 10,
+    width: '100%',
   },
   investorIsActiveIndicator: {
     ...typography.paragraphGray,

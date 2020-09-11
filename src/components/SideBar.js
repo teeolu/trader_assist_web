@@ -4,8 +4,8 @@ import { Layout, Menu } from 'antd';
 import {
   DashboardOutlined,
   UsergroupAddOutlined,
-  UploadOutlined,
-  DownloadOutlined,
+  VerticalAlignTopOutlined,
+  VerticalAlignBottomOutlined,
   SettingOutlined,
   UserOutlined,
   HistoryOutlined,
@@ -41,14 +41,14 @@ const SideBar = ({ url }) => {
       path: `${url}${PrivatePaths.ACTIVITIES}`,
     },
     {
-      name: 'Returns',
-      icon: UploadOutlined,
-      path: `${url}${PrivatePaths.RETURNS}`,
+      name: 'Investments',
+      icon: VerticalAlignBottomOutlined,
+      path: `${url}${PrivatePaths.INVESTMENTS}`,
     },
     {
-      name: 'Investments',
-      icon: DownloadOutlined,
-      path: `${url}${PrivatePaths.INVESTMENTS}`,
+      name: 'Returns',
+      icon: VerticalAlignTopOutlined,
+      path: `${url}${PrivatePaths.RETURNS}`,
     },
     {
       name: 'Settings',

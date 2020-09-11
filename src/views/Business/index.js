@@ -10,16 +10,19 @@ import Investments from '../investments';
 import Settings from '../settings';
 import PrivateRoute from '../../routes/PrivateRoute';
 import { getCurrentBusinessState } from '../../redux/business/addBusinessReducer';
+import { getIsFetchingState } from '../../redux/business/getBusinessReducer';
 import { Api } from '../../repository/Api';
 import SideBar from '../../components/SideBar';
 import NavHeader from '../../components/NavHeader';
 import Activities from '../Activities';
+import Loading from '../../atoms/Loading';
 
 export default (props) => {
   let {
     match: { params, path, url },
   } = props;
   const currentBusiness = useSelector(getCurrentBusinessState);
+  const isFetching = useSelector(getIsFetchingState);
 
   useEffect(() => {
     Api.AuthRepository.requestUser();
@@ -34,6 +37,10 @@ export default (props) => {
     }
     // eslint-disable-next-line
   }, []);
+
+  console.log('isFetching isFetching isFetching ', isFetching);
+
+  if (isFetching) return <Loading />;
   if (!params || !params.platformId || !currentBusiness.platformId) return null;
   const businessRoutes = [
     { path: PrivatePaths.INVESTORS, exact: false, component: Investors },
