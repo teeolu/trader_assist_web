@@ -32,11 +32,6 @@ const UploadImage = ({ onSelectImage, imageUploadKey, uploadeText }) => {
   console.log('errorMessage ', errorMessage, status);
 
   useEffect(() => {
-    Api.AuthRepository.requestUser();
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
     if (imageUploadProgress !== null) {
       notification['open']({
         message: `${imageUploadProgress}% uploading...`,

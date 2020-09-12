@@ -56,13 +56,13 @@ const AddBusiness = ({ businessAsStaff }) => {
   function onFinish(values) {
     const data = new FormData();
 
-    data.append('image', selectedImage);
+    data.append('file', selectedImage);
+    data.append('upload_preset', 'platform_image');
     Api.MiscRepository.uploadImage({
       imageUploadUri: null,
       formData: data,
     })
       .then((data) => {
-        console.log('errorMessage data ', data);
         if (!!data) {
           notification['open']({
             message: `Registering your platform...`,
@@ -73,7 +73,7 @@ const AddBusiness = ({ businessAsStaff }) => {
           Api.BusinessRepository.addBusiness({
             formData: {
               ...values,
-              image: data,
+              platformImage: data,
             },
           }).then((success) => {
             if (success === true) {
