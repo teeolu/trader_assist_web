@@ -52,7 +52,7 @@ const ConfirmReturn = (props) => {
             data: {
               proofOfPayment: data,
               isConfirmed: true,
-              _id,
+              returnId: _id,
             },
             tag: 'confirm',
           },

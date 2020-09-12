@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Switch, Link, Route } from 'react-router-dom';
-import { DatePicker, Layout, Row, Col, Card, notification, Select } from 'antd';
+import { Link } from 'react-router-dom';
+import { DatePicker, Layout, Row, Col, Card, notification } from 'antd';
 
 import {
-  getIsFetchingState,
+  // getIsFetchingState,
   getInvestmentsState,
   getErrorMessageState,
   getStatusState,
@@ -14,26 +14,31 @@ import { colors, typography, boxShadows } from '../../Css';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { Api } from '../../repository/Api';
 import { overviewOptions } from '../../constants/dateFilter';
-import PrivateRoute from '../../routes/PrivateRoute';
 import { makeStyles } from '@material-ui/styles';
 import InvestmentDetails from './InvestmentsDetail';
-import { activites } from '../Activities/mock';
 import { sortBaseOnTime } from '../../utils/time';
 
 const { Content } = Layout;
 const { RangePicker } = DatePicker;
 
 const Investments = (props) => {
-  let {
-    match: { path },
-    location: { pathname },
-  } = props;
+  let { location } = props;
 
-  const [selectedOption, setSelectedOption] = useState(overviewOptions[0]);
-  const [activeTab, setActiveTab] = useState(0);
+  const urlParams = new URLSearchParams(location.search);
+  const searchInvestmentId = urlParams.get('investmentId');
+  console.log('investmentId investmentId ', searchInvestmentId, location);
+
+  const [
+    selectedOption,
+    // setSelectedOption
+  ] = useState(overviewOptions[0]);
+  const [
+    activeTab,
+    // setActiveTab
+  ] = useState(0);
   const classes = useStyles();
 
-  const isFetching = useSelector(getIsFetchingState);
+  // const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
   const investments = useSelector(getInvestmentsState);
@@ -82,7 +87,6 @@ const Investments = (props) => {
     const dataSource = !!investments.investments[selectedOption.option]
       ? sortBaseOnTime(investments.investments[selectedOption.option].data)
       : [];
-    console.log('data data ', pathname);
     return dataSource.map((investment, i) => {
       const investmentId = investment.investmentId;
       const color = investment.isConfirmed ? colors.blue : colors.red;
@@ -91,7 +95,7 @@ const Investments = (props) => {
       const isActiveTag = investment.isActive ? 'Active' : 'Inactive';
 
       return (
-        <Link to={`${pathname}?investmentId=${investmentId}`}>
+        <Link to={`${location.pathname}?investmentId=${investmentId}`}>
           <Row key={1} gutter={0} className={classes.activitiesRow}>
             <Col span={15}>
               <p style={{ color: colors.black, width: '80%', margin: 0, letterSpacing: '1px' }}>
@@ -197,36 +201,30 @@ const Investments = (props) => {
               top: 0,
             }}
             bodyStyle={{ padding: 15 }}>
-            <Switch>
-              <PrivateRoute
-                path={`${path}/:investmentId`}
-                exact={true}
-                component={(props) => (
-                  <InvestmentDetails selectedOption={selectedOption} {...props} />
-                )}
+            {!!searchInvestmentId ? (
+              <InvestmentDetails
+                investmentId={searchInvestmentId}
+                selectedOption={selectedOption}
+                {...props}
               />
-              <Route
-                render={() => (
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      marginBottom: 0,
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      fontSize: '1.3em',
-                      height: '100%',
-                      textAlign: 'center',
-                      color: colors.pinkDark,
-                    }}>
-                    <p style={{ width: '80%', borderBottom: boxShadows.border, paddingBottom: 15 }}>
-                      Click on a date in the calendar to see all the returns and investment for the
-                      day
-                    </p>
-                  </div>
-                )}
-              />
-            </Switch>
+            ) : (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: 0,
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  fontSize: '1.3em',
+                  height: '100%',
+                  textAlign: 'center',
+                  color: colors.pinkDark,
+                }}>
+                <p style={{ width: '80%', borderBottom: boxShadows.border, paddingBottom: 15 }}>
+                  Click on a date in the calendar to see all the returns and investment for the day
+                </p>
+              </div>
+            )}
           </div>
         </Col>
       </Row>

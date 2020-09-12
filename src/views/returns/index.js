@@ -4,8 +4,8 @@ import { Switch, Link, Route } from 'react-router-dom';
 import { Layout, Row, Col, Card, notification, DatePicker } from 'antd';
 
 import {
-  getIsFetchingState,
-  getReturnsState,
+  // getIsFetchingState,
+  // getReturnsState,
   getErrorMessageState,
   getStatusState,
   Status,
@@ -14,7 +14,7 @@ import { colors, typography, boxShadows } from '../../Css';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { Api } from '../../repository/Api';
 import { overviewOptions } from '../../constants/dateFilter';
-import { humanReadableTime, sortBaseOnTime } from '../../utils/time';
+import { humanReadableTime } from '../../utils/time';
 import PrivateRoute from '../../routes/PrivateRoute';
 import ReportDetails from './ReturnsDetail';
 import { makeStyles } from '@material-ui/styles';
@@ -27,18 +27,24 @@ const { RangePicker } = DatePicker;
 const Returns = (props) => {
   let {
     match: { path },
-    location: { pathname },
+    // location: { pathname },
   } = props;
-  const returnIdFromParam = pathname.split(`${path}/`)[1];
+  // const returnIdFromParam = pathname.split(`${path}/`)[1];
 
-  const [selectedOption, setSelectedOption] = useState(overviewOptions[0]);
-  const [activeTab, setActiveTab] = useState(0);
+  const [
+    selectedOption,
+    // setSelectedOption
+  ] = useState(overviewOptions[0]);
+  const [
+    activeTab,
+    // setActiveTab
+  ] = useState(0);
   const classes = useStyles();
 
-  const isFetching = useSelector(getIsFetchingState);
+  // const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
-  const returns = useSelector(getReturnsState);
+  // const returns = useSelector(getReturnsState);
 
   useEffect(() => {
     fetchReturns();
@@ -84,9 +90,9 @@ const Returns = (props) => {
   }
 
   function renderTable() {
-    const dataSource = !!returns.returns[selectedOption.option]
-      ? sortBaseOnTime(returns.returns[selectedOption.option].data)
-      : [];
+    // const dataSource = !!returns.returns[selectedOption.option]
+    //   ? sortBaseOnTime(returns.returns[selectedOption.option].data)
+    //   : [];
 
     return activites.map((el, i) => {
       const returnId = 1; // el._id;
@@ -242,86 +248,3 @@ const useStyles = makeStyles({
 });
 
 export default Returns;
-
-// return (
-//   <Table
-//     loading={isFetching}
-//     columns={columns}
-//     rowClassName={(returns) => {
-//       if (!!returnIdFromParam) {
-//         if (returns._id === returnIdFromParam) return classes.activeRow;
-//       }
-//     }}
-// dataSource={
-//   !!returns.returns[selectedOption.option]
-//     ? sortBaseOnTime(returns.returns[selectedOption.option].data)
-//     : []
-// }
-//     onRow={(record) => {
-//       return {
-//         onClick: (event) => {
-//           history.push(`${path}/${record._id}`);
-//         },
-//       };
-//     }}
-//     pagination={{ pageSize: 10 }}
-//   />
-
-// const columns = [
-//   {
-//     title: 'Investor',
-//     dataIndex: 'investor',
-//     ellipsis: true,
-//     render: (investor) => {
-//       return <p style={{ marginBottom: 0 }}>{investor.fullName}</p>;
-//     },
-//     width: 150,
-//   },
-//   {
-//     title: 'Amount',
-//     dataIndex: 'amount',
-//     render: (amount) => <span>&#8358;{amount.toLocaleString()}</span>,
-//   },
-//   {
-//     title: 'Status',
-//     dataIndex: 'dueDate',
-//     render: (text, { isReturnDue, isApproved, isConfirmed }) => {
-//       const color = isReturnDue
-//         ? isApproved
-//           ? isConfirmed
-//             ? colors.green
-//             : colors.blue
-//           : colors.red
-//         : colors.black2;
-//       const tag = isReturnDue
-//         ? isApproved
-//           ? isConfirmed
-//             ? 'confirmed'
-//             : 'unconfirmed'
-//           : 'unapproved'
-//         : 'not due';
-//       return (
-//         <Row>
-//           <span
-//             style={{
-//               ...typography.captionMedium,
-//               border: `1px solid ${color}`,
-//               borderRadius: 5,
-//               padding: '3px 5px',
-//               color,
-//               display: 'inline-block',
-//             }}>
-//             {tag}
-//           </span>
-//         </Row>
-//       );
-//     },
-//   },
-//   {
-//     title: 'Due date',
-//     dataIndex: 'dueDate',
-//     render: (date) => {
-//       return humanReadableTime(date);
-//     },
-//   },
-// ];

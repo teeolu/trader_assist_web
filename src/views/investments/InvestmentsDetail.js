@@ -18,12 +18,7 @@ import UploadImage from '../../atoms/UploadImage';
 import Buttons from '../../atoms/Buttons';
 import { getCurrentBusinessState } from '../../redux/business/addBusinessReducer';
 
-const InvestmentDetails = ({ selectedOption, ...props }) => {
-  let {
-    match: {
-      params: { investmentId },
-    },
-  } = props;
+const InvestmentDetails = ({ selectedOption, investmentId }) => {
   const imageUploadKey = 'confirmInvestment';
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -74,7 +69,7 @@ const InvestmentDetails = ({ selectedOption, ...props }) => {
             data: {
               proofOfPayment: data,
               isConfirmed: true,
-              _id,
+              investmentId: _id,
             },
             tag: 'confirm',
           },

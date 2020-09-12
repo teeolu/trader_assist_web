@@ -10,6 +10,7 @@ import {
   getStatusState,
   Status,
 } from '../../redux/business/addBusinessReducer';
+import { getErrorMessageState as getImageUploadErrorMessage } from '../../redux/returns/editReturnsReducer';
 import OnboardingLayout from '../../components/OnboardingLayout';
 import Buttons from '../../atoms/Buttons';
 import { Api } from '../../repository/Api';
@@ -30,6 +31,7 @@ const AddBusiness = ({ businessAsStaff }) => {
   const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
+  const imageUploadErrorMessage = useSelector(getImageUploadErrorMessage);
 
   useEffect(() => {
     if (status === Status.ADD_BUSINESS_REQUEST_FAILURE) {
@@ -58,32 +60,37 @@ const AddBusiness = ({ businessAsStaff }) => {
     Api.MiscRepository.uploadImage({
       imageUploadUri: null,
       formData: data,
-    }).then((data) => {
-      if (!!data) {
-        notification['open']({
-          message: `Registering your platform...`,
-          key: imageUploadKey,
-          icon: <LoadingOutlined style={{ color: colors.green }} />,
-          ...notificationConfigs,
-        });
-        Api.BusinessRepository.addBusiness({
-          formData: {
-            ...values,
-            platformImage: data,
-          },
-        }).then((success) => {
-          if (success === true) {
-            notification['open']({
-              ...notificationConfigs,
-              message: `Your platform has been created successfully`,
-              key: imageUploadKey,
-              duration: 5,
-            });
-            history.push(PrivatePaths.MY_PROFILE);
-          }
-        });
-      }
-    });
+    })
+      .then((data) => {
+        console.log('errorMessage data ', data);
+        if (!!data) {
+          notification['open']({
+            message: `Registering your platform...`,
+            key: imageUploadKey,
+            icon: <LoadingOutlined style={{ color: colors.green }} />,
+            ...notificationConfigs,
+          });
+          Api.BusinessRepository.addBusiness({
+            formData: {
+              ...values,
+              image: data,
+            },
+          }).then((success) => {
+            if (success === true) {
+              notification['open']({
+                ...notificationConfigs,
+                message: `Your platform has been created successfully`,
+                key: imageUploadKey,
+                duration: 5,
+              });
+              history.push(PrivatePaths.MY_PROFILE);
+            }
+          });
+        }
+      })
+      .catch((err) => {
+        console.log('errorMessage err ', err, imageUploadErrorMessage);
+      });
   }
 
   function onFinishFailed(errorInfo) {

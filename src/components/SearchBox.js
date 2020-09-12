@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Input, AutoComplete, Skeleton } from 'antd';
+import { Input, AutoComplete } from 'antd';
 import { useSelector } from 'react-redux';
 import { UserOutlined } from '@ant-design/icons';
 
@@ -11,37 +11,38 @@ const { Search } = Input;
 const SearchBox = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchResult, setSearchResult] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [loadingState, setLoadingState] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState('');
+  // const [loadingState, setLoadingState] = useState(false);
   const currentBusiness = useSelector(getCurrentBusinessState);
 
   useEffect(() => {
     if (!!searchKeyword) search();
+    // eslint-disable-next-line
   }, [searchKeyword]);
 
   function search() {
-    setLoadingState(true);
+    // setLoadingState(true);
     instance
       .get(`/search/platform`, {
         params: { keyword: searchKeyword, limit: 10, platformId: currentBusiness.platformId },
       })
       .then((response) => {
         console.log('response data ', response);
-        const { data, status, message } = response.data;
+        const { data, status } = response.data;
         if (status) {
           setSearchResult((prevState) => ({
             ...prevState,
             ...data,
           }));
         } else {
-          setErrorMessage(message);
+          // setErrorMessage(message);
         }
-        setLoadingState(false);
+        // setLoadingState(false);
       })
       .catch((err) => {
         console.log('response err ', err);
-        setErrorMessage(err.message);
-        setLoadingState(false);
+        // setErrorMessage(err.message);
+        // setLoadingState(false);
       });
   }
 

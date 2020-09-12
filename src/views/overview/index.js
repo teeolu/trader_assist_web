@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Layout, Row, Col, Card } from 'antd';
 
 import './index.css';
 import OverviewCalendar from './Calendar';
 import CalendarDateReturns from './CalendarDateReturn';
-import { typography, colors, boxShadows } from '../../Css';
+import { colors, boxShadows } from '../../Css';
 
 const { Content } = Layout;
 

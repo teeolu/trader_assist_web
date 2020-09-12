@@ -9,8 +9,8 @@ import {
 import { Layout, Row, Card, notification, Col, Select, DatePicker } from 'antd';
 
 import {
-  getIsFetchingState,
-  getInvestmentsState,
+  // getIsFetchingState,
+  // getInvestmentsState,
   getErrorMessageState,
   getStatusState,
   Status,
@@ -40,14 +40,20 @@ const ActivityColors = {
 };
 
 const Activities = (props) => {
-  const [selectedOption, setSelectedOption] = useState(overviewOptions[0]);
-  const [activeTab, setActiveTab] = useState(0);
+  const [
+    selectedOption,
+    // setSelectedOption
+  ] = useState(overviewOptions[0]);
+  const [
+    activeTab,
+    // setActiveTab
+  ] = useState(0);
   const classes = useStyles();
 
-  const isFetching = useSelector(getIsFetchingState);
+  // const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
-  const investments = useSelector(getInvestmentsState);
+  // const investments = useSelector(getInvestmentsState);
 
   useEffect(() => {
     fetchInvestments();

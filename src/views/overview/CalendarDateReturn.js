@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { notification, List, Spin } from 'antd';
+import { notification, List } from 'antd';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 

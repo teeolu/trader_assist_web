@@ -6,7 +6,12 @@ import { LoadingOutlined, CheckCircleTwoTone } from '@ant-design/icons';
 import { colors } from '../Css';
 import { notification } from 'antd';
 import { notificationConfigs } from '../constants/ToastNotifincation';
-import { getImageUploadPercentageState } from '../redux/misc/imageUploadReducer';
+import {
+  getImageUploadPercentageState,
+  getErrorMessageState,
+  getStatusState,
+} from '../redux/misc/imageUploadReducer';
+import { Api } from '../repository/Api';
 
 const acceptedMimeTypes = ['image/png', 'image/jpeg', 'image/gif'];
 const maxFileSize = 1000000;
@@ -18,9 +23,18 @@ const UploadImage = ({ onSelectImage, imageUploadKey, uploadeText }) => {
     type: '',
   });
   const imageUploadProgress = useSelector(getImageUploadPercentageState);
+  const errorMessage = useSelector(getErrorMessageState);
+  const status = useSelector(getStatusState);
   const classes = useStyles({});
   const fileInputRef = useRef();
   const fileInputContainerRef = useRef();
+
+  console.log('errorMessage ', errorMessage, status);
+
+  useEffect(() => {
+    Api.AuthRepository.requestUser();
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (imageUploadProgress !== null) {

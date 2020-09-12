@@ -36,7 +36,7 @@ const ApproveReturnBtn = (props) => {
       formData: {
         data: {
           isApproved: true,
-          _id,
+          returnId: _id,
         },
         tag: 'approve',
       },
