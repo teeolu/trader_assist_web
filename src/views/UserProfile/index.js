@@ -25,6 +25,12 @@ const UserProfile = (props) => {
 
   if (isFetching) return <Loading />;
 
+  const platforms = !!currentUser
+    ? !!currentUser.platformDetails
+      ? currentUser.platformDetails.docs
+      : null
+    : null;
+
   return (
     <Content style={{ padding: 20 }}>
       <div
@@ -54,29 +60,27 @@ const UserProfile = (props) => {
         />
       </div>
       <Row gutter={20}>
-        {!!currentUser
-          ? !!Array.isArray(currentUser.platformDetails)
-            ? currentUser.platformDetails.map((platform) => {
-                return (
-                  <Col key={platform._id} span={6} className={classes.businessCard}>
-                    <div>
-                      <Link to={`platform/${platform.platformId}/overview`}>
-                        {/* <Avatar
+        {!!platforms
+          ? platforms.map((platform) => {
+              return (
+                <Col key={platform._id} span={6} className={classes.businessCard}>
+                  <div>
+                    <Link to={`platform/${platform.platformId}/overview`}>
+                      {/* <Avatar
                         size="large"
                         style={{ marginBottom: 10 }}
                         src={business.businessImage.secure_url}
                         alt={business.platformName}
                       /> */}
-                        <p style={{ margin: 0, font: fonts.regular }}>{platform.platformName}</p>
-                        <p style={{ ...typography.caption, margin: 0, font: fonts.regular }}>
-                          {platform.role}
-                        </p>
-                      </Link>
-                    </div>
-                  </Col>
-                );
-              })
-            : null
+                      <p style={{ margin: 0, font: fonts.regular }}>{platform.platformName}</p>
+                      <p style={{ ...typography.caption, margin: 0, font: fonts.regular }}>
+                        {platform.role}
+                      </p>
+                    </Link>
+                  </div>
+                </Col>
+              );
+            })
           : null}
       </Row>
       {!!currentUser.businessAsStaff && currentUser.businessAsStaff.length === 0 && (

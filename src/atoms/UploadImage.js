@@ -11,7 +11,6 @@ import {
   getErrorMessageState,
   getStatusState,
 } from '../redux/misc/imageUploadReducer';
-import { Api } from '../repository/Api';
 
 const acceptedMimeTypes = ['image/png', 'image/jpeg', 'image/gif'];
 const maxFileSize = 1000000;

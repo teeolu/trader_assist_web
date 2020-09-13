@@ -35,8 +35,8 @@ instance.interceptors.response.use(
         //   type: SET_CURRENT_BUSINESS,
         //   payload: {},
         // });
-        Auth.removeToken();
-        Auth.removeCurrentBusiness();
+        // Auth.removeToken();
+        // Auth.removeCurrentBusiness();
         history.push(PublicPaths.ERROR_UNAUTHORIZED);
         return;
       }

@@ -43,6 +43,5 @@ export const investmentDuration = (duration) => {
   return {
     start: moment(currentDate).valueOf(),
     end: moment(futureMonth).valueOf(),
-    range: parseInt(duration),
   };
 };

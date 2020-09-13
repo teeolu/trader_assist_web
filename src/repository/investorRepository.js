@@ -185,8 +185,10 @@ const InvestorRepository = function (axiosInstance) {
             store.dispatch({
               type: GET_INVESTORS_REQUEST_SUCCESS,
               payload: {
-                investors: data,
-                total: data.length,
+                investors: data.docs,
+                total: data.total,
+                page: data.page,
+                totalPages: data.pages,
               },
             });
             return;

@@ -9,8 +9,8 @@ const initialState = {
   errorMessage: '',
   status: null,
   businessHistory: {
-    history: {},
-    size: null,
+    history: [],
+    total: null,
   },
 };
 
@@ -32,11 +32,8 @@ const getBusinessHistoryReducer = (state = initialState, action) => {
         isFetching: false,
         status: Status.GET_BUSINESS_HISTORY_REQUEST_SUCCESS,
         businessHistory: {
-          history: {
-            ...state.businessHistory.history,
-            ...action.payload.history,
-          },
-          size: action.payload.size,
+          ...action.payload,
+          history: [...state.businessHistory.history, ...action.payload.history],
         },
       };
     case GET_BUSINESS_HISTORY_REQUEST_FAILURE:

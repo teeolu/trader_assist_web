@@ -1,34 +1,43 @@
 import { colors } from '../Css';
+import {
+  VerticalAlignTopOutlined,
+  VerticalAlignBottomOutlined,
+  EditFilled,
+  DeleteOutlined,
+  CheckOutlined,
+  MailOutlined,
+  UserAddOutlined,
+} from '@ant-design/icons';
 
 export const historyTag = {
   edit: {
-    icon: 'file-document-edit-outline',
+    icon: EditFilled,
     color: colors.yellow,
   },
   add: {
-    icon: 'plus-circle-outline',
+    icon: UserAddOutlined,
     color: colors.blue,
   },
   invest: {
-    icon: 'download-outline',
+    icon: VerticalAlignBottomOutlined,
     color: colors.green,
     size: 25,
   },
   return: {
-    icon: 'upload-outline',
+    icon: VerticalAlignTopOutlined,
     color: colors.red,
     size: 25,
   },
   delete: {
-    icon: 'delete-outline',
+    icon: DeleteOutlined,
     color: colors.pinkDark,
   },
   approve: {
-    icon: 'checkbox-marked-outline',
+    icon: CheckOutlined,
     color: colors.green,
   },
   invite: {
-    icon: 'account-plus-outline',
+    icon: MailOutlined,
     color: '#a06a34',
   },
 };

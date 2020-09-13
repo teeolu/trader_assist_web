@@ -168,7 +168,7 @@ const BusinessRepository = function (axiosInstance) {
           });
         });
     },
-    getBusinessHistory: function ({ selectedOption }) {
+    getBusinessHistory: function ({ params }) {
       store.dispatch({
         type: GET_BUSINESS_HISTORY_REQUEST,
       });
@@ -177,10 +177,7 @@ const BusinessRepository = function (axiosInstance) {
         .get(`/history/platform`, {
           params: {
             platformId: store.getState().addBusiness.currentBusiness.platformId,
-            dateFrom: selectedOption.startDate,
-            dateTo: selectedOption.endDate,
-            page: 1,
-            limit: 10,
+            ...params,
           },
         })
         .then(function (response) {
@@ -189,8 +186,10 @@ const BusinessRepository = function (axiosInstance) {
             store.dispatch({
               type: GET_BUSINESS_HISTORY_REQUEST_SUCCESS,
               payload: {
-                history: { [selectedOption.option]: data.history },
-                size: data.size,
+                history: data.docs,
+                total: data.total,
+                page: data.page,
+                totalPages: data.pages,
               },
             });
             return;

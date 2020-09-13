@@ -60,10 +60,11 @@ const AddInvestor = ({ match }) => {
   }, [status]);
 
   function onFinish(values) {
+    console.log('investorBank investorBank ', selectBank);
     Api.InvestorRepository.addInvestor({
       formData: {
         ...values,
-        bank: selectBank,
+        investorBank: selectBank,
         notifyInvestor,
         platformId: currentBusiness.platformId,
       },
@@ -157,7 +158,7 @@ const AddInvestor = ({ match }) => {
               style={{ width: '100%' }}>
               {banksArray.map((bank) => {
                 return (
-                  <Option value={bank.value} key={bank.id}>
+                  <Option value={bank.name} key={bank.id}>
                     {bank.name}
                   </Option>
                 );
