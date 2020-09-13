@@ -105,7 +105,7 @@ const InvestorRepository = function (axiosInstance) {
       });
 
       return axiosInstance
-        .get(`/investments/platform`, {
+        .get(`/investments/investor`, {
           params,
         })
         .then(function (response) {
@@ -114,8 +114,10 @@ const InvestorRepository = function (axiosInstance) {
             store.dispatch({
               type: GET_INVESTOR_INVESTMENT_REQUEST_SUCCESS,
               payload: {
-                investments: { [params.investorId]: data.data },
+                investments: { [params.investorId]: data.docs },
                 size: data.total,
+                page: data.page,
+                pages: data.pages,
               },
             });
             return;
@@ -284,8 +286,8 @@ const InvestorRepository = function (axiosInstance) {
           ...formData,
         })
         .then(function (response) {
-          const { success, message } = response.data;
-          if (success) {
+          const { status, message } = response.data;
+          if (status) {
             const params = {
               investorId: formData.investor,
             };
@@ -295,7 +297,7 @@ const InvestorRepository = function (axiosInstance) {
             store.dispatch({
               type: ADD_INVESTMENT_REQUEST_SUCCESS,
             });
-            return;
+            return true;
           }
           store.dispatch({
             type: ADD_INVESTMENT_REQUEST_FAILURE,

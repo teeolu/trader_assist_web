@@ -33,11 +33,11 @@ const getInvestorInvestmentReducer = (state = initialState, action) => {
         isFetching: false,
         status: Status.GET_INVESTOR_INVESTMENT_REQUEST_SUCCESS,
         investorsInvestment: {
+          ...action.payload,
           investments: {
             ...state.investorsInvestment.investments,
             ...action.payload.investments,
           },
-          size: action.payload.size,
         },
       };
     case GET_INVESTOR_INVESTMENT_REQUEST_FAILURE:

@@ -64,6 +64,8 @@ const AddInvestment = ({ match }) => {
         duration: investmentDuration(values.interval),
         platformId: currentBusiness.platformId,
       },
+    }).then((success) => {
+      if (success) form.resetFields();
     });
   }
 
@@ -110,6 +112,7 @@ const AddInvestment = ({ match }) => {
             initialValues={{
               startDate: moment(),
               interval: '1',
+              recurrent: false,
             }}
             onFinish={onFinish}
             scrollToFirstError>
