@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { DatePicker, Layout, Row, Col, Card, notification } from 'antd';
+import { makeStyles } from '@material-ui/styles';
 
 import {
   // getIsFetchingState,
@@ -13,30 +14,26 @@ import {
 import { colors, typography, boxShadows } from '../../Css';
 import { notificationConfigs } from '../../constants/ToastNotifincation';
 import { Api } from '../../repository/Api';
-import { overviewOptions } from '../../constants/dateFilter';
-import { makeStyles } from '@material-ui/styles';
 import InvestmentDetails from './InvestmentsDetail';
 import { sortBaseOnTime } from '../../utils/time';
+import InvestmentsItems from '../../components/InvestmentsItems';
+import Pagination from '../../atoms/Pagination';
 
 const { Content } = Layout;
 const { RangePicker } = DatePicker;
 
 const Investments = (props) => {
   let { location } = props;
+  const classes = useStyles();
 
+  const [queryParams, setQueryParams] = useState({
+    dateFrom: null,
+    dateTo: null,
+    page: 1,
+    limit: 10,
+  });
   const urlParams = new URLSearchParams(location.search);
   const searchInvestmentId = urlParams.get('investmentId');
-  console.log('investmentId investmentId ', searchInvestmentId, location);
-
-  const [
-    selectedOption,
-    // setSelectedOption
-  ] = useState(overviewOptions[0]);
-  const [
-    activeTab,
-    // setActiveTab
-  ] = useState(0);
-  const classes = useStyles();
 
   // const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
@@ -46,7 +43,7 @@ const Investments = (props) => {
   useEffect(() => {
     fetchInvestments();
     // eslint-disable-next-line
-  }, [selectedOption.option]);
+  }, [queryParams]);
 
   useEffect(() => {
     if (status === Status.GET_INVESTMENTS_REQUEST_FAILURE) {
@@ -58,90 +55,35 @@ const Investments = (props) => {
     // eslint-disable-next-line
   }, [status]);
 
-  function getParamArgs() {
-    let queryParams;
-    switch (activeTab) {
-      case 0:
-        queryParams = {};
-        break;
-      case 1:
-        queryParams = { isConfirmed: false };
-        break;
-      case 2:
-        queryParams = { isConfirmed: true };
-        break;
-      default:
-        break;
-    }
-    return queryParams;
-  }
-
   function fetchInvestments() {
     Api.InvestmentRepository.getInvesments({
-      selectedOption,
-      params: { ...getParamArgs() },
+      params: queryParams,
     });
   }
 
+  function handleDateFilter(_, dateString) {
+    setQueryParams((prevState) => ({
+      ...prevState,
+      dateFrom: dateString[0],
+      dateTo: dateString[1],
+    }));
+  }
+
+  function handlePaginationChange(pageNumber) {
+    setQueryParams((prevState) => ({
+      ...prevState,
+      page: pageNumber,
+    }));
+  }
+
   function renderTable() {
-    const dataSource = !!investments.investments[selectedOption.option]
-      ? sortBaseOnTime(investments.investments[selectedOption.option].data)
-      : [];
+    const dataSource = !!investments ? sortBaseOnTime(investments.data) : [];
     return dataSource.map((investment, i) => {
       const investmentId = investment.investmentId;
-      const color = investment.isConfirmed ? colors.blue : colors.red;
-      const tag = investment.isConfirmed ? investment.confirmedBy.fullName : 'unconfirmed';
-      const isActiveColor = investment.isActive ? colors.green : colors.red;
-      const isActiveTag = investment.isActive ? 'Active' : 'Inactive';
 
       return (
         <Link to={`${location.pathname}?investmentId=${investmentId}`}>
-          <Row key={1} gutter={0} className={classes.activitiesRow}>
-            <Col span={15}>
-              <p style={{ color: colors.black, width: '80%', margin: 0, letterSpacing: '1px' }}>
-                {investment.investmentRef}
-              </p>
-            </Col>
-            <Col span={3}>
-              <p style={{ margin: 0, color: colors.black2 }}>
-                &#8358;{investment.investmentAmount.toLocaleString()}
-              </p>
-            </Col>
-            <Col span={3}>
-              <Row>
-                <span
-                  style={{
-                    ...typography.captionMedium,
-                    border: `1px solid ${isActiveColor}`,
-                    borderRadius: 5,
-                    padding: '3px 5px',
-                    color,
-                    display: 'inline-block',
-                  }}>
-                  {isActiveTag}
-                </span>
-              </Row>
-            </Col>
-            <Col span={3}>
-              <Row>
-                <span
-                  style={
-                    !investment.isConfirmed
-                      ? {
-                          ...typography.captionMedium,
-                          border: `1px solid ${color}`,
-                          borderRadius: 5,
-                          padding: '3px 5px',
-                          color,
-                          display: 'inline-block',
-                        }
-                      : null
-                  }>
-                  {tag}
-                </span>
-              </Row>
-            </Col>
-          </Row>
+          <InvestmentsItems investment={investment} />
         </Link>
       );
     });
@@ -178,7 +120,7 @@ const Investments = (props) => {
                   display: 'flex',
                   justifyContent: 'flex-end',
                 }}>
-                <RangePicker size="large" />
+                <RangePicker size="large" onChange={handleDateFilter} />
               </Col>
             </Row>
             <Row key={1} gutter={0} className={classes.activitiesRow}>
@@ -189,7 +131,8 @@ const Investments = (props) => {
               <Col span={3}>Status</Col>
               <Col span={3}>Confirmed</Col>
             </Row>
-            {renderTable()}
+            <div style={{ position: 'relative' }}>{renderTable()}</div>
+            <Pagination onChange={handlePaginationChange} total={investments.size} />
           </Card>
         </Col>
         <Col span={7}>
@@ -202,11 +145,7 @@ const Investments = (props) => {
             }}
             bodyStyle={{ padding: 15 }}>
             {!!searchInvestmentId ? (
-              <InvestmentDetails
-                investmentId={searchInvestmentId}
-                selectedOption={selectedOption}
-                {...props}
-              />
+              <InvestmentDetails investmentId={searchInvestmentId} {...props} />
             ) : (
               <div
                 style={{

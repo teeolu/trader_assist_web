@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import Activities from '../../../components/Activities';
+// import Activities from '../../../components/Activities';
 import {
   // getIsFetchingState,
   getInvestorHistoryState,
@@ -42,15 +42,15 @@ const InvestorActivities = ({ investor }) => {
     });
   }
 
-  // console.log(
-  //   'investorsHistory[investor.investorId] investorsHistory[investor.investorId] ',
-  //   investorsHistory[investor.investorId],
-  // );
+  console.log(
+    'investorsHistory[investor.investorId] investorsHistory[investor.investorId] ',
+    investorsHistory[investor.investorId],
+  );
 
   return (
     <>
       <Card bordered={true} bodyStyle={{ padding: 15 }}>
-        <Activities activities={investorsHistory[investor.investorId]} />
+        {/* <Activities activities={investorsHistory[investor.investorId]} /> */}
       </Card>
     </>
   );

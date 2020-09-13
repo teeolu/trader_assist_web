@@ -10,7 +10,7 @@
   margin-top: -8px;
 }
 
-[data-theme="compact"]
+/* [data-theme="compact"]
   .card-container
   > .ant-tabs-card
   > .ant-tabs-content
@@ -18,7 +18,7 @@
 .card-container > .ant-tabs-card > .ant-tabs-content > .ant-tabs-tabpane {
   background: #fff5f8;
   padding: 16px;
-}
+} */
 
 [data-theme="compact"] .card-container > .ant-tabs-card > .ant-tabs-bar,
 .card-container > .ant-tabs-card > .ant-tabs-bar {

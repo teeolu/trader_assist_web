@@ -1,30 +1,30 @@
 import React, { useEffect } from 'react';
-import { List, Collapse, Card, notification } from 'antd';
-import { CaretRightOutlined } from '@ant-design/icons';
+import { notification, Row, Col } from 'antd';
 import { useSelector } from 'react-redux';
+import { makeStyles } from '@material-ui/styles';
 
-import { colors, typography } from '../../../Css';
+import { colors, boxShadows } from '../../../Css';
 import {
   getInvestorInvestmentsState,
   getErrorMessageState,
   getStatusState,
+  getIsFetchingState,
   Status,
 } from '../../../redux/investor/getInvestorInvestmentReducer';
 import { notificationConfigs } from '../../../constants/ToastNotifincation';
 import { Api } from '../../../repository/Api';
-import { getInvestorReturnsState } from '../../../redux/investor/getInvestorReturnReducer';
-import { sortBaseOnTime, humanReadableTime } from '../../../utils/time';
-
-const { Panel } = Collapse;
+import { sortBaseOnTime } from '../../../utils/time';
+import InvestmentsItems from '../../../components/InvestmentsItems';
+import InvestorInvestmentReturns from '../../../components/InvestorInvestmentReturns';
+import Loading from '../../../atoms/Loading';
 
 const InvestorInvestments = ({ investor }) => {
   const investorId = investor.investorId;
-  // const classes = useStyles();
-  // const isFetching = useSelector(getIsFetchingState);
+  const classes = useStyles();
+  const isFetching = useSelector(getIsFetchingState);
   const errorMsg = useSelector(getErrorMessageState);
   const status = useSelector(getStatusState);
   const investorsInvestmentsData = useSelector(getInvestorInvestmentsState);
-  const investorsReturns = useSelector(getInvestorReturnsState);
 
   useEffect(() => {
     fetchInvestorInvestment();
@@ -49,154 +49,27 @@ const InvestorInvestments = ({ investor }) => {
     });
   }
 
-  function generateInvestmentReturn(id) {
-    // Work on this when i have an endpoint
-    // const returns = investorsReturns[investorId].data.filter((el) => el.investment === id);
-    return []; // returns;
-  }
-
   return (
     <div>
+      <Row key={1} gutter={0} className={classes.tableHead}>
+        <Col span={15}>
+          <p style={{ color: colors.black, width: '80%', margin: 0 }}>Investment ref</p>
+        </Col>
+        <Col span={3}>Amount</Col>
+        <Col span={3}>Status</Col>
+        <Col span={3}>Confirmed</Col>
+      </Row>
+      {isFetching && <Loading marginTop={20} />}
       {!!investorsInvestmentsData.investments[investorId]
         ? sortBaseOnTime(investorsInvestmentsData.investments[investorId]).map((investment, i) => {
-            console.log('data data data ', investment);
             return (
-              <Card
-                key={investment._id}
-                bordered={true}
-                style={{ marginTop: i !== 0 ? 15 : 0 }}
-                bodyStyle={{ padding: 15 }}>
-                <h4
-                  style={{
-                    ...typography.paragraph,
-                    fontWeight: 600,
-                    letterSpacing: 1,
-                    color: investment.isConfirmed ? colors.green : colors.gray,
-                  }}>
-                  NGN{investment.investmentAmount.toLocaleString()}{' '}
-                  <span style={{ ...typography.captionMedium }}>
-                    on {humanReadableTime(investment.createdAt)}
-                  </span>
-                </h4>
-                <p style={{ marginBottom: 10 }}>
-                  {investment.isConfirmed
-                    ? `This investment was confirmed by ${investment.confirmedBy.fullName}`
-                    : 'Not yet confirmed'}
-                </p>
-                <div
-                  style={{
-                    display: 'flex',
-                  }}>
-                  <div
-                    style={{
-                      flex: 1,
-                      width: '100%',
-                      height: '100%',
-                      marginRight: 20,
-                    }}>
-                    <p>Number of returns</p>
-                    <p style={{ ...typography.h3, color: colors.blue }}>
-                      {investment.numberOfReturns}
-                    </p>
-                  </div>
-                  <div
-                    style={{
-                      flex: 1,
-                      width: '100%',
-                      height: '100%',
-                      paddingLeft: 20,
-                      borderLeft: `1px solid ${colors.gray}`,
-                    }}>
-                    <p>Returns sum</p>
-                    <p style={{ ...typography.h3, color: colors.pinkDark }}>
-                      NGN{investment.sumOfReturns.toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-                <Collapse
-                  bordered={false}
-                  accordion={true}
-                  expandIconPosition="right"
-                  style={{ margin: 0, padding: 0, marginTop: 10, backgroundColor: colors.white }}
-                  expandIcon={({ isActive }) => (
-                    <CaretRightOutlined
-                      style={{ fontSize: '1.2rem', color: colors.pinkDark }}
-                      color={colors.pinkDark}
-                      rotate={isActive ? 90 : 0}
-                    />
-                  )}
-                  className="site-collapse-custom-collapse">
-                  <Panel
-                    style={{ margin: 0, padding: 0 }}
-                    header={<p style={{ color: colors.pinkDark }}>See returns</p>}
-                    key="1"
-                    className="site-collapse-custom-panel">
-                    <List
-                      itemLayout="horizontal"
-                      dataSource={generateInvestmentReturn(investment.investmentId)}
-                      renderItem={(returns) => {
-                        const {
-                          // _id,
-                          amount,
-                          isApproved,
-                          isConfirmed,
-                          approvedBy,
-                          confirmedBy,
-                          dueDate,
-                          isReturnDue,
-                        } = returns;
-                        const color = isReturnDue
-                          ? isApproved
-                            ? isConfirmed
-                              ? colors.green
-                              : colors.yellow
-                            : colors.red
-                          : colors.black2;
-                        const returnStatus = isReturnDue
-                          ? isApproved
-                            ? isConfirmed
-                              ? 'confirmed'
-                              : 'unconfirmed'
-                            : 'unapproved'
-                          : 'not due';
-                        const returnReview = isReturnDue
-                          ? isApproved
-                            ? isConfirmed
-                              ? `Confirmed by ${confirmedBy}`
-                              : `Approved by ${approvedBy}, confirm return`
-                            : 'Approve this return'
-                          : `Due date - ${humanReadableTime(dueDate)}`;
-                        return (
-                          <List.Item>
-                            <List.Item.Meta
-                              title={
-                                <div style={{ display: 'flex' }}>
-                                  <p>
-                                    {amount.toLocaleString()}
-                                    <span
-                                      style={{
-                                        ...typography.captionMedium,
-                                        border: `1px solid ${color}`,
-                                        borderRadius: 5,
-                                        padding: '3px 5px',
-                                        color,
-                                        marginLeft: 10,
-                                        display: 'inline-block',
-                                      }}>
-                                      {returnStatus}
-                                    </span>
-                                  </p>
-                                </div>
-                              }
-                              description={returnReview}
-                            />
-                          </List.Item>
-                        );
-                      }}
-                    />
-                  </Panel>
-                </Collapse>
-              </Card>
+              <div key={investment.investmentId}>
+                <InvestorInvestmentReturns
+                  investment={investment}
+                  investorId={investorId}
+                  renderInvestment={() => <InvestmentsItems investment={investment} />}
+                />
+              </div>
             );
           })
         : null}
@@ -204,6 +77,22 @@ const InvestorInvestments = ({ investor }) => {
   );
 };
 
-// const useStyles = makeStyles({});
+const useStyles = makeStyles({
+  activeRow: {
+    backgroundColor: colors.pinkLight,
+  },
+  tableHead: {
+    padding: 20,
+    borderBottom: boxShadows.border,
+    transition: '.3s all',
+  },
+  activitiesRow: {
+    padding: 20,
+    borderBottom: boxShadows.border,
+    cursor: 'pointer',
+    transition: '.3s all',
+    '&:hover': { backgroundColor: colors.gray3 },
+  },
+});
 
 export default InvestorInvestments;

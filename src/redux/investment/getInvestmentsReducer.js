@@ -9,7 +9,7 @@ const initialState = {
   errorMessage: '',
   status: null,
   investments: {
-    investments: {},
+    data: [],
     size: null,
   },
 };
@@ -32,7 +32,6 @@ const getInvestmentsReducer = (state = initialState, action) => {
         isFetching: false,
         status: Status.GET_INVESTMENTS_REQUEST_SUCCESS,
         investments: {
-          investments: { ...state.businessOverview },
           ...action.payload,
         },
       };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Switch, Link, Route } from 'react-router-dom';
 import { Layout, Row, Col, Card, notification, DatePicker } from 'antd';
+import { makeStyles } from '@material-ui/styles';
 
 import {
   // getIsFetchingState,
@@ -17,9 +18,6 @@ import { overviewOptions } from '../../constants/dateFilter';
 import { humanReadableTime } from '../../utils/time';
 import PrivateRoute from '../../routes/PrivateRoute';
 import ReportDetails from './ReturnsDetail';
-import { makeStyles } from '@material-ui/styles';
-import { Date } from 'core-js';
-import { activites } from '../Activities/mock';
 
 const { Content } = Layout;
 const { RangePicker } = DatePicker;
@@ -94,7 +92,7 @@ const Returns = (props) => {
     //   ? sortBaseOnTime(returns.returns[selectedOption.option].data)
     //   : [];
 
-    return activites.map((el, i) => {
+    return [].map((el, i) => {
       const returnId = 1; // el._id;
       const color = el.isReturnDue
         ? el.isApproved
