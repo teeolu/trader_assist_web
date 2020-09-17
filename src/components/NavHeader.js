@@ -36,7 +36,7 @@ const NavHeader = () => {
             }}>
             <Avatar
               src={
-                !!currentBusiness.businessImage ? currentBusiness.businessImage.secure_url : null
+                !!currentBusiness.platformImage ? currentBusiness.platformImage.secure_url : null
               }
               size="large"
               style={{ border: `1px solid ${colors.gray}`, marginLeft: 20, marginRight: 20 }}

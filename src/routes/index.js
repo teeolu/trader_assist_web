@@ -74,6 +74,8 @@ const Routes = (props) => {
           })}
           <Route exact path="/" render={() => <Redirect to="/my-profile" />} />
         </Switch>
+
+        {/* <Route exact render={() => <div>You missed your way</div>} /> */}
       </Router>
     </Layout>
   );

@@ -52,26 +52,22 @@ const InvestmentRepository = function (axiosInstance) {
           });
         });
     },
-    getInvestmentById: function ({ params = {} }) {
-      let businessId = store.getState().addBusiness.currentBusiness.platformId;
+    getInvestmentById: function ({ investmentId, params = {} }) {
       store.dispatch({
         type: GET_INVESTMENT_REQUEST,
       });
 
       return axiosInstance
-        .get('/api/business/investment', {
-          params: {
-            businessId,
-            investmentId: params.investmentId,
-          },
+        .get(`/investment/${investmentId}`, {
+          params,
         })
         .then(function (response) {
-          const { success, message, data } = response.data;
+          const { status, message, data } = response.data;
 
-          if (success) {
+          if (status) {
             store.dispatch({
               type: GET_INVESTMENT_REQUEST_SUCCESS,
-              payload: { [data._id]: data },
+              payload: { [data.investmentId]: data },
             });
             return;
           }

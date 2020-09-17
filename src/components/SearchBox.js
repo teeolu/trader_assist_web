@@ -27,13 +27,10 @@ const SearchBox = () => {
         params: { keyword: searchKeyword, limit: 10, platformId: currentBusiness.platformId },
       })
       .then((response) => {
-        console.log('response data ', response);
         const { data, status } = response.data;
+        console.log('response data ', data);
         if (status) {
-          setSearchResult((prevState) => ({
-            ...prevState,
-            ...data,
-          }));
+          setSearchResult((prevState) => [...prevState, ...data.docs]);
         } else {
           // setErrorMessage(message);
         }
@@ -63,6 +60,7 @@ const SearchBox = () => {
       </span>
     );
   }
+  console.log('response searchResult ', searchResult);
 
   function renderItem(data) {
     return {

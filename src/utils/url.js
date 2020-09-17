@@ -1,5 +1,5 @@
 export const existInUrl = (item) => {
-  const urlContent = window.location.href.split('/');
+  const urlContent = window.location.href.split('?')[0].split('/');
   let value;
   if (!!Array.isArray(item)) {
     item.forEach((el) => {

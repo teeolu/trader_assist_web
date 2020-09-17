@@ -31,11 +31,13 @@ const InvestmentDetails = ({ selectedOption, investmentId }) => {
   useEffect(() => {
     if (!!investmentId)
       Api.InvestmentRepository.getInvestmentById({
-        params: { investmentId },
+        investmentId,
+        params: {},
       });
   }, [investmentId]);
-  const { amount, isConfirmed, confirmedBy, investor, proofOfPayment, _id } =
+  const { investmentAmount, isConfirmed, confirmedBy, investmentRef, investor, proofOfPayment } =
     investmentsById[investmentId] || {};
+  // console.log('investmentsById investmentsById ', investmentsById[investmentId]);
 
   const color = isConfirmed ? colors.blue : colors.red;
   const tag = isConfirmed ? 'confirmed' : 'unconfirmed';
@@ -69,7 +71,7 @@ const InvestmentDetails = ({ selectedOption, investmentId }) => {
             data: {
               proofOfPayment: data,
               isConfirmed: true,
-              investmentId: _id,
+              investmentId,
             },
             tag: 'confirm',
           },
@@ -94,7 +96,13 @@ const InvestmentDetails = ({ selectedOption, investmentId }) => {
   }
 
   return (
-    <div>
+    <div style={{ padding: 20 }}>
+      <p
+        style={{
+          ...typography.h4,
+        }}>
+        {investmentRef}
+      </p>
       <p
         style={{
           ...typography.captionMedium,
@@ -133,7 +141,7 @@ const InvestmentDetails = ({ selectedOption, investmentId }) => {
         <img src={proofOfPayment.secure_url} alt="bank" style={{ height: 300, width: '100%' }} />
       )}
       <p style={{ ...typography.h4, color: colors.black2 }}>
-        &#8358;{!!amount && amount.toLocaleString()}
+        &#8358;{!!investmentAmount && investmentAmount.toLocaleString()}
       </p>
       <p>
         <Link

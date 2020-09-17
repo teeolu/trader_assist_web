@@ -1,11 +1,11 @@
 export default class Auth {
   static isAuthenticated() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('ta-token');
     return !!token;
   }
 
   static setToken(token) {
-    localStorage.setItem('token', token);
+    localStorage.setItem('ta-token', token);
   }
 
   static setCurrentBusiness(business) {
@@ -19,11 +19,11 @@ export default class Auth {
   }
 
   static getToken() {
-    return localStorage.getItem('token');
+    return localStorage.getItem('ta-token');
   }
 
   static removeToken() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('ta-token');
   }
 
   static removeCurrentBusiness() {
