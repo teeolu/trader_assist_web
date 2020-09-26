@@ -38,8 +38,6 @@ export default (props) => {
     // eslint-disable-next-line
   }, []);
 
-  console.log('isFetching isFetching isFetching ', isFetching);
-
   if (isFetching) return <Loading />;
   if (!params || !params.platformId || !currentBusiness.platformId) return null;
   const businessRoutes = [
@@ -52,9 +50,9 @@ export default (props) => {
   ];
   return (
     <>
-      <NavHeader />
+      <SideBar url={url} />
       <Layout className="site-layout" style={{ height: '100%' }}>
-        <SideBar url={url} />
+        <NavHeader />
         {businessRoutes.map((route) => {
           const routePath = `${path}${route.path}`;
           return <PrivateRoute path={routePath} exact={route.exact} component={route.component} />;

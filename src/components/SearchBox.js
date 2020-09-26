@@ -5,6 +5,7 @@ import { UserOutlined } from '@ant-design/icons';
 
 import { getCurrentBusinessState } from '../redux/business/addBusinessReducer';
 import { instance } from '../repository/Api';
+import { colors } from '../Css';
 
 const { Search } = Input;
 
@@ -88,6 +89,9 @@ const SearchBox = () => {
     <AutoComplete
       dropdownClassName="certain-category-search-dropdown"
       dropdownMatchSelectWidth={500}
+      style={{
+        boxShadow: '0 2px 4px 0 rgba(16, 24, 32,.2)',
+      }}
       options={options}>
       <Search
         placeholder="Search for investor, investment, and returns"
@@ -97,6 +101,7 @@ const SearchBox = () => {
         size="large"
         style={{
           width: 500,
+          background: colors.white,
         }}
       />
     </AutoComplete>
