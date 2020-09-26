@@ -1,22 +1,37 @@
 import React from 'react';
 import { List, Collapse } from 'antd';
+import { useSelector } from 'react-redux';
 
 import { colors, typography } from '../Css';
-// import { getInvestorReturnsState } from '../redux/investor/getInvestorReturnReducer';
+import { getInvestmentsReturnState } from '../redux/investor/getInvestmentReturnsReducer';
 import { humanReadableTime } from '../utils/time';
+import { Api } from '../repository/Api';
 
 const { Panel } = Collapse;
 
 export default ({ investment, investorId, renderInvestment }) => {
-  // const investorsReturns = useSelector(getInvestorReturnsState);
-  function generateInvestmentReturn(id) {
+  const investmentReturns = useSelector(getInvestmentsReturnState);
+  console.log('generateInvestmentReturn ', investmentReturns);
+  function generateInvestmentReturn(investmentId) {
     // Work on this when i have an endpoint
-    // const returns = investorsReturns[investorId].data.filter((el) => el.investment === id);
-    return []; // returns;
+    // console.log('generateInvestmentReturn ', investmentId, investmentReturns);
+    // const returns = investmentReturns[investmentId].data;
+    return [];
+  }
+
+  function handleAccordionChange(investmentId) {
+    console.log('generateInvestmentReturn ', investmentId);
+    if (typeof investmentId !== 'undefined') {
+      Api.InvestorRepository.getInvestmentReturns({ investmentId, params: {} });
+    }
   }
 
   return (
-    <Collapse bordered={false} accordion={true} className="site-collapse-custom-collapse">
+    <Collapse
+      onChange={handleAccordionChange}
+      bordered={true}
+      accordion={true}
+      className="site-collapse-custom-collapse">
       <Panel
         header={renderInvestment()}
         key={investment.investmentId}

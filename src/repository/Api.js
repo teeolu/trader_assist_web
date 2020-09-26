@@ -1,6 +1,6 @@
 /** @format */
-
 import axios from 'axios';
+
 import { AuthRepository } from './authRepository';
 import { InvestorRepository } from './investorRepository';
 import { BusinessRepository } from './businessRepository';
@@ -13,10 +13,15 @@ import history from '../routes/history';
 import { PublicPaths } from '../routes';
 
 const config = {
+  timeout: 1000,
   baseURL: `https://trader-assistant-backend.herokuapp.com/trader-assistant`, //`http://localhost:4000/trader-assistant`, //
 };
 
 export const instance = axios.create(config);
+
+const axiosErrorMessage = {
+  networkError: 'Network Error',
+};
 
 if (Auth.isAuthenticated() === true) {
   instance.defaults.headers.common['authorization'] = `Bearer ${Auth.getToken()}`;
@@ -45,6 +50,8 @@ instance.interceptors.response.use(
         // return;
       }
       return Promise.reject(error.response.data);
+    }
+    if (error.message === axiosErrorMessage.networkError) {
     }
     throw new Error('An error occured');
   },

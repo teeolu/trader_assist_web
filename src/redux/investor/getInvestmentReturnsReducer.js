@@ -43,9 +43,9 @@ const getInvestmentReturnsReducer = (state = initialState, action) => {
   }
 };
 
-export const getIsFetchingState = (state) => state.getInvestorInvestment.isFetching;
-export const getErrorMessageState = (state) => state.getInvestorInvestment.errorMessage;
-export const getStatusState = (state) => state.getInvestorInvestment.status;
-export const getInvestmentsReturnState = (state) => state.getInvestorInvestment.investmentReturns;
+export const getIsFetchingState = (state) => state.getInvestmentReturns.isFetching;
+export const getErrorMessageState = (state) => state.getInvestmentReturns.errorMessage;
+export const getStatusState = (state) => state.getInvestmentReturns.status;
+export const getInvestmentsReturnState = (state) => state.getInvestmentReturns.investmentReturns;
 
 export default getInvestmentReturnsReducer;

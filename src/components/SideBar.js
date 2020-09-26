@@ -19,7 +19,6 @@ import { PrivatePaths } from '../routes';
 import { existInUrl } from '../utils/url';
 import { getCurrentUserState } from '../redux/auth/userRequestReducer';
 import { getCurrentBusinessState } from '../redux/business/addBusinessReducer';
-import history from '../routes/history';
 
 const { Sider } = Layout;
 
@@ -45,10 +44,6 @@ const SideBar = ({ url }) => {
   if (!currentUser.platformDetails) return null;
   const userPlatforms =
     currentUser.platformDetails.total > 1 ? currentUser.platformDetails.docs : [];
-
-  function handleChange(value) {
-    console.log(`selected ${value}`);
-  }
 
   const SideBarContents = [
     {
@@ -89,7 +84,12 @@ const SideBar = ({ url }) => {
         .filter((platform) => platform.platformId !== currentBusiness.platformId)
         .map((platform) => {
           return (
-            <Menu.Item onClick={() => history.push(`platform/${platform.platformId}`)}>
+            <Menu.Item
+              onClick={() => {
+                const location = window.location.origin;
+                window.location.href = location + `/platform/${platform.platformId}/overview`;
+                // history.push(`platform/${platform.platformId}`)}
+              }}>
               <CurrentBussinessInfo
                 platformImage={!!platform.platformImage ? platform.platformImage.secure_url : null}
                 platformName={platform.platformName}
@@ -120,12 +120,14 @@ const SideBar = ({ url }) => {
             }
             platformName={currentBusiness.platformName}
           />
-          <DownOutlined
-            style={{
-              fontSize: fontsize.h4,
-              color: colors.black3,
-            }}
-          />
+          {userPlatforms.length > 1 && (
+            <DownOutlined
+              style={{
+                fontSize: fontsize.h4,
+                color: colors.black3,
+              }}
+            />
+          )}
         </div>
       </Dropdown>
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Layout, Row, Col } from 'antd';
 
-import { boxShadows } from '../Css';
 import SearchBox from './SearchBox';
 
 const { Header } = Layout;

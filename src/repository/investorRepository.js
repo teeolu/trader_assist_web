@@ -35,13 +35,13 @@ import store from '../redux/store';
 
 const InvestorRepository = function (axiosInstance) {
   let InvestorRepository = {
-    getInvestmentReturns: function ({ params = {} }) {
+    getInvestmentReturns: function ({ investmentId, params = {} }) {
       store.dispatch({
         type: GET_INVESTMENT_RETURNS_REQUEST,
       });
 
       return axiosInstance
-        .get('/api/investors/returns-by-investment', {
+        .get(`/returns/${investmentId}`, {
           params,
         })
         .then(function (response) {
@@ -50,7 +50,7 @@ const InvestorRepository = function (axiosInstance) {
             store.dispatch({
               type: GET_INVESTMENT_RETURNS_REQUEST_SUCCESS,
               payload: {
-                [params.investmentId]: data,
+                [investmentId]: data,
               },
             });
             return;
