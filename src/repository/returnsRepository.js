@@ -96,7 +96,7 @@ const ReturnsRepository = function (axiosInstance) {
         });
     },
     getReturnsCalendarOverviewId: function ({ params = {} }) {
-      let businessId = store.getState().addBusiness.currentBusiness.platformId;
+      let platformId = store.getState().addBusiness.currentBusiness.platformId;
       store.dispatch({
         type: GET_RETURNS_CALENDAR_OVERVIEW_REQUEST,
       });
@@ -104,13 +104,13 @@ const ReturnsRepository = function (axiosInstance) {
       return axiosInstance
         .get('/return-overview', {
           params: {
-            businessId,
+            platformId,
             ...params,
           },
         })
         .then(function (response) {
           const { status, message, data } = response.data;
-          // console.log('GET_RETURNS_CALENDAR_OVERVIEW_REQUEST ', params, response.data);
+          console.log('GET_RETURNS_CALENDAR_OVERVIEW_REQUEST ', params, response.data);
           if (status) {
             store.dispatch({
               type: GET_RETURNS_CALENDAR_OVERVIEW_REQUEST_SUCCESS,

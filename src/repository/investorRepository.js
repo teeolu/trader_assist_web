@@ -24,9 +24,9 @@ import {
   GET_INVESTOR_HISTORY_REQUEST,
   GET_INVESTOR_HISTORY_REQUEST_SUCCESS,
   GET_INVESTOR_HISTORY_REQUEST_FAILURE,
-  GET_INVESTOR_RETURNS_REQUEST,
-  GET_INVESTOR_RETURNS_REQUEST_SUCCESS,
-  GET_INVESTOR_RETURNS_REQUEST_FAILURE,
+  // GET_INVESTOR_RETURNS_REQUEST,
+  // GET_INVESTOR_RETURNS_REQUEST_SUCCESS,
+  // GET_INVESTOR_RETURNS_REQUEST_FAILURE,
   CONFIRM_RETURNS_REQUEST,
   CONFIRM_RETURNS_REQUEST_SUCCESS,
   CONFIRM_RETURNS_REQUEST_FAILURE,
@@ -67,38 +67,38 @@ const InvestorRepository = function (axiosInstance) {
           });
         });
     },
-    getInvestorReturns: function ({ params = {} }) {
-      store.dispatch({
-        type: GET_INVESTOR_RETURNS_REQUEST,
-      });
+    // getInvestorReturns: function ({ params = {} }) {
+    //   store.dispatch({
+    //     type: GET_INVESTOR_RETURNS_REQUEST,
+    //   });
 
-      return axiosInstance
-        .get('/api/investors/investor-returns', {
-          params,
-        })
-        .then(function (response) {
-          const { status, message, data } = response.data;
-          if (status) {
-            store.dispatch({
-              type: GET_INVESTOR_RETURNS_REQUEST_SUCCESS,
-              payload: {
-                [params.investorId]: { data: data.returns, size: data.size },
-              },
-            });
-            return;
-          }
-          store.dispatch({
-            type: GET_INVESTOR_RETURNS_REQUEST_FAILURE,
-            payload: message,
-          });
-        })
-        .catch(function (error) {
-          store.dispatch({
-            type: GET_INVESTOR_RETURNS_REQUEST_FAILURE,
-            payload: error.message,
-          });
-        });
-    },
+    //   return axiosInstance
+    //     .get('/api/investors/investor-returns', {
+    //       params,
+    //     })
+    //     .then(function (response) {
+    //       const { status, message, data } = response.data;
+    //       if (status) {
+    //         store.dispatch({
+    //           type: GET_INVESTOR_RETURNS_REQUEST_SUCCESS,
+    //           payload: {
+    //             [params.investorId]: { data: data.returns, size: data.size },
+    //           },
+    //         });
+    //         return;
+    //       }
+    //       store.dispatch({
+    //         type: GET_INVESTOR_RETURNS_REQUEST_FAILURE,
+    //         payload: message,
+    //       });
+    //     })
+    //     .catch(function (error) {
+    //       store.dispatch({
+    //         type: GET_INVESTOR_RETURNS_REQUEST_FAILURE,
+    //         payload: error.message,
+    //       });
+    //     });
+    // },
     getInvestorInvestment: function ({ params = {} }) {
       store.dispatch({
         type: GET_INVESTOR_INVESTMENT_REQUEST,
@@ -144,6 +144,7 @@ const InvestorRepository = function (axiosInstance) {
         .get(`/investor/${investorId}`, { params })
         .then(function (response) {
           const { status, message, data } = response.data;
+          console.log('GET_RETURNS_CALENDAR_OVERVIEW_REQUEST fail', status);
 
           if (!!status) {
             store.dispatch({

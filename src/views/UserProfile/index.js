@@ -96,7 +96,7 @@ const UserProfile = (props) => {
                         <Avatar
                           size="large"
                           style={{ marginBottom: 5 }}
-                          src={platform.platformImage.secure_url}
+                          src={platform.platformImage?.secure_url}
                           alt={platform.platformName}
                         />
                         <p style={{ margin: 0, font: fonts.regular, color: '#101820FF' }}>

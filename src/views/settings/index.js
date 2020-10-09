@@ -44,17 +44,6 @@ const Settings = (props) => {
         },
       ],
     },
-    {
-      name: 'My profile',
-      subMenu: [
-        {
-          name: 'Edit profile',
-        },
-        {
-          name: 'Reset password',
-        },
-      ],
-    },
   ];
 
   return (

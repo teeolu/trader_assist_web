@@ -59,7 +59,7 @@ const InvestorDetails = (props) => {
   useEffect(() => {
     if (investorId) {
       fetchInvestor();
-      fetchInvestorReturns();
+      // fetchInvestorReturns();
     }
     // eslint-disable-next-line
   }, [investorId]);
@@ -91,13 +91,13 @@ const InvestorDetails = (props) => {
     });
   }
 
-  function fetchInvestorReturns() {
-    Api.InvestorRepository.getInvestorReturns({
-      params: {
-        investorId,
-      },
-    });
-  }
+  // function fetchInvestorReturns() {
+  //   Api.InvestorRepository.getInvestorReturns({
+  //     params: {
+  //       investorId,
+  //     },
+  //   });
+  // }
 
   return (
     <div
